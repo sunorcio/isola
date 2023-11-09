@@ -8,15 +8,6 @@
 
 
 
-/* TODO
-fix depth, fix rotation
-use and test all functions in their simplest form
-print all information, compartmentalyze init 
-break apart render setup
-keep or replace timers, test for stable framerate
-*/
-
-
 
 #define JUSTPI		3.14159265358979323846
 
@@ -61,31 +52,41 @@ static uint8_t elementCube[] = {
 	20,21,22,		20,22,23,
 };
 
-int resolution[2] = {480,360};
-int framesize = 32;
+int resolution[] = {480,360};
+int framesize[] = {32,24};
 
-float view[4][4];
-float projection[4][4];
+
+float view[4][4] = {0};
+float projection[4][4] = {0};
 
 void printm4(float m[4][4]){
 	int i;
 	SDL_Log("\n");
 	for(i = 0;i<4;i++){
-			SDL_Log("%f,%f,%f,%f,",m[0][i],m[1][i],m[2][i],m[3][i]);
+			SDL_Log("%f,%f,%f,%f,\n",m[0][i],m[1][i],m[2][i],m[3][i]);
 	}
 	SDL_Log("\n");
 }
 
+void mprojection(unsigned char pers,float left, float right, float bottom, float top, float near, float far, float dest[4][4]){
+	projection[0][0] = (float)resolution[1]/resolution[0];
+	projection[1][1] = 1;
+	projection[2][2] = -0.125;
+	projection[3][3] = 1;
+	projection[2][3] = -1*pers;
+}
+
 void mset(void){
+
 	view[0][0] = 1;
 	view[1][1] = 1;
 	view[2][2] = 1;
 	view[3][3] = 1;
+	view[3][0] = 0;
+	view[3][1] = 0;
 	view[3][2] = -1;
-	projection[0][0] = 1;
-	projection[1][1] = (float)resolution[0]/resolution[1];
-	projection[2][2] = 0.25;
-	projection[3][3] = 1;
+	mprojection(0,(float)-32/24/* *0.816496581 */, (float)32/24/* *0.816496581 */,
+			-/* 0.81649658 */1, /* 0.81649658 */1, 0.125f, 4.f, projection);
 }
 
 void mrot(void){
@@ -96,18 +97,13 @@ void mrot(void){
 	if (cameraPhs>JUSTPI*2){
 		cameraPhs -= JUSTPI*2;
 	}
+	
 
- 	view[0][0] = cos(cameraPhs);
-	view[2][0] = -sin(cameraPhs);
- 	view[1][1] = cos(cameraPhs); 
- 	view[2][1] = sin(cameraPhs); 
-	view[0][2] = sin(cameraPhs);
- 	view[1][2] = -sin(cameraPhs);
-	view[2][2] = cos(cameraPhs);
 }
 
+
 unsigned int drawBuffers[1];
-unsigned int renderBuffer[1];
+unsigned int renderBuffer[2];
 unsigned int frameBuffer[1];
 unsigned int elementBuffer[1];
 unsigned int vertexBuffer[1];
@@ -181,21 +177,27 @@ void renderCreate(void){
 	glUniformMatrix4fv(locPrj,1,GL_FALSE,*projection);
 
 
+
 	glGenFramebuffers(1,&frameBuffer[0]);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,frameBuffer[0]);
 
-	glGenRenderbuffers(1,&renderBuffer[0]);
+	glGenRenderbuffers(2,&renderBuffer[0]);
 	glBindRenderbuffer(GL_RENDERBUFFER,renderBuffer[0]);
-	glRenderbufferStorage(GL_RENDERBUFFER,GL_RGB,framesize,framesize);
-	glViewport(0,0,framesize,framesize);
+	glRenderbufferStorage(GL_RENDERBUFFER,GL_RGB,framesize[0],framesize[1]);
+	glBindRenderbuffer(GL_RENDERBUFFER,renderBuffer[1]);
+	glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT16,framesize[0],framesize[1]);
 	glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,
 							  GL_RENDERBUFFER,renderBuffer[0]);
+	glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,
+							  GL_RENDERBUFFER,renderBuffer[1]);
+
 	drawBuffers[0] = GL_COLOR_ATTACHMENT0;
 	glDrawBuffers(1,drawBuffers);
+	glViewport(0,0,framesize[0],framesize[1]);
 }
 void renderDestroy(void){
 	glBindRenderbuffer(GL_RENDERBUFFER,0);
-	glDeleteRenderbuffers(1,&renderBuffer[0]);
+	glDeleteRenderbuffers(2,&renderBuffer[0]);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
 	glDeleteFramebuffers(1,&frameBuffer[0]);
 
@@ -225,7 +227,7 @@ void draw(void){
 
 	glBindFramebuffer(GL_READ_FRAMEBUFFER,frameBuffer[0]);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
-	glBlitFramebuffer(0,0,framesize,framesize,0,0,resolution[0],resolution[1],
+	glBlitFramebuffer(0,0,framesize[0],framesize[1],0,0,resolution[0],resolution[1],
 					  GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT,GL_NEAREST);
 
 	SDL_GL_SwapWindow(isolaWindow);
@@ -244,6 +246,7 @@ void loop(void){
 
 	SDL_Event ev = {0};
 	uint8_t run = 1;
+	uint8_t pause = 0;
 	while(run){
 		while (SDL_PollEvent(&ev)){
 			if(ev.type == SDL_QUIT){run = 0;}
@@ -251,12 +254,13 @@ void loop(void){
 				switch (ev.key.keysym.sym){
 
 					case SDLK_ESCAPE:
-						run = 0;
+						run = !run;
 					break;
 					case SDLK_q:
-						run = 0;
+						run = !run;
 					break;
-					case SDLK_r:
+					case SDLK_p:
+						pause = !pause;
 					break;
 					case SDLK_SPACE:
 					break;
@@ -264,13 +268,15 @@ void loop(void){
 			}
 		}
 
-		if(SDL_GetTicks64()>=(unsigned)lastStep+1000/isolaSPS){
+		if(!pause){
+			if(SDL_GetTicks64()>=(unsigned)lastStep+1000/isolaSPS){
 
-			mrot();
+				mrot();
 
-			/* if (state[SDL_SCANCODE_A]){} */
-			lastStep = SDL_GetTicks64();
-		}
+				/* if (state[SDL_SCANCODE_A]){} */
+				lastStep = SDL_GetTicks64();
+			}
+		}else {SDL_Delay(1);}
 
 		if(SDL_GetTicks64()>(unsigned)lastFrame+1000/isolaFPS){
 
