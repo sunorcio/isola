@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -12,7 +11,6 @@
 #define JUSTPI		3.14159265358979323846
 
 static float vertexCube[] = {
-/* 	pos                         col */
 	-0.500,-0.500, 0.500,		0.750, 0.250, 0.250,
 	 0.500,-0.500, 0.500,		0.750, 0.250, 0.250,
 	 0.500, 0.500, 0.500,		0.750, 0.250, 0.250,
@@ -43,7 +41,7 @@ static float vertexCube[] = {
 	 0.500, 0.500,-0.500,		0.500, 0.500, 0.000,
 	 0.500, 0.500, 0.500,		0.500, 0.500, 0.000,
 };
-static uint8_t elementCube[] = {
+static unsigned char elementCube[] = {
 	0,1,2,			0,2,3,
 	4,5,6,			4,6,7,
 	8,9,10,			8,10,11,
@@ -235,23 +233,45 @@ void draw(void){
 
 
 
+#define TICK_INTERVAL	30
+
+/* static Uint32 next_time;
+Uint32 time_left(void)
+{
+	Uint32 now;
+
+	now = SDL_GetTicks();
+	if(next_time <= now)
+		return 0;
+	else
+		return next_time - now;
+}
+
+	next_time = SDL_GetTicks() + TICK_INTERVAL;
+	while ( game_running ) {
+		update_game_state();
+		SDL_Delay(time_left());
+		next_time += TICK_INTERVAL;
+	} */
+
+
 void loop(void){
-	int isolaFPS = 30;
-	int isolaSPS = 30;
-	SDL_TimerID lastFrame = SDL_GetTicks64();
-	SDL_TimerID lastStep = SDL_GetTicks64();
+	int isolaFPS = 144;
+	int isolaSPS = 144;
+	unsigned long lastFrame = SDL_GetTicks64();
+	unsigned long lastStep = SDL_GetTicks64();
 
-	int numkeys;
-	const uint8_t* state = SDL_GetKeyboardState(&numkeys);
+	int keyLength;
+	const unsigned char* keyState = SDL_GetKeyboardState(&keyLength);
 
-	SDL_Event ev = {0};
-	uint8_t run = 1;
-	uint8_t pause = 0;
+	SDL_Event event = {0};
+	unsigned char run = 1;
+	unsigned char pause = 0;
 	while(run){
-		while (SDL_PollEvent(&ev)){
-			if(ev.type == SDL_QUIT){run = 0;}
-			if(ev.type == SDL_KEYDOWN){
-				switch (ev.key.keysym.sym){
+		while (SDL_PollEvent(&event)){
+			if(event.type == SDL_QUIT){run = 0;}
+			if(event.type == SDL_KEYDOWN){
+				switch (event.key.keysym.sym){
 
 					case SDLK_ESCAPE:
 						run = !run;
@@ -269,7 +289,7 @@ void loop(void){
 		}
 
 		if(!pause){
-			if(SDL_GetTicks64()>=(unsigned)lastStep+1000/isolaSPS){
+			if(SDL_GetTicks64()>=lastStep+1000/isolaSPS){
 
 				mrot();
 
@@ -278,7 +298,7 @@ void loop(void){
 			}
 		}else {SDL_Delay(1);}
 
-		if(SDL_GetTicks64()>(unsigned)lastFrame+1000/isolaFPS){
+		if(SDL_GetTicks64()>lastFrame+1000/isolaFPS){
 
 
 			draw();
