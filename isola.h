@@ -9,7 +9,7 @@
 #define ISOLA_INITPARSE		0
 /* [1^0]  alternatively, set -DISOLA_DBG flag */
 #define ISOLA_DEBUG			1
-/* [1^0]  input stderr to file "ISOLA_LOG" */
+/* [1^0]  input stderr to file (./isola.log) */
 #define ISOLA_LOG			0
 
 /* Init parameters for SDL context creation ________________________________ */

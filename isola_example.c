@@ -183,7 +183,7 @@ void renderCreate(void){
 	glBindRenderbuffer(GL_RENDERBUFFER,renderBuffer[0]);
 	glRenderbufferStorage(GL_RENDERBUFFER,GL_RGB,framesize[0],framesize[1]);
 	glBindRenderbuffer(GL_RENDERBUFFER,renderBuffer[1]);
-	glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT16,framesize[0],framesize[1]);
+	glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT24,framesize[0],framesize[1]);
 	glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,
 							  GL_RENDERBUFFER,renderBuffer[0]);
 	glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,

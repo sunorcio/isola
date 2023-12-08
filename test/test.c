@@ -1,5 +1,8 @@
+#include "isola.h"
 #include <cglm/cglm.h>
-#include <SDL2/SDL.h>
+#include <time.h>
+
+
 
 
 void printm4(float m[4][4]){
@@ -11,7 +14,7 @@ void printm4(float m[4][4]){
 	printf("\n");
 }
 
-void msetup(){
+void msetup(void){
 	float cameraPos[] = {0,0,-1};
 	float cameraTgt[] = {0,0,0};
 	float cameraUp[] = {0,1,0};
@@ -31,6 +34,20 @@ void msetup(){
 	printm4(projection);
 }
 
+
+
+
+
+
+
+
+
+
+
+/* no input without window */
+/* TODO print average frametime, be generous with the sample size to compensate probable imprecision */
+
+
 void loop(void){
 	int isolaFPS = 144;
 	int isolaSPS = 144;
@@ -42,50 +59,39 @@ void loop(void){
 
 	SDL_Event ev = {0};
 	unsigned char run = 1;
-	unsigned char pause = 0;
 	while(run){
+
 		while (SDL_PollEvent(&ev)){
 			if(ev.type == SDL_QUIT){run = 0;}
 			if(ev.type == SDL_KEYDOWN){
 				switch (ev.key.keysym.sym){
-
 					case SDLK_ESCAPE:
 						run = !run;
-					break;
-					case SDLK_q:
-						run = !run;
-					break;
-					case SDLK_p:
-						pause = !pause;
-					break;
-					case SDLK_SPACE:
 					break;
 				}
 			}
 		}
 
-		if(!pause){
-			if(SDL_GetTicks64()>=lastStep+1000/isolaSPS){
-				
-				/* if (state[SDL_SCANCODE_A]){} */
-				lastStep = SDL_GetTicks64();
-			}
-		}else {SDL_Delay(1);}
+		if(SDL_GetTicks64()>=lastStep+1000/isolaSPS){
+			lastStep = SDL_GetTicks64();
+		}
 
-		if(SDL_GetTicks64()>lastFrame+1000/isolaFPS){
-
-			lastFrame = SDL_GetTicks64();
-		}else{SDL_Delay(1);}
 	}
 }
 
 
 int main(void){
-	SDL_Init(SDL_INIT_TIMER);
+	srand(time(0));
+	isolaInit();
+
 
 	loop();
 
-	SDL_Quit();
+
+	isolaErrorGL();
+	isolaErrorSDL(-1);
+	isolaQuit();
+	return 0;
 }
 
 
