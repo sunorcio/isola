@@ -20,7 +20,8 @@ void msetup(void){
 	float cameraUp[] = {0,1,0};
 	mat4 view = {0};
 	mat4 projection = {0};
-
+	
+	/* TODO comment and decomment vim */
  	glm_lookat(cameraPos, cameraTgt, cameraUp, view);
 	glm_ortho((float)-32/24/* *0.816496581 */, (float)32/24/* *0.816496581 */,
 			-/* 0.81649658 */1, /* 0.81649658 */1, 0.125f, 4.f, projection);
@@ -29,8 +30,8 @@ void msetup(void){
 	printm4(projection);
 	glm_frustum((float)-32/24/* *0.816496581 */, (float)32/24/* *0.816496581 */,
 			-/* 0.81649658 */1, /* 0.81649658 */1, 0.125f, 4.f, projection);
-	//glm_ortho((float)-32/24/* *0.816496581 */, (float)32/24/* *0.816496581 */,
-	//		-/* 0.81649658 */1, /* 0.81649658 */1, 0.125f, 8.f, projection);
+	glm_ortho((float)-32/24/* *0.816496581 */, (float)32/24/* *0.816496581 */,
+			-/* 0.81649658 */1, /* 0.81649658 */1, 0.125f, 8.f, projection);
 	printm4(projection);
 }
 
@@ -49,13 +50,8 @@ void msetup(void){
 
 
 void loop(void){
-	int isolaFPS = 144;
 	int isolaSPS = 144;
-	unsigned long lastFrame = SDL_GetTicks64();
 	unsigned long lastStep = SDL_GetTicks64();
-
-	int numkeys;
-	const unsigned char* state = SDL_GetKeyboardState(&numkeys);
 
 	SDL_Event ev = {0};
 	unsigned char run = 1;
@@ -72,15 +68,22 @@ void loop(void){
 			}
 		}
 
+<<<<<<< HEAD
 		if(SDL_GetTicks64()>=lastStep+1000/isolaSPS){
 			lastStep = SDL_GetTicks64();
 		}
 
+=======
+		if(SDL_GetTicks64()>=lastStep+1000/isolaSPS){	
+			lastStep = SDL_GetTicks64();
+		}
+>>>>>>> 28b66e049ea2c352b4c85d76f32d4116c0b46758
 	}
 }
 
 
 int main(void){
+<<<<<<< HEAD
 	srand(time(0));
 	isolaInit();
 
@@ -92,6 +95,15 @@ int main(void){
 	isolaErrorSDL(-1);
 	isolaQuit();
 	return 0;
+=======
+	SDL_Init(SDL_INIT_TIMER);
+		
+	
+/* 	loop(); */
+	
+	printf("%s",SDL_GetError());
+	SDL_Quit();
+>>>>>>> 28b66e049ea2c352b4c85d76f32d4116c0b46758
 }
 
 
