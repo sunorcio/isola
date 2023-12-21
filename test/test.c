@@ -7,13 +7,14 @@
 
 void printm4(float m[4][4]){
 	int i;
-	printf("\n");
+	SDL_Log("\n");
 	for(i = 0;i<4;i++){
-			printf("%f,%f,%f,%f,\n",m[0][i],m[1][i],m[2][i],m[3][i]);
+			SDL_Log("%f,%f,%f,%f,\n",m[0][i],m[1][i],m[2][i],m[3][i]);
 	}
-	printf("\n");
+	SDL_Log("\n");
 }
 
+/* TODO test matrix transformation bounds and definition */
 void msetup(void){
 	float cameraPos[] = {0,0,-1};
 	float cameraTgt[] = {0,0,0};
@@ -21,37 +22,25 @@ void msetup(void){
 	mat4 view = {0};
 	mat4 projection = {0};
 	
-	/* TODO comment and decomment vim */
- 	glm_lookat(cameraPos, cameraTgt, cameraUp, view);
-	glm_ortho((float)-32/24/* *0.816496581 */, (float)32/24/* *0.816496581 */,
+	glm_lookat(cameraPos, cameraTgt, cameraUp, view);
+	glm_ortho((float)-8/6/* *0.816496581 */, (float)8/6/* *0.816496581 */,
 			-/* 0.81649658 */1, /* 0.81649658 */1, 0.125f, 4.f, projection);
-
+/* 	glm_frustum((float)-8/6// *0.816496581 //, (float)8/6// *0.816496581 //,
+			-// 0.81649658 //1, // 0.81649658 //1, 0.125f, 4.f, projection); */
 	printm4(view);
-	printm4(projection);
-	glm_frustum((float)-32/24/* *0.816496581 */, (float)32/24/* *0.816496581 */,
-			-/* 0.81649658 */1, /* 0.81649658 */1, 0.125f, 4.f, projection);
-	glm_ortho((float)-32/24/* *0.816496581 */, (float)32/24/* *0.816496581 */,
-			-/* 0.81649658 */1, /* 0.81649658 */1, 0.125f, 8.f, projection);
 	printm4(projection);
 }
 
 
 
 
-
-
-
-
-
-
-
-/* no input without window */
-/* TODO print average frametime, be generous with the sample size to compensate probable imprecision */
-
-
 void loop(void){
-	int isolaSPS = 144;
-	unsigned long lastStep = SDL_GetTicks64();
+	#define isolaFPS 144
+	const unsigned long clockFreq = SDL_GetPerformanceFrequency();
+	unsigned long lastSteps = SDL_GetPerformanceCounter();
+	unsigned long lastStepf = SDL_GetPerformanceCounter();
+
+	SDL_GL_SetSwapInterval(0);
 
 	SDL_Event ev = {0};
 	unsigned char run = 1;
@@ -64,30 +53,28 @@ void loop(void){
 					case SDLK_ESCAPE:
 						run = !run;
 					break;
+					case SDLK_SPACE:
+					break;
 				}
 			}
 		}
 
-<<<<<<< HEAD
-		if(SDL_GetTicks64()>=lastStep+1000/isolaSPS){
-			lastStep = SDL_GetTicks64();
-		}
+		if(SDL_GetPerformanceCounter()>=lastStepf+clockFreq/isolaFPS){
+			lastStepf += clockFreq/isolaFPS;
 
-=======
-		if(SDL_GetTicks64()>=lastStep+1000/isolaSPS){	
-			lastStep = SDL_GetTicks64();
+			glClear(GL_COLOR_BUFFER_BIT);
+			SDL_GL_SwapWindow(isolaWindow);
 		}
->>>>>>> 28b66e049ea2c352b4c85d76f32d4116c0b46758
 	}
 }
 
 
 int main(void){
-<<<<<<< HEAD
 	srand(time(0));
 	isolaInit();
 
 
+	msetup();
 	loop();
 
 
@@ -95,15 +82,6 @@ int main(void){
 	isolaErrorSDL(-1);
 	isolaQuit();
 	return 0;
-=======
-	SDL_Init(SDL_INIT_TIMER);
-		
-	
-/* 	loop(); */
-	
-	printf("%s",SDL_GetError());
-	SDL_Quit();
->>>>>>> 28b66e049ea2c352b4c85d76f32d4116c0b46758
 }
 
 

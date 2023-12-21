@@ -54,6 +54,7 @@ int resolution[] = {480,360};
 int framesize[] = {32,24};
 
 
+
 float view[4][4] = {0};
 float projection[4][4] = {0};
 
@@ -65,15 +66,14 @@ void printm4(float m[4][4]){
 	}
 	SDL_Log("\n");
 }
-
-void mprojection(unsigned char pers,float left, float right, float bottom, float top, float near, float far, float dest[4][4]){
+void mprojection(unsigned char pers,float left, float right, float bottom,
+					float top, float near, float far, float dest[4][4]){
 	projection[0][0] = (float)resolution[1]/resolution[0];
 	projection[1][1] = 1;
 	projection[2][2] = -0.125;
 	projection[3][3] = 1;
 	projection[2][3] = -1*pers;
 }
-
 void mset(void){
 
 	view[0][0] = 1;
@@ -83,10 +83,11 @@ void mset(void){
 	view[3][0] = 0;
 	view[3][1] = 0;
 	view[3][2] = -1;
-	mprojection(0,(float)-32/24/* *0.816496581 */, (float)32/24/* *0.816496581 */,
-			-/* 0.81649658 */1, /* 0.81649658 */1, 0.125f, 4.f, projection);
+	mprojection(0,(float)-32/24/* *0.816496581 */, 
+					(float)32/24/* *0.816496581 */,
+					-/* 0.81649658 */1, /* 0.81649658 */1, 
+					0.125f, 4.f, projection);
 }
-
 void mrot(void){
 	static float cameraRad = 1;
 	static float cameraPhs = 0.;
@@ -96,7 +97,6 @@ void mrot(void){
 		cameraPhs -= JUSTPI*2;
 	}
 	
-
 }
 
 
@@ -183,15 +183,19 @@ void renderCreate(void){
 	glBindRenderbuffer(GL_RENDERBUFFER,renderBuffer[0]);
 	glRenderbufferStorage(GL_RENDERBUFFER,GL_RGB,framesize[0],framesize[1]);
 	glBindRenderbuffer(GL_RENDERBUFFER,renderBuffer[1]);
-	glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT24,framesize[0],framesize[1]);
+	glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT24,
+							framesize[0],framesize[1]);
 	glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,
-							  GL_RENDERBUFFER,renderBuffer[0]);
+								  GL_RENDERBUFFER,renderBuffer[0]);
 	glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,
 							  GL_RENDERBUFFER,renderBuffer[1]);
 
 	drawBuffers[0] = GL_COLOR_ATTACHMENT0;
 	glDrawBuffers(1,drawBuffers);
 	glViewport(0,0,framesize[0],framesize[1]);
+
+
+	SDL_GL_SetSwapInterval(0);
 }
 void renderDestroy(void){
 	glBindRenderbuffer(GL_RENDERBUFFER,0);
@@ -225,7 +229,8 @@ void draw(void){
 
 	glBindFramebuffer(GL_READ_FRAMEBUFFER,frameBuffer[0]);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
-	glBlitFramebuffer(0,0,framesize[0],framesize[1],0,0,resolution[0],resolution[1],
+	glBlitFramebuffer(0,0,framesize[0],framesize[1],0,0,
+						resolution[0],resolution[1],
 					  GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT,GL_NEAREST);
 
 	SDL_GL_SwapWindow(isolaWindow);
@@ -233,33 +238,15 @@ void draw(void){
 
 
 
-#define TICK_INTERVAL	30
 
-/* static Uint32 next_time;
-Uint32 time_left(void)
-{
-	Uint32 now;
-
-	now = SDL_GetTicks();
-	if(next_time <= now)
-		return 0;
-	else
-		return next_time - now;
-}
-
-	next_time = SDL_GetTicks() + TICK_INTERVAL;
-	while ( game_running ) {
-		update_game_state();
-		SDL_Delay(time_left());
-		next_time += TICK_INTERVAL;
-	} */
 
 
 void loop(void){
-	int isolaFPS = 144;
-	int isolaSPS = 144;
-	unsigned long lastFrame = SDL_GetTicks64();
-	unsigned long lastStep = SDL_GetTicks64();
+	#define isolaFPS 144
+	#define isolaSPS 144
+	const unsigned long clockFreq = SDL_GetPerformanceFrequency();
+	unsigned long lastFrame = SDL_GetPerformanceCounter();
+	unsigned long lastStep = SDL_GetPerformanceCounter();
 
 	int keyLength;
 	const unsigned char* keyState = SDL_GetKeyboardState(&keyLength);
@@ -283,29 +270,29 @@ void loop(void){
 						pause = !pause;
 					break;
 					case SDLK_SPACE:
+						printm4(view);
+						printm4(projection);
 					break;
 				}
 			}
 		}
 
 		if(!pause){
-			if(SDL_GetTicks64()>=lastStep+1000/isolaSPS){
+			if(SDL_GetPerformanceCounter()>=lastStep+clockFreq/isolaSPS){
+				lastStep += clockFreq/isolaSPS;
+				/* if (state[SDL_SCANCODE_A]){} */
 
 				mrot();
-
-				/* if (state[SDL_SCANCODE_A]){} */
-				lastStep = SDL_GetTicks64();
 			}
-		}else {SDL_Delay(1);}
+		}
 
-		if(SDL_GetTicks64()>lastFrame+1000/isolaFPS){
-
+		if(SDL_GetPerformanceCounter()>=lastFrame+clockFreq/isolaFPS){
+			lastFrame += clockFreq/isolaFPS;
 
 			draw();
 
-
-			lastFrame = SDL_GetTicks64();
 		}else{SDL_Delay(1);}
+
 	}
 }
 
