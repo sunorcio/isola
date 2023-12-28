@@ -43,7 +43,7 @@ clean: isola
 # Depends on these sources:
 # glew - https://github.com/nigels-com/glew
 # SDL - https://github.com/libsdl-org/SDL
-# consider using cglm (c) or glm (c++) for vector math and matrix setup
+# consider using cglm (c) or glm (c++) for vector math and gl matrix setup
 #
 # ____________________DYNAMIC COMPILE
 # 

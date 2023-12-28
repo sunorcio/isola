@@ -41,7 +41,7 @@ static float vertexCube[] = {
 	 0.500, 0.500,-0.500,		0.500, 0.500, 0.000,
 	 0.500, 0.500, 0.500,		0.500, 0.500, 0.000,
 };
-static unsigned char elementCube[] = {
+static unsigned char elementsCube[] = {
 	0,1,2,			0,2,3,
 	4,5,6,			4,6,7,
 	8,9,10,			8,10,11,
@@ -50,45 +50,57 @@ static unsigned char elementCube[] = {
 	20,21,22,		20,22,23,
 };
 
-int resolution[] = {480,360};
-int framesize[] = {32,24};
+static float vertexAxis[] = {
+	 0.625+0.000, 0.000, 0.000,		0.000, 0.000, 0.000,
+	 0.625+0.250, 0.000, 0.000,		1.000, 0.000, 0.000,
+	 0.625+0.000, 0.250, 0.000,		0.000, 1.000, 0.000,
+	 0.625+0.000, 0.100, 0.250,		0.000, 0.000, 1.000,
+};
+static unsigned char elementsAxis[] = {
+	0,1,
+	0,2,
+	0,3,
+};
+
+unsigned int resolution[2] = {480,360};
+unsigned int framesize[2] = {32,24};
 
 
+float view[4*4] = {0};
+float projection[4*4] = {0};
 
-float view[4][4] = {0};
-float projection[4][4] = {0};
-
-void printm4(float m[4][4]){
+void printm4(float m[4*4]){
 	int i;
 	SDL_Log("\n");
 	for(i = 0;i<4;i++){
-			SDL_Log("%f,%f,%f,%f,\n",m[0][i],m[1][i],m[2][i],m[3][i]);
+			SDL_Log("%f,%f,%f,%f,\n",m[0*4+i],m[1*4+i],m[2*4+i],m[3*4+i]);
 	}
 	SDL_Log("\n");
 }
-void mprojection(unsigned char pers,float left, float right, float bottom,
-					float top, float near, float far, float dest[4][4]){
-	projection[0][0] = (float)resolution[1]/resolution[0];
-	projection[1][1] = 1;
-	projection[2][2] = -0.125;
-	projection[3][3] = 1;
-	projection[2][3] = -1*pers;
-}
+
 void mset(void){
 
-	view[0][0] = 1;
-	view[1][1] = 1;
-	view[2][2] = 1;
-	view[3][3] = 1;
-	view[3][0] = 0;
-	view[3][1] = 0;
-	view[3][2] = -1;
-	mprojection(0,(float)-32/24/* *0.816496581 */, 
-					(float)32/24/* *0.816496581 */,
-					-/* 0.81649658 */1, /* 0.81649658 */1, 
-					0.125f, 4.f, projection);
+	view[0*4+0] = 1;
+	view[1*4+1] = 1;
+	view[2*4+2] = 1;
+
+	view[3*4+0] = 0;
+	view[3*4+1] = 0;
+	view[3*4+2] = -1;
+	view[3*4+3] = 1;
+
+	projection[0*4+0] = 0.75;
+	projection[1*4+1] = 1;
+	projection[2*4+2] = -0.516129;
+
+	projection[3*4+0] = 0;
+	projection[3*4+1] = 0;
+	projection[3*4+2] = -1.064516;
+	projection[3*4+3] = 1;
+
+	printm4(view);
 }
-void mrot(void){
+void manim(void){
 	static float cameraRad = 1;
 	static float cameraPhs = 0.;
 
@@ -103,9 +115,9 @@ void mrot(void){
 unsigned int drawBuffers[1];
 unsigned int renderBuffer[2];
 unsigned int frameBuffer[1];
-unsigned int elementBuffer[1];
-unsigned int vertexBuffer[1];
-unsigned int vertexArrayObject[1];
+unsigned int elementBuffer[2];
+unsigned int vertexBuffer[2];
+unsigned int vertexArrayObject[2];
 unsigned int shaderProgram[1];
 void renderCreate(void){
 	int locPos = 0;
@@ -117,17 +129,17 @@ void renderCreate(void){
 	int locPrj;
 
 
-	glGenVertexArrays(1,&vertexArrayObject[0]);
-	glGenBuffers(1,&vertexBuffer[0]);
-	glGenBuffers(1,&elementBuffer[0]);
+	glGenVertexArrays(2,&vertexArrayObject[0]);
+	glGenBuffers(2,&vertexBuffer[0]);
+	glGenBuffers(2,&elementBuffer[0]);
 
 
 	id = 0;
 	glBindVertexArray(vertexArrayObject[id]);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,elementBuffer[id]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(elementCube),
-				 elementCube,GL_DYNAMIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(elementsCube),
+				 elementsCube,GL_DYNAMIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer[id]);
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertexCube),
@@ -141,6 +153,27 @@ void renderCreate(void){
 	glVertexAttribPointer(locCol,3,GL_FLOAT,GL_FALSE,
 						  sizeof(vertexCube[0])*6,
 						  (void*)(sizeof(vertexCube[0])*3));
+
+	id = 1;
+	glBindVertexArray(vertexArrayObject[id]);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,elementBuffer[id]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(elementsAxis),
+				 elementsAxis,GL_DYNAMIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer[id]);
+	glBufferData(GL_ARRAY_BUFFER,sizeof(vertexAxis),
+				 vertexAxis,GL_DYNAMIC_DRAW);
+
+	glEnableVertexAttribArray(locPos);
+	glVertexAttribPointer(locPos,3,GL_FLOAT,GL_FALSE,
+						  sizeof(vertexAxis[0])*6,(void*)0);
+	
+	glEnableVertexAttribArray(locCol);
+	glVertexAttribPointer(locCol,3,GL_FLOAT,GL_FALSE,
+						  sizeof(vertexAxis[0])*6,
+						  (void*)(sizeof(vertexAxis[0])*3));
+
 
 
 	id = 0;
@@ -168,11 +201,11 @@ void renderCreate(void){
 
 	locViw = glGetUniformLocation(shaderProgram[id],"matView");
 	if(locViw == -1){SDL_Log("matView not found in shader %d",id);}
-	glUniformMatrix4fv(locViw,1,GL_FALSE,*view);
+	glUniformMatrix4fv(locViw,1,GL_FALSE,view);
 
 	locPrj = glGetUniformLocation(shaderProgram[id],"matProj");
 	if(locPrj == -1){SDL_Log("matProj not found in shader %d",id);}
-	glUniformMatrix4fv(locPrj,1,GL_FALSE,*projection);
+	glUniformMatrix4fv(locPrj,1,GL_FALSE,projection);
 
 
 
@@ -192,8 +225,10 @@ void renderCreate(void){
 
 	drawBuffers[0] = GL_COLOR_ATTACHMENT0;
 	glDrawBuffers(1,drawBuffers);
-	glViewport(0,0,framesize[0],framesize[1]);
+/* 	glViewport(0,0,framesize[0],framesize[1]); */
+	glViewport(0,0,resolution[0],resolution[1]);
 
+	glLineWidth(5);
 
 	SDL_GL_SetSwapInterval(0);
 }
@@ -214,7 +249,7 @@ void draw(void){
 	int id;
 	int locViw;
 
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,frameBuffer[0]);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0/* frameBuffer[0] */);
 
 	glClear( GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT );
 
@@ -223,20 +258,22 @@ void draw(void){
 	glUseProgram(shaderProgram[id]);
 
 	locViw = glGetUniformLocation(shaderProgram[id],"matView");
-	glUniformMatrix4fv(locViw,1,GL_FALSE,*view);
+	glUniformMatrix4fv(locViw,1,GL_FALSE,view);
 
-	glDrawElements(GL_TRIANGLES,sizeof(elementCube),GL_UNSIGNED_BYTE,(void*)0);
+	glDrawElements(GL_TRIANGLES,sizeof(elementsCube),GL_UNSIGNED_BYTE,(void*)0);
 
-	glBindFramebuffer(GL_READ_FRAMEBUFFER,frameBuffer[0]);
+	id = 1;
+	glBindVertexArray(vertexArrayObject[id]);
+	glDrawElements(GL_LINES,sizeof(elementsAxis),GL_UNSIGNED_BYTE,(void*)0);
+
+/* 	glBindFramebuffer(GL_READ_FRAMEBUFFER,frameBuffer[0]);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
 	glBlitFramebuffer(0,0,framesize[0],framesize[1],0,0,
 						resolution[0],resolution[1],
-					  GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT,GL_NEAREST);
+					  GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT,GL_NEAREST); */
 
 	SDL_GL_SwapWindow(isolaWindow);
 }
-
-
 
 
 
@@ -280,9 +317,16 @@ void loop(void){
 		if(!pause){
 			if(SDL_GetPerformanceCounter()>=lastStep+clockFreq/isolaSPS){
 				lastStep += clockFreq/isolaSPS;
-				/* if (state[SDL_SCANCODE_A]){} */
+				if (keyState[SDL_SCANCODE_A]){
+				}
+				if (keyState[SDL_SCANCODE_D]){
+				}
+				if (keyState[SDL_SCANCODE_S]){
+				}
+				if (keyState[SDL_SCANCODE_W]){
+				}
 
-				mrot();
+				manim();
 			}
 		}
 
@@ -295,6 +339,9 @@ void loop(void){
 
 	}
 }
+
+
+
 
 int main(void){
 	srand(time(0));
