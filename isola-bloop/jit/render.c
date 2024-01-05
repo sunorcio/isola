@@ -1,47 +1,42 @@
-#include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
-#include <math.h>
+#include "render.h"
 
 #include "isola.h"
 
 
 
 
-#define JUSTPI		3.14159265358979323846
-
-static float vertexCube[] = {
-	-0.500,-0.500, 0.500,		0.750, 0.250, 0.250,
-	 0.500,-0.500, 0.500,		0.750, 0.250, 0.250,
-	 0.500, 0.500, 0.500,		0.750, 0.250, 0.250,
-	-0.500, 0.500, 0.500,		0.750, 0.250, 0.250,
+float vertexCube[] = {
+	-0.500,-0.500, 0.500,		0.250, 0.250, 0.750,
+	 0.500,-0.500, 0.500,		0.250, 0.250, 0.750,
+	 0.500, 0.500, 0.500,		0.250, 0.250, 0.750,
+	-0.500, 0.500, 0.500,		0.250, 0.250, 0.750,
 
 	-0.500, 0.500, 0.500,		0.250, 0.750, 0.250,
 	 0.500, 0.500, 0.500,		0.250, 0.750, 0.250,
 	 0.500, 0.500,-0.500,		0.250, 0.750, 0.250,
 	-0.500, 0.500,-0.500,		0.250, 0.750, 0.250,
 
-	-0.500,-0.500, 0.500,		0.250, 0.250, 0.750,
-	-0.500, 0.500, 0.500,		0.250, 0.250, 0.750,
-	-0.500, 0.500,-0.500,		0.250, 0.250, 0.750,
-	-0.500,-0.500,-0.500,		0.250, 0.250, 0.750,
+	 0.500,-0.500, 0.500,		0.750, 0.250, 0.250,
+	 0.500,-0.500,-0.500,		0.750, 0.250, 0.250,
+	 0.500, 0.500,-0.500,		0.750, 0.250, 0.250,
+	 0.500, 0.500, 0.500,		0.750, 0.250, 0.250,
 
-	-0.500,-0.500,-0.500,		0.000, 0.500, 0.500,
-	-0.500, 0.500,-0.500,		0.000, 0.500, 0.500,
-	 0.500, 0.500,-0.500,		0.000, 0.500, 0.500,
-	 0.500,-0.500,-0.500,		0.000, 0.500, 0.500,
+	-0.500,-0.500,-0.500,		0.625, 0.625, 0.000,
+	-0.500, 0.500,-0.500,		0.625, 0.625, 0.000,
+	 0.500, 0.500,-0.500,		0.625, 0.625, 0.000,
+	 0.500,-0.500,-0.500,		0.625, 0.625, 0.000,
 
-	-0.500,-0.500, 0.500,		0.500, 0.000, 0.500,
-	-0.500,-0.500,-0.500,		0.500, 0.000, 0.500,
-	 0.500,-0.500,-0.500,		0.500, 0.000, 0.500,
-	 0.500,-0.500, 0.500,		0.500, 0.000, 0.500,
+	-0.500,-0.500, 0.500,		0.625, 0.000, 0.625,
+	-0.500,-0.500,-0.500,		0.625, 0.000, 0.625,
+	 0.500,-0.500,-0.500,		0.625, 0.000, 0.625,
+	 0.500,-0.500, 0.500,		0.625, 0.000, 0.625,
 
-	 0.500,-0.500, 0.500,		0.500, 0.500, 0.000,
-	 0.500,-0.500,-0.500,		0.500, 0.500, 0.000,
-	 0.500, 0.500,-0.500,		0.500, 0.500, 0.000,
-	 0.500, 0.500, 0.500,		0.500, 0.500, 0.000,
+	-0.500,-0.500, 0.500,		0.000, 0.625, 0.625,
+	-0.500, 0.500, 0.500,		0.000, 0.625, 0.625,
+	-0.500, 0.500,-0.500,		0.000, 0.625, 0.625,
+	-0.500,-0.500,-0.500,		0.000, 0.625, 0.625,
 };
-static unsigned char elementsCube[] = {
+unsigned char elementsCube[] = {
 	0,1,2,			0,2,3,
 	4,5,6,			4,6,7,
 	8,9,10,			8,10,11,
@@ -50,13 +45,13 @@ static unsigned char elementsCube[] = {
 	20,21,22,		20,22,23,
 };
 
-static float vertexAxis[] = {
-	 0.625+0.000, 0.000, 0.000,		0.000, 0.000, 0.000,
-	 0.625+0.250, 0.000, 0.000,		1.000, 0.000, 0.000,
-	 0.625+0.000, 0.250, 0.000,		0.000, 1.000, 0.000,
-	 0.625+0.000, 0.100, 0.250,		0.000, 0.000, 1.000,
+float vertexAxis[] = {
+	 0.000, 0.000, 0.000,		0.000, 0.000, 0.000,
+	 1.750, 0.000, 0.000,		1.000, 0.000, 0.000,
+	 0.000, 1.750, 0.000,		0.000, 1.000, 0.000,
+	 0.000, 0.000, 1.750,		0.000, 0.000, 1.000,
 };
-static unsigned char elementsAxis[] = {
+unsigned char elementsAxis[] = {
 	0,1,
 	0,2,
 	0,3,
@@ -65,20 +60,14 @@ static unsigned char elementsAxis[] = {
 unsigned int resolution[2] = {480,360};
 unsigned int framesize[2] = {32,24};
 
-
 float view[4*4] = {0};
 float projection[4*4] = {0};
+float nullvec3[3] = {0};
+float displacement[3] = {1,0,0};
 
-void printm4(float m[4*4]){
-	int i;
-	SDL_Log("\n");
-	for(i = 0;i<4;i++){
-			SDL_Log("%f,%f,%f,%f,\n",m[0*4+i],m[1*4+i],m[2*4+i],m[3*4+i]);
-	}
-	SDL_Log("\n");
-}
 
-void mset(void){
+
+static void mset(void){
 
 	view[0*4+0] = 1;
 	view[1*4+1] = 1;
@@ -86,39 +75,27 @@ void mset(void){
 
 	view[3*4+0] = 0;
 	view[3*4+1] = 0;
-	view[3*4+2] = -1;
+	view[3*4+2] = -2;
 	view[3*4+3] = 1;
 
-	projection[0*4+0] = 0.75;
-	projection[1*4+1] = 1;
+	projection[0*4+0] = (3./4)/1/* .25 *//* 0.918559 */;
+	projection[1*4+1] = 1./1/* .25 *//* 1.224745 */;
 	projection[2*4+2] = -0.516129;
 
 	projection[3*4+0] = 0;
 	projection[3*4+1] = 0;
 	projection[3*4+2] = -1.064516;
 	projection[3*4+3] = 1;
-
-	printm4(view);
-}
-void manim(void){
-	static float cameraRad = 1;
-	static float cameraPhs = 0.;
-
-	cameraPhs += JUSTPI/32;
-	if (cameraPhs>JUSTPI*2){
-		cameraPhs -= JUSTPI*2;
-	}
-	
 }
 
 
-unsigned int drawBuffers[1];
-unsigned int renderBuffer[2];
-unsigned int frameBuffer[1];
-unsigned int elementBuffer[2];
-unsigned int vertexBuffer[2];
-unsigned int vertexArrayObject[2];
-unsigned int shaderProgram[1];
+static unsigned int drawBuffers[1];
+static unsigned int renderBuffer[2];
+static unsigned int frameBuffer[1];
+static unsigned int elementBuffer[2];
+static unsigned int vertexBuffer[2];
+static unsigned int vertexArrayObject[2];
+static unsigned int shaderProgram[1];
 void renderCreate(void){
 	int locPos = 0;
 	int locCol = 1;
@@ -127,6 +104,7 @@ void renderCreate(void){
 	unsigned int fs;
 	int locViw;
 	int locPrj;
+	int locDis;
 
 
 	glGenVertexArrays(2,&vertexArrayObject[0]);
@@ -207,6 +185,10 @@ void renderCreate(void){
 	if(locPrj == -1){SDL_Log("matProj not found in shader %d",id);}
 	glUniformMatrix4fv(locPrj,1,GL_FALSE,projection);
 
+	locDis = glGetUniformLocation(shaderProgram[id],"displacement");
+	if(locDis == -1){SDL_Log("matProj not found in shader %d",id);}
+	glUniform3fv(locDis,1,displacement);
+
 
 
 	glGenFramebuffers(1,&frameBuffer[0]);
@@ -225,10 +207,8 @@ void renderCreate(void){
 
 	drawBuffers[0] = GL_COLOR_ATTACHMENT0;
 	glDrawBuffers(1,drawBuffers);
-/* 	glViewport(0,0,framesize[0],framesize[1]); */
-	glViewport(0,0,resolution[0],resolution[1]);
-
-	glLineWidth(5);
+	glViewport(0,0,framesize[0],framesize[1]);
+/* 	glViewport(0,0,resolution[0],resolution[1]); */
 
 	SDL_GL_SetSwapInterval(0);
 }
@@ -248,8 +228,9 @@ void renderDestroy(void){
 void draw(void){
 	int id;
 	int locViw;
+	int locDis;
 
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0/* frameBuffer[0] */);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,frameBuffer[0]);
 
 	glClear( GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT );
 
@@ -258,105 +239,37 @@ void draw(void){
 	glUseProgram(shaderProgram[id]);
 
 	locViw = glGetUniformLocation(shaderProgram[id],"matView");
+	locDis = glGetUniformLocation(shaderProgram[id],"displacement");
 	glUniformMatrix4fv(locViw,1,GL_FALSE,view);
 
+	displacement[0] = 0;
+	displacement[1] = 0;
+	displacement[2] = 0;
+	glUniform3fv(locDis,1,nullvec3);
 	glDrawElements(GL_TRIANGLES,sizeof(elementsCube),GL_UNSIGNED_BYTE,(void*)0);
+
+	displacement[0] = 1;
+	displacement[1] = 0;
+	displacement[2] = 0;
+	glUniform3fv(locDis,1,displacement);
+	glDrawElements(GL_TRIANGLES,sizeof(elementsCube),GL_UNSIGNED_BYTE,(void*)0);
+
 
 	id = 1;
 	glBindVertexArray(vertexArrayObject[id]);
+	displacement[0] = 0;
+	displacement[1] = 0;
+	displacement[2] = 0;
+	glUniform3fv(locDis,1,displacement);
 	glDrawElements(GL_LINES,sizeof(elementsAxis),GL_UNSIGNED_BYTE,(void*)0);
 
-/* 	glBindFramebuffer(GL_READ_FRAMEBUFFER,frameBuffer[0]);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER,frameBuffer[0]);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
 	glBlitFramebuffer(0,0,framesize[0],framesize[1],0,0,
 						resolution[0],resolution[1],
-					  GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT,GL_NEAREST); */
+						GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT,GL_NEAREST);
 
 	SDL_GL_SwapWindow(isolaWindow);
-}
-
-
-
-
-void loop(void){
-	#define isolaFPS 144
-	#define isolaSPS 144
-	const unsigned long clockFreq = SDL_GetPerformanceFrequency();
-	unsigned long lastFrame = SDL_GetPerformanceCounter();
-	unsigned long lastStep = SDL_GetPerformanceCounter();
-
-	int keyLength;
-	const unsigned char* keyState = SDL_GetKeyboardState(&keyLength);
-
-	SDL_Event event = {0};
-	unsigned char run = 1;
-	unsigned char pause = 0;
-	while(run){
-		while (SDL_PollEvent(&event)){
-			if(event.type == SDL_QUIT){run = 0;}
-			if(event.type == SDL_KEYDOWN){
-				switch (event.key.keysym.sym){
-
-					case SDLK_ESCAPE:
-						run = !run;
-					break;
-					case SDLK_q:
-						run = !run;
-					break;
-					case SDLK_p:
-						pause = !pause;
-					break;
-					case SDLK_SPACE:
-						printm4(view);
-						printm4(projection);
-					break;
-				}
-			}
-		}
-
-		if(!pause){
-			if(SDL_GetPerformanceCounter()>=lastStep+clockFreq/isolaSPS){
-				lastStep += clockFreq/isolaSPS;
-				if (keyState[SDL_SCANCODE_A]){
-				}
-				if (keyState[SDL_SCANCODE_D]){
-				}
-				if (keyState[SDL_SCANCODE_S]){
-				}
-				if (keyState[SDL_SCANCODE_W]){
-				}
-
-				manim();
-			}
-		}
-
-		if(SDL_GetPerformanceCounter()>=lastFrame+clockFreq/isolaFPS){
-			lastFrame += clockFreq/isolaFPS;
-
-			draw();
-
-		}else{SDL_Delay(1);}
-
-	}
-}
-
-
-
-
-int main(void){
-	srand(time(0));
-	isolaInit();
-
-
-	renderCreate();
-	loop();
-	renderDestroy();
-
-
-	isolaErrorGL();
-	isolaErrorSDL(-1);
-	isolaQuit();
-	return 0;
 }
 
 

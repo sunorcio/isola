@@ -9,10 +9,10 @@ CC = clang
 CFLAGS = -Wall -Wextra -pedantic -std=c99 -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable  -MJ $@.json
 OPT = -O3 -pipe -march=native
 
-LIBS = -lGLEW -lGL -lGLU -lSDL2 -lm
+LIBS = -lSDL2 -lm
 LDFLAGS = ${LIBS}
 
-SRC = isola.c test.c
+SRC = test.c
 OBJ = ${SRC:.c=.o}
 
 DEPS = ${SRC}
@@ -43,7 +43,7 @@ clean: test
 # Depends on these sources:
 # glew - https://github.com/nigels-com/glew
 # SDL - https://github.com/libsdl-org/SDL
-# consider using cglm (c) or glm (c++) for vector math and matrix setup
+# consider using cglm (c) or glm (c++) for vector math and gl matrix setup
 #
 # ____________________DYNAMIC COMPILE
 # 

@@ -1,8 +1,10 @@
 #include "isola.h"
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
 
 
 
@@ -54,6 +56,7 @@ static FILE* isolaLog = {0};
 
 
 
+
 void isolaGetWindow(void){
 	SDL_GetWindowPosition(isolaWindow, &isolaInfoWindow.xpos,
 						  &isolaInfoWindow.ypos);
@@ -64,8 +67,7 @@ void isolaGetWindow(void){
 	SDL_GetWindowDisplayMode(isolaWindow, &isolaInfoWindow.displayMode);
 }
 void isolaGetDisplay(void){
-	int i;
-	int j;
+	int i,j;
 	int buff;
 	buff = SDL_GetNumVideoDisplays();
 	isolaInfoDisplay.displayModeCount = calloc(buff+1, sizeof(int));
@@ -87,64 +89,118 @@ void isolaGetDisplay(void){
 		buff += isolaInfoDisplay.displayModeCount[i];
 	}
 }
-
 static void isolaGetContext(void){
-	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &isolaInfoContext.maxAttrib);
-	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
-				  &isolaInfoContext.maxTexUnits);
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &isolaInfoContext.maxTexSize);
-	glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS,
-				  &isolaInfoContext.maxColorAttachments);
-	glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &isolaInfoContext.max3DTexSize);
-	glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS,
-				  &isolaInfoContext.maxFragmentUniforms);
+/* 	glBindFramebuffer(GL_FRAMEBUFFER,0); */
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+									GL_FRONT_LEFT,
+									GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE,
+									&isolaInfoContext.fbdefRedsize);
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+									GL_FRONT_LEFT,
+									GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE,
+									&isolaInfoContext.fbdefGreensize);
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+									GL_FRONT_LEFT,
+									GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE,
+									&isolaInfoContext.fbdefBluesize);
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+									GL_FRONT_LEFT,
+									GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE,
+									&isolaInfoContext.fbdefAlphasize);
+#if ISOLA_DEPTH
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+									GL_DEPTH,
+									GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE,
+									&isolaInfoContext.fbdefDepthsize);
+#endif
+#if ISOLA_STENCIL
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+									GL_STENCIL,
+									GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE,
+									&isolaInfoContext.fbdefStencilsize);
+#endif
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+									GL_FRONT_LEFT,
+									GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING,
+									&isolaInfoContext.fbdefColorencoding);
+
+	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES,
+					&isolaInfoContext.maxVertices);
+	glGetIntegerv(GL_MAX_ELEMENTS_INDICES,
+					&isolaInfoContext.maxIndices);
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS,
+					&isolaInfoContext.maxAttrib);
 	glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS,
-				  &isolaInfoContext.maxVertexUniforms);
+					&isolaInfoContext.maxVertexUniforms);
+	glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS,
+					&isolaInfoContext.maxFragmentUniforms);
+	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
+					&isolaInfoContext.maxTexCombinedUnits);
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS,
+					&isolaInfoContext.maxTexUnits);
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE,
+					&isolaInfoContext.maxTexSize);
+	glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE,
+					&isolaInfoContext.max3DTexSize);
 	glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE,
-				  &isolaInfoContext.maxCubeTexSize);
-	glGetIntegerv(GL_MAX_DRAW_BUFFERS, &isolaInfoContext.maxDrawBuffers);
-	glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &isolaInfoContext.maxIndices);
-	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &isolaInfoContext.maxVertices);
+					&isolaInfoContext.maxCubeTexSize);
+	glGetIntegerv(GL_MAX_DRAW_BUFFERS,
+					&isolaInfoContext.maxDrawBuffers);
+	glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS,
+					&isolaInfoContext.maxColorAttachments);
 	glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE,
-				  &isolaInfoContext.maxRenderbufferSize);
-	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &isolaInfoContext.maxSamplers);
+					&isolaInfoContext.maxRenderbufferSize);
 
 	isolaInfoContext.cpuCount = SDL_GetCPUCount();
 	isolaInfoContext.systemRAM = SDL_GetSystemRAM();
 	isolaInfoContext.cacheSize = SDL_GetCPUCacheLineSize();
 }
-
 void isolaGetState(void){
 	int state;
 	isolaInfoState = 0x0000;
 	glGetIntegerv(GL_BLEND, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStateBLEND);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStateBLEND);
 	glGetIntegerv(GL_COLOR_LOGIC_OP, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStateCOLORLOGIC);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStateCOLORLOGIC);
 	glGetIntegerv(GL_CULL_FACE, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStateCULLFACE);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStateCULLFACE);
 	glGetIntegerv(GL_DEPTH_TEST, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStateDEPTHTEST);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStateDEPTHTEST);
 	glGetIntegerv(GL_DITHER, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStateDITHER);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStateDITHER);
 	glGetIntegerv(GL_DOUBLEBUFFER, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStateDOUBLEBUFFER);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStateDOUBLEBUFFER);
 	glGetIntegerv(GL_SCISSOR_TEST, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStateSCISSORTEST);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStateSCISSORTEST);
 	glGetIntegerv(GL_STENCIL_TEST, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStateSTENCILTEST);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStateSTENCILTEST);
 	glGetIntegerv(GL_FRAMEBUFFER_SRGB, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStateSRGBFRAMEBUFFER);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStateSRGBFRAMEBUFFER);
 	glGetIntegerv(GL_POINT_SMOOTH, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStatePOINTSMOOTH);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStatePOINTSMOOTH);
 	glGetIntegerv(GL_LINE_SMOOTH, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStateLINESMOOTH);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStateLINESMOOTH);
 	glGetIntegerv(GL_POLYGON_SMOOTH, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStatePOLYGONSMOOTH);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStatePOLYGONSMOOTH);
 	glGetIntegerv(GL_PROGRAM_POINT_SIZE, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStatePOINTSIZEPROGRAM);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStatePOINTSIZEPROGRAM);
 	glGetIntegerv(GL_MULTISAMPLE, &state);
-	isolaInfoState = (isolaInfoState | state*isolaStateMULTISAMPLE);
+	isolaInfoState = (isolaInfoState
+							| state*isolaStateMULTISAMPLE);
+
 }
 
 
@@ -227,10 +283,7 @@ unsigned char isolaShaderSrcCompare(char* shaderSrc,
 
 
 static void contextPromt(void){
-	int maj;
-	int min;
-	int flags;
-	int prof;
+	int maj, min, flags, prof;
 
 	SDL_Log("\n");
 	SDL_Log("Vendor        : %s", glGetString(GL_VENDOR));
@@ -427,7 +480,10 @@ void isolaInit(void){
 	glClear(GL_COLOR_BUFFER_BIT);
 	SDL_GL_SwapWindow(isolaWindow);
 
+#ifdef ISOLA_DBG
+	isolaGetContext();
 	isolaGetState();
+#endif
 	isolaGetWindow();
 	isolaGetDisplay();
 }

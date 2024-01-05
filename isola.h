@@ -88,18 +88,38 @@ extern SDL_GLContext* isolaContext;
 extern SDL_Window* isolaWindow;
 
 struct ISOLA_Context{
+	int fbdefRedsize;
+	int fbdefGreensize;
+	int fbdefBluesize;
+	int fbdefAlphasize;
+	int fbdefDepthsize;
+	int fbdefStencilsize;
+/* 	GL_LINEAR or GL_SRGB */
+	int fbdefColorencoding;
+
 	int maxVertices;
 	int maxIndices;
+/* 	at least 16 */
 	int maxAttrib;
+/* 	at least 1024 */
 	int maxVertexUniforms;
+/* 	at least 1024 */
 	int maxFragmentUniforms;
-	int maxSamplers;
+/* 	at least 64 */
+	int maxTexCombinedUnits;
+/* 	at least 16 */
 	int maxTexUnits;
+/* 	at least 1024 */
 	int maxTexSize;
+/* 	at least 64 */
 	int max3DTexSize;
+/* 	at least 1024 */
 	int maxCubeTexSize;
+/* 	at least 8 */
 	int maxDrawBuffers;
+/* 	at least 8 */
 	int maxColorAttachments;
+/* 	at least 8 */
 	int maxRenderbufferSize;
 
 	int cpuCount;
@@ -112,6 +132,7 @@ struct ISOLA_Window{
 	int ypos;
 	int width;
 	int height;
+/* see SDL_CreateWindow for a list of flags */
 	int flags;
 	int displayIndex;
 	SDL_DisplayMode displayMode;
@@ -119,6 +140,8 @@ struct ISOLA_Window{
 
 struct ISOLA_Display{
 	int* displayModeCount;
+/* all display modes are stored in the same array, use previous counts to
+   retrieve the display id offset of the desired display */
 	SDL_DisplayMode* displayModes;
 }extern isolaInfoDisplay;
 
@@ -140,11 +163,11 @@ extern unsigned int isolaInfoState;
 
 
 
-/* update window information in (isolaWindowInfo) */
+/* update window information in (isolaInfoWindow) */
 extern void isolaGetWindow(void);
-/* update window & current display availiable modes in (isolaDisplayInfo) */
+/* update display information (isolaInfoDisplay) */
 extern void isolaGetDisplay(void);
-/* retrieve current opengl state */
+/* retrieve currently enabled opengl state (isolaInfoState) */
 extern void isolaGetState(void);
 
 
@@ -155,7 +178,7 @@ extern unsigned int isolaShaderCompile(const char* shaderFile,
 									   unsigned int shaderType);
 
 /* loads srcfile into heap, returns a pointer that can be issued to
- * isolaShaderSrcCompare(), you must free this pointer yourself */
+   isolaShaderSrcCompare(), you must free this pointer yourself */
 extern char* isolaShaderSrcLoad(const char* shaderFile);
 /* compares srcfile with loaded src, if !=, src is updated and return !0 */
 extern unsigned char isolaShaderSrcCompare(char* shaderSrc,
