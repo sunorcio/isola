@@ -5,8 +5,6 @@
 
 
 
-/* [1^0]  NOT IMPLEMENTED : runtime parse of parameters */
-#define ISOLA_INITPARSE		0
 /* [1^0]  alternatively, set -DISOLA_DBG flag */
 #define ISOLA_DEBUG			1
 /* [1^0]  input stderr to file (./isola.log) */
@@ -57,6 +55,7 @@
 
 /* extended replacement for SDL_Init() */ 
 extern void isolaInit(void);
+/* extended replacement for SDL_Quit() */ 
 extern void isolaQuit(void);
 
 
@@ -87,6 +86,8 @@ extern signed char isolaErrorGL(void);
 extern SDL_GLContext* isolaContext;
 extern SDL_Window* isolaWindow;
 
+
+/* system resources and specification related information */
 struct ISOLA_Context{
 	int fbdefRedsize;
 	int fbdefGreensize;
@@ -127,6 +128,7 @@ struct ISOLA_Context{
 	int cacheSize;
 }extern isolaInfoContext;
 
+/* current window state, updated with isolaGetWindow() */
 struct ISOLA_Window{
 	int xpos;
 	int ypos;
@@ -136,12 +138,15 @@ struct ISOLA_Window{
 	int flags;
 	int displayIndex;
 	SDL_DisplayMode displayMode;
+	SDL_DisplayMode desktopDisplayMode;
 }extern isolaInfoWindow;
 
+/* system, resources an information */
 struct ISOLA_Display{
+/* 	number of display modes for the id, access array with desired display id */
 	int* displayModeCount;
-/* all display modes are stored in the same array, use previous counts to
-   retrieve the display id offset of the desired display */
+/*	contains ALL display modes, for specific display id, its modes range from
+	(sum of previous counts - 1) to (sum of previous counts + count - 1) */
 	SDL_DisplayMode* displayModes;
 }extern isolaInfoDisplay;
 
@@ -159,15 +164,15 @@ struct ISOLA_Display{
 #define isolaStatePOLYGONSMOOTH		0x0800
 #define isolaStatePOINTSIZEPROGRAM	0x1000
 #define isolaStateMULTISAMPLE 		0x2000
+/* glEnable state information */
 extern unsigned int isolaInfoState;
 
 
-
-/* update window information in (isolaInfoWindow) */
+/* update window information (isolaInfoWindow) */
 extern void isolaGetWindow(void);
-/* update display information (isolaInfoDisplay) */
+/* retrieve all availiable display information (isolaInfoDisplay) */
 extern void isolaGetDisplay(void);
-/* retrieve currently enabled opengl state (isolaInfoState) */
+/* update currently enabled opengl state (isolaInfoState) */
 extern void isolaGetState(void);
 
 

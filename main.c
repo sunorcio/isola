@@ -14,39 +14,40 @@
 
 
 
+float cameracurrad[3] = {0,M_PI/4,0};
+float cameradesrad[3] = {0};
+float cameraease = 2./16;
 float xrot[3*3] = {0};
 float yrot[3*3] = {0};
 float zrot[3*3] = {0};
 float brot[3*3] = {0};
-float camerarad[3] = {((M_PI*2)/360)*30,M_PI/4,0};
-float cameradesrad[3] = {0};
-float cameraease = 0.25*3/4;
 void mrot(void){
-	camerarad[0] += cameradesrad[0]*cameraease;
+	cameracurrad[0] = asin(0.5);
+	cameracurrad[0] += cameradesrad[0]*cameraease;
 	cameradesrad[0] -= cameradesrad[0]*cameraease;
-	camerarad[1] += cameradesrad[1]*cameraease;
+	cameracurrad[1] += cameradesrad[1]*cameraease;
 	cameradesrad[1] -= cameradesrad[1]*cameraease;
-	camerarad[2] += cameradesrad[2]*cameraease;
+	cameracurrad[2] += cameradesrad[2]*cameraease;
 	cameradesrad[2] -= cameradesrad[2]*cameraease;
 
 
 	xrot[0*3+0] = 1;
-	xrot[1*3+1] = cos(camerarad[0]);
-	xrot[1*3+2] = sin(camerarad[0]);
-	xrot[2*3+1] = -sin(camerarad[0]);
-	xrot[2*3+2] = cos(camerarad[0]);
+	xrot[1*3+1] = cos(cameracurrad[0]);
+	xrot[1*3+2] = sin(cameracurrad[0]);
+	xrot[2*3+1] = -sin(cameracurrad[0]);
+	xrot[2*3+2] = cos(cameracurrad[0]);
 
 	yrot[1*3+1] = 1;
-	yrot[0*3+0] = cos(camerarad[1]);
-	yrot[0*3+2] = -sin(camerarad[1]);
-	yrot[2*3+0] = sin(camerarad[1]);
-	yrot[2*3+2] = cos(camerarad[1]);
+	yrot[0*3+0] = cos(cameracurrad[1]);
+	yrot[0*3+2] = -sin(cameracurrad[1]);
+	yrot[2*3+0] = sin(cameracurrad[1]);
+	yrot[2*3+2] = cos(cameracurrad[1]);
 
 	zrot[2*3+2] = 1;
-	zrot[0*3+0] = cos(camerarad[2]);
-	zrot[0*3+1] = sin(camerarad[2]);
-	zrot[1*3+0] = -sin(camerarad[2]);
-	zrot[1*3+1] = cos(camerarad[2]);
+	zrot[0*3+0] = cos(cameracurrad[2]);
+	zrot[0*3+1] = sin(cameracurrad[2]);
+	zrot[1*3+0] = -sin(cameracurrad[2]);
+	zrot[1*3+1] = cos(cameracurrad[2]);
 
 	mat_mul_3(xrot,yrot,brot);
 	mat_mul_3(brot,zrot,brot);
@@ -81,10 +82,10 @@ void loop(void){
 						pause = !pause;
 					break;
 					case SDLK_a:
-						cameradesrad[1] += M_PI/4;
+						cameradesrad[1] += M_PI/2;
 					break;
 					case SDLK_d:
-						cameradesrad[1] -= M_PI/4;
+						cameradesrad[1] -= M_PI/2;
 					break;
 				}
 			}
@@ -94,23 +95,11 @@ void loop(void){
 			if(SDL_GetPerformanceCounter()>=lastStep+clockFreq/isolaSPS){
 				lastStep = SDL_GetPerformanceCounter();
 
-/* 				if (keyState[SDL_SCANCODE_A]){
-					cameradesrad[1] += M_PI/4;
-				}
-				if (keyState[SDL_SCANCODE_D]){
-					cameradesrad[1] -= M_PI/4;
-				} */
 				if (keyState[SDL_SCANCODE_S]){
-					cameradesrad[0] -= M_PI/(256*2);
+					cameradesrad[0] -= asin(0.5);
 				}
 				if (keyState[SDL_SCANCODE_W]){
-					cameradesrad[0] += M_PI/(256*2);
-				}
-				if (keyState[SDL_SCANCODE_K]){
-					defaultpos[1] -= M_PI/(256*2);
-				}
-				if (keyState[SDL_SCANCODE_I]){
-					defaultpos[1] += M_PI/(256*2);
+					cameradesrad[0] += M_PI/2-asin(0.5);
 				}
 
 				mrot();
@@ -120,7 +109,7 @@ void loop(void){
 		if(SDL_GetPerformanceCounter()>=lastFrame+clockFreq/isolaFPS){
 			lastFrame = SDL_GetPerformanceCounter();
 
-			draw();
+			renderDraw();
 
 		}else{SDL_Delay(1);}
 

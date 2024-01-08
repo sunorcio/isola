@@ -65,6 +65,8 @@ void isolaGetWindow(void){
 	isolaInfoWindow.flags = SDL_GetWindowFlags(isolaWindow);
 	isolaInfoWindow.displayIndex = SDL_GetWindowDisplayIndex(isolaWindow);
 	SDL_GetWindowDisplayMode(isolaWindow, &isolaInfoWindow.displayMode);
+	SDL_GetDesktopDisplayMode(isolaInfoWindow.displayIndex,
+								&isolaInfoWindow.desktopDisplayMode);
 }
 void isolaGetDisplay(void){
 	int i,j;
@@ -476,9 +478,11 @@ void isolaInit(void){
 	glDisable(GL_MULTISAMPLE);
 #endif
 
+
 	glClearColor(0.75f,0.5f,0.75f,1.f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	SDL_GL_SwapWindow(isolaWindow);
+
 
 #ifdef ISOLA_DBG
 	isolaGetContext();
@@ -493,6 +497,8 @@ void isolaQuit(void){
 		SDL_Log("Uncaught errors left");
 	}
 #endif
+
+
 #if ISOLA_LOG
 	fclose(isolaLog);
 #endif
