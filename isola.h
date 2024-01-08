@@ -4,6 +4,7 @@
 
 
 
+#define ISOLA_WINDOWTITLE "isola_example"
 
 /* [1^0]  alternatively, set -DISOLA_DBG flag */
 #define ISOLA_DEBUG			1

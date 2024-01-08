@@ -1,9 +1,9 @@
 
 default_rule: all
-	./isola
+	./$(BIN)
 
 
-
+BIN = isola_example
 CC = clang
 
 CFLAGS = -Wall -Wextra -pedantic -std=c89 -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable  -MJ $@.json
@@ -26,15 +26,15 @@ ${OBJ}: ${DEPS}
 
 
 
-all: isola Compdb clean
+all: $(BIN) Compdb clean
 
-isola: ${OBJ}
+$(BIN): ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
 
 Compdb: ${OBJ}
 	./Compdb
 
-clean: isola
+clean: $(BIN)
 	rm *.o*
 	
 
