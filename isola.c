@@ -92,7 +92,7 @@ void isolaGetDisplay(void){
 	}
 }
 static void isolaGetContext(void){
-/* 	glBindFramebuffer(GL_FRAMEBUFFER,0); */
+	glBindFramebuffer(GL_FRAMEBUFFER,0);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
 									GL_FRONT_LEFT,
 									GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE,
