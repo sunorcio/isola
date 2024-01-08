@@ -389,8 +389,7 @@ void isolaInit(void){
 
 	isolaWindow = SDL_CreateWindow( ISOLA_WINDOWTITLE,
 					SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-					480, 360, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL
-					);
+					480, 360, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL );
 
 	if (!isolaWindow) {
 		isolaErrorSDL(-1);
