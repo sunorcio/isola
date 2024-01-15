@@ -8,51 +8,10 @@
 #include "isola.h"
 
 
-#include "matrix.h"
+#include "mutil.h"
 #include "render.h"
 
 
-
-
-float cameracurrad[3] = {0,M_PI/4,0};
-float cameradesrad[3] = {0};
-float cameraease = 2./16;
-float xrot[3*3] = {0};
-float yrot[3*3] = {0};
-float zrot[3*3] = {0};
-float brot[3*3] = {0};
-void mrot(void){
-	cameracurrad[0] = asin(0.5);
-	cameracurrad[0] += cameradesrad[0]*cameraease;
-	cameradesrad[0] -= cameradesrad[0]*cameraease;
-	cameracurrad[1] += cameradesrad[1]*cameraease;
-	cameradesrad[1] -= cameradesrad[1]*cameraease;
-	cameracurrad[2] += cameradesrad[2]*cameraease;
-	cameradesrad[2] -= cameradesrad[2]*cameraease;
-
-
-	xrot[0*3+0] = 1;
-	xrot[1*3+1] = cos(cameracurrad[0]);
-	xrot[1*3+2] = sin(cameracurrad[0]);
-	xrot[2*3+1] = -sin(cameracurrad[0]);
-	xrot[2*3+2] = cos(cameracurrad[0]);
-
-	yrot[1*3+1] = 1;
-	yrot[0*3+0] = cos(cameracurrad[1]);
-	yrot[0*3+2] = -sin(cameracurrad[1]);
-	yrot[2*3+0] = sin(cameracurrad[1]);
-	yrot[2*3+2] = cos(cameracurrad[1]);
-
-	zrot[2*3+2] = 1;
-	zrot[0*3+0] = cos(cameracurrad[2]);
-	zrot[0*3+1] = sin(cameracurrad[2]);
-	zrot[1*3+0] = -sin(cameracurrad[2]);
-	zrot[1*3+1] = cos(cameracurrad[2]);
-
-	mat_mul_3(xrot,yrot,brot);
-	mat_mul_3(brot,zrot,brot);
-	mat_cp_3_4(brot,view);
-}
 
 
 void loop(void){
@@ -82,27 +41,40 @@ void loop(void){
 						pause = !pause;
 					break;
 					case SDLK_a:
-						cameradesrad[1] += M_PI/2;
+						cameradest[1] += M_PI/2;
 					break;
 					case SDLK_d:
-						cameradesrad[1] -= M_PI/2;
+						cameradest[1] -= M_PI/2;
+					break;
+					case SDLK_i:
+						cameraZoom(1);
+					break;
+					case SDLK_k:
+						cameraZoom(-1);
 					break;
 				}
 			}
 		}
 
 		if(!pause){
+			unsigned char down = 0;
 			if(SDL_GetPerformanceCounter()>=lastStep+clockFreq/isolaSPS){
 				lastStep = SDL_GetPerformanceCounter();
 
 				if (keyState[SDL_SCANCODE_S]){
-					cameradesrad[0] -= asin(0.5);
+					cameradest[0] -= asin(0.5);
 				}
 				if (keyState[SDL_SCANCODE_W]){
-					cameradesrad[0] += M_PI/2-asin(0.5);
+					cameradest[0] += M_PI/2-asin(0.5);
 				}
+/* 				if (keyState[SDL_SCANCODE_A]){
+					cameradest[1] += M_PI/2;
+				}
+				if (keyState[SDL_SCANCODE_D]){
+					cameradest[1] -= M_PI/2;
+				} */
 
-				mrot();
+				cameraUpdate();
 			}
 		}
 
@@ -120,8 +92,10 @@ void loop(void){
 
 
 int main(void){
+
 	srand(time(0));
 	isolaInit();
+	SDL_GL_SetSwapInterval(0);
 
 
 	renderCreate();

@@ -6,8 +6,10 @@ default_rule: all
 BIN = isola_example
 CC = clang
 
-CFLAGS = -Wall -Wextra -pedantic -std=c89 -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable  -MJ $@.json
+#CFLAGS = -Wall -Wextra -pedantic -std=c89 -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable
+CFLAGS = -Wall -Wextra -pedantic -std=c89 -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-unused-result -MJ $@.json
 OPT = -O3 -pipe -march=native
+#
 
 LIBS = -lGLEW -lGL -lGLU -lSDL2 -lm
 LDFLAGS = ${LIBS}
@@ -20,7 +22,8 @@ DEPS = ${SRC}
 
 
 .c.o:
-	${CC} -c ${CFLAGS} $<
+#	${CC} -c ${CFLAGS} $<
+	${CC} -c ${CFLAGS} ${OPT} $<
 
 ${OBJ}: ${DEPS}
 

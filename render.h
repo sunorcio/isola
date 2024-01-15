@@ -5,12 +5,14 @@
 
 
 #include "isola.h"
+#include "mutil.h"
 
 
 
 
-extern float view[4*4];
-extern float projection[4*4];
+extern float cameradest[3];
+extern void cameraUpdate(void);
+extern void cameraZoom(short increment);
 
 extern void renderCreate(void);
 extern void renderDestroy(void);

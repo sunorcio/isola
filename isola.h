@@ -4,14 +4,17 @@
 
 
 
-#define ISOLA_WINDOWTITLE "isola_example"
+/* isola configuration _____________________________________________________ */
 
-/* [1^0]  alternatively, set -DISOLA_DBG flag */
-#define ISOLA_DEBUG			1
-/* [1^0]  input stderr to file (./isola.log) */
-#define ISOLA_LOG			0
+/* alternatively, set -DISOLA_DBG flag */
+#define ISOLA_DEBUG			1  /* [1^0] */
+/* input stderr to file (./isola.log) */
+#define ISOLA_LOG			0  /* [1^0] */
 
-/* Init parameters for SDL context creation ________________________________ */
+#define ISOLA_WINDOWTITLE	"isola_example"
+/* #define ISOLA_SCALERATIO	0  // [1^0] // TODO does fitting autocenter?*/
+
+/* init parameters for SDL context creation ________________________________ */
 
 #define ISOLA_GAMEPAD			0  /* [1^0] */
 #define ISOLA_DEPTH				1  /* [1^0] */
@@ -135,6 +138,8 @@ struct ISOLA_Window{
 	int ypos;
 	int width;
 	int height;
+	int xratio;
+	int yratio;
 /* see SDL_CreateWindow for a list of flags */
 	int flags;
 	int displayIndex;
@@ -142,7 +147,7 @@ struct ISOLA_Window{
 	SDL_DisplayMode desktopDisplayMode;
 }extern isolaInfoWindow;
 
-/* system, resources an information */
+/* dysplay modes for all availiable devices, retrieved with isolaGetDisplay() */
 struct ISOLA_Display{
 /* 	number of display modes for the id, access array with desired display id */
 	int* displayModeCount;

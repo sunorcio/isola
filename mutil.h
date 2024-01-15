@@ -1,9 +1,44 @@
+#ifndef MUTIL_H
+#define MUTIL_H
+
+
+
+
+#include "isola.h"
 #include <SDL2/SDL.h>
 
 
 
 
-void printm4(float m[4*4]){
+static void proj_glortho(float left, float right, float bottom, float top,
+								float nearZ, float farZ, float dest[4*4]){
+
+	float rl,tb,fn;
+
+	rl = 1./(right-left);
+	tb = 1./(top-bottom);
+	fn =-1./(farZ-nearZ);
+
+	dest[0*4+0] = 2.*rl;
+	dest[1*4+1] = 2.*tb;
+	dest[2*4+2] = 2.*fn;
+	dest[3*4+0] = -(right+left)*rl;
+	dest[3*4+1] = -(top+bottom)*tb;
+	dest[3*4+2] = (farZ+nearZ)*fn;
+	dest[3*4+3] = 1.;
+}
+
+static unsigned int mut_gcd(int a, int b){
+	int t;
+	while(b!=0){
+		t=b;
+		b=a%b;
+		a=t;
+	}
+	return abs(a);
+}
+
+static void mut_print_m4(float m[4*4]){
 	int i;
 	SDL_Log("\n");
 	for(i = 0;i<4;i++){
@@ -11,7 +46,8 @@ void printm4(float m[4*4]){
 	}
 	SDL_Log("\n");
 }
-void printm3(float m[3*3]){
+
+static void mut_print_m3(float m[3*3]){
 	int i;
 	SDL_Log("\n");
 	for(i = 0;i<3;i++){
@@ -20,8 +56,7 @@ void printm3(float m[3*3]){
 	SDL_Log("\n");
 }
 
-
-void mat_cp_3(float src[3*3],float dest[3*3]){
+static void mut_cp_m3(float src[3*3],float dest[3*3]){
 	dest[0*3+0] = src[0*3+0];
 	dest[0*3+1] = src[0*3+1];
 	dest[0*3+2] = src[0*3+2];
@@ -32,7 +67,8 @@ void mat_cp_3(float src[3*3],float dest[3*3]){
 	dest[2*3+1] = src[2*3+1];
 	dest[2*3+2] = src[2*3+2];
 }
-void mat_cp_3_4(float src[3*3],float dest[4*4]){
+
+static void mut_cp_m3_4(float src[3*3],float dest[4*4]){
 	dest[0*4+0] = src[0*3+0];
 	dest[0*4+1] = src[0*3+1];
 	dest[0*4+2] = src[0*3+2];
@@ -44,7 +80,7 @@ void mat_cp_3_4(float src[3*3],float dest[4*4]){
 	dest[2*4+2] = src[2*3+2];
 }
 
-void mat_mul_3(float a[3*3],float b[3*3],float dest[3*3]){
+static void mut_mul_m3(float a[3*3],float b[3*3],float dest[3*3]){
 	float c[3*3] = {0};
 	c[0*3+0] = a[0*3+0]*b[0*3+0] + a[1*3+0]*b[0*3+1] + a[2*3+0]*b[0*3+2];
 	c[0*3+1] = a[0*3+1]*b[0*3+0] + a[1*3+1]*b[0*3+1] + a[2*3+1]*b[0*3+2];
@@ -55,6 +91,10 @@ void mat_mul_3(float a[3*3],float b[3*3],float dest[3*3]){
 	c[2*3+0] = a[0*3+0]*b[2*3+0] + a[1*3+0]*b[2*3+1] + a[2*3+0]*b[2*3+2];
 	c[2*3+1] = a[0*3+1]*b[2*3+0] + a[1*3+1]*b[2*3+1] + a[2*3+1]*b[2*3+2];
 	c[2*3+2] = a[0*3+2]*b[2*3+0] + a[1*3+2]*b[2*3+1] + a[2*3+2]*b[2*3+2];
-	mat_cp_3(c,dest);
+	mut_cp_m3(c,dest);
 }
 
+
+
+
+#endif
