@@ -12,7 +12,6 @@
 #define ISOLA_LOG			0  /* [1^0] */
 
 #define ISOLA_WINDOWTITLE	"isola_example"
-/* #define ISOLA_SCALERATIO	0  // [1^0] // TODO does fitting autocenter?*/
 
 /* init parameters for SDL context creation ________________________________ */
 
@@ -138,8 +137,8 @@ struct ISOLA_Window{
 	int ypos;
 	int width;
 	int height;
-	int xratio;
-	int yratio;
+	float xratio;
+	float yratio;
 /* see SDL_CreateWindow for a list of flags */
 	int flags;
 	int displayIndex;

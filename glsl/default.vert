@@ -3,6 +3,7 @@
 
 
 
+uniform mat4 matModel;
 uniform mat4 matView;
 uniform mat4 matProj;
 
@@ -24,8 +25,10 @@ void main()
 	vfColor = vertColor;
 /* 	vfColor = pow(vec3(vertPosition.x+position.x,
 					(vertPosition.y+position.y)*sqrt(2)/(2.*cos(asin(0.5))),
-					)); */
-	gl_Position = matProj * matView * vec4(vertPosition.x+position.x,
+					vertPosition.z+position.z)/16,
+					vec3(1,1,1)); */
+	gl_Position = matProj * matView * matModel *
+				vec4(vertPosition.x+position.x,
 					(vertPosition.y+position.y)*sqrt(2)/(2.*cos(asin(0.5))),
 					vertPosition.z+position.z,
 					1.);

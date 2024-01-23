@@ -4,35 +4,35 @@
 
 
 static float vertexCube[] = {
-	-0.500,-0.500, 0.500,		0.250, 0.250, 0.750,
-	 0.500,-0.500, 0.500,		0.250, 0.250, 0.750,
-	 0.500, 0.500, 0.500,		0.250, 0.250, 0.750,
-	-0.500, 0.500, 0.500,		0.250, 0.250, 0.750,
-
-	-0.500, 0.500, 0.500,		0.250, 0.750, 0.250,
-	 0.500, 0.500, 0.500,		0.250, 0.750, 0.250,
-	 0.500, 0.500,-0.500,		0.250, 0.750, 0.250,
-	-0.500, 0.500,-0.500,		0.250, 0.750, 0.250,
-
-	 0.500,-0.500, 0.500,		0.750, 0.250, 0.250,
-	 0.500,-0.500,-0.500,		0.750, 0.250, 0.250,
-	 0.500, 0.500,-0.500,		0.750, 0.250, 0.250,
-	 0.500, 0.500, 0.500,		0.750, 0.250, 0.250,
-
-	-0.500,-0.500,-0.500,		0.625, 0.625, 0.000,
-	-0.500, 0.500,-0.500,		0.625, 0.625, 0.000,
-	 0.500, 0.500,-0.500,		0.625, 0.625, 0.000,
-	 0.500,-0.500,-0.500,		0.625, 0.625, 0.000,
-
-	-0.500,-0.500, 0.500,		0.625, 0.000, 0.625,
-	-0.500,-0.500,-0.500,		0.625, 0.000, 0.625,
-	 0.500,-0.500,-0.500,		0.625, 0.000, 0.625,
-	 0.500,-0.500, 0.500,		0.625, 0.000, 0.625,
-
-	-0.500,-0.500, 0.500,		0.000, 0.625, 0.625,
-	-0.500, 0.500, 0.500,		0.000, 0.625, 0.625,
-	-0.500, 0.500,-0.500,		0.000, 0.625, 0.625,
-	-0.500,-0.500,-0.500,		0.000, 0.625, 0.625,
+	-0.500,-0.500, 0.502,  	0.250, 0.250, 0.750,	/* 0.250, 0.125, 0.000, */
+	 0.500,-0.500, 0.502,  	0.250, 0.250, 0.750,    /* 0.250, 0.125, 0.000, */
+	 0.500, 0.500, 0.502,  	0.250, 0.250, 0.750,    /* 0.250, 0.125, 0.000, */
+	-0.500, 0.500, 0.502,  	0.250, 0.250, 0.750,    /* 0.250, 0.125, 0.000, */
+                                                    /*                      */
+	-0.500, 0.502, 0.500,  	0.250, 0.750, 0.250,    /* 0.000, 0.250, 0.000, */
+	 0.500, 0.502, 0.500,  	0.250, 0.750, 0.250,    /* 0.000, 0.250, 0.000, */
+	 0.500, 0.502,-0.500,  	0.250, 0.750, 0.250,    /* 0.000, 0.250, 0.000, */
+	-0.500, 0.502,-0.500,  	0.250, 0.750, 0.250,    /* 0.000, 0.250, 0.000, */
+                                                    /*                      */
+	 0.502,-0.500, 0.500,  	0.750, 0.250, 0.250,    /* 0.250, 0.125, 0.000, */
+	 0.502,-0.500,-0.500,  	0.750, 0.250, 0.250,    /* 0.250, 0.125, 0.000, */
+	 0.502, 0.500,-0.500,  	0.750, 0.250, 0.250,    /* 0.250, 0.125, 0.000, */
+	 0.502, 0.500, 0.500,  	0.750, 0.250, 0.250,    /* 0.250, 0.125, 0.000, */
+                                                    /*                      */
+	-0.500,-0.500,-0.502,  	0.625, 0.625, 0.000,    /* 0.250, 0.125, 0.000, */
+	-0.500, 0.500,-0.502,  	0.625, 0.625, 0.000,    /* 0.250, 0.125, 0.000, */
+	 0.500, 0.500,-0.502,  	0.625, 0.625, 0.000,    /* 0.250, 0.125, 0.000, */
+	 0.500,-0.500,-0.502,  	0.625, 0.625, 0.000,    /* 0.250, 0.125, 0.000, */
+                                                    /*                      */
+	-0.500,-0.502, 0.500,  	0.625, 0.000, 0.625,    /* 0.000, 0.250, 0.000, */
+	-0.500,-0.502,-0.500,  	0.625, 0.000, 0.625,    /* 0.000, 0.250, 0.000, */
+	 0.500,-0.502,-0.500,  	0.625, 0.000, 0.625,    /* 0.000, 0.250, 0.000, */
+	 0.500,-0.502, 0.500,  	0.625, 0.000, 0.625,    /* 0.000, 0.250, 0.000, */
+                                                    /*                      */
+	-0.502,-0.500, 0.500,  	0.000, 0.625, 0.625,    /* 0.250, 0.125, 0.000, */
+	-0.502, 0.500, 0.500,  	0.000, 0.625, 0.625,    /* 0.250, 0.125, 0.000, */
+	-0.502, 0.500,-0.500,  	0.000, 0.625, 0.625,    /* 0.250, 0.125, 0.000, */
+	-0.502,-0.500,-0.500,  	0.000, 0.625, 0.625,    /* 0.250, 0.125, 0.000, */
 };
 static unsigned short elementsCube[] = {
 	0,1,2,			0,2,3,
@@ -43,65 +43,243 @@ static unsigned short elementsCube[] = {
 	20,21,22,		20,22,23,
 };
 
-static unsigned short levelsize;
+#define levelsize 32
 static unsigned char* level;
 
+static float model[4*4] = {0};
 static float view[4*4] = {0};
 static float projection[4*4] = {0};
 
 
-
-
-float cameradest[3] = {0};
-static float cameraease = 2./8.;
-static float camerarota[3] = {0,M_PI/4,0};
+unsigned char integerscaling = 0;
+unsigned short cameraframe = 0;
+unsigned short cameraframescaled[2] = {0};
+float cameradesrot[3] = {0};
+int camerapos[3] = {0,0,0};
+static float cameraease = 2./16;
+static float camerarot[3] = {0,M_PI/4,0};
 void cameraUpdate(void){
 
 	float rot[3*3] = {0};
 	float brot[3*3] = {0};
 
-	camerarota[0] = asin(0.5);
-	camerarota[0] += cameradest[0]*cameraease;
-	cameradest[0] -= cameradest[0]*cameraease;
-	camerarota[1] += cameradest[1]*cameraease;
-	cameradest[1] -= cameradest[1]*cameraease;
-	camerarota[2] += cameradest[2]*cameraease;
-	cameradest[2] -= cameradest[2]*cameraease;
+
+	camerarot[0] = asin(0.5);
+	if (fabs(cameradesrot[0])<(M_PI*cameraease)/64) {
+		camerarot[0] += cameradesrot[0];
+		cameradesrot[0] = 0;
+	}else{
+		camerarot[0] += cameradesrot[0]*cameraease;
+		cameradesrot[0] -= cameradesrot[0]*cameraease;
+	}
+	if (fabs(cameradesrot[1])<(M_PI*cameraease)/64) {
+		camerarot[1] += cameradesrot[1];
+		cameradesrot[1] = 0;
+	}else{
+		camerarot[1] += cameradesrot[1]*cameraease;
+		cameradesrot[1] -= cameradesrot[1]*cameraease;
+	}
+	if (fabs(cameradesrot[2])<(M_PI*cameraease)/64) {
+		camerarot[2] += cameradesrot[2];
+		cameradesrot[2] = 0;
+	}else{
+		camerarot[2] += cameradesrot[2]*cameraease;
+		cameradesrot[2] -= cameradesrot[2]*cameraease;
+	}
+	if(camerarot[0]>2*M_PI){
+		camerarot[0] -= 2*M_PI;
+	}else if (camerarot[0]<0) {
+		camerarot[0] += 2*M_PI;
+	}
+	if(camerarot[1]>2*M_PI){
+		camerarot[1] -= 2*M_PI;
+	}else if (camerarot[1]<0) {
+		camerarot[1] += 2*M_PI;
+	}
+	if(camerarot[2]>2*M_PI){
+		camerarot[2] -= 2*M_PI;
+	}else if (camerarot[2]<0) {
+		camerarot[2] += 2*M_PI;
+	}
+
 
 	rot[0*3+0] = 1;
-	rot[1*3+1] = cos(camerarota[0]);
-	rot[1*3+2] = sin(camerarota[0]);
-	rot[2*3+1] = -sin(camerarota[0]);
-	rot[2*3+2] = cos(camerarota[0]);
+	rot[1*3+1] = cos(camerarot[0]);
+	rot[1*3+2] = sin(camerarot[0]);
+	rot[2*3+1] = -sin(camerarot[0]);
+	rot[2*3+2] = cos(camerarot[0]);
 
 	brot[1*3+1] = 1;
-	brot[0*3+0] = cos(camerarota[1]);
-	brot[0*3+2] = -sin(camerarota[1]);
-	brot[2*3+0] = sin(camerarota[1]);
-	brot[2*3+2] = cos(camerarota[1]);
-	mut_mul_m3(rot,brot,rot);
+	brot[0*3+0] = cos(camerarot[1]);
+	brot[0*3+2] = -sin(camerarot[1]);
+	brot[2*3+0] = sin(camerarot[1]);
+	brot[2*3+2] = cos(camerarot[1]);
+	mut_m3_mul(rot,brot,rot);
 	brot[0*3+2] = 0.;
 	brot[2*3+0] = 0.;
 
 	brot[2*3+2] = 1;
-	brot[0*3+0] = cos(camerarota[2]);
-	brot[0*3+1] = sin(camerarota[2]);
-	brot[1*3+0] = -sin(camerarota[2]);
-	brot[1*3+1] = cos(camerarota[2]);
-	mut_mul_m3(rot,brot,rot);
+	brot[0*3+0] = cos(camerarot[2]);
+	brot[0*3+1] = sin(camerarot[2]);
+	brot[1*3+0] = -sin(camerarot[2]);
+	brot[1*3+1] = cos(camerarot[2]);
+	mut_m3_mul(rot,brot,rot);
 
-	mut_cp_m3_4(rot,view);
-}
-static unsigned short frame;
-void cameraZoom(short increment){
-	if (frame+increment*2>=4) {
-		frame += increment*2;
+	mut_m3_cp_m4(rot,view);
+
+
+	if(!integerscaling){
+		cameraframescaled[0] = cameraframe*isolaInfoWindow.xratio-
+						(int)(cameraframe*isolaInfoWindow.xratio)%2;
+		cameraframescaled[1] = cameraframe*isolaInfoWindow.yratio-
+						(int)(cameraframe*isolaInfoWindow.yratio)%2;
+	}else{
+		cameraframescaled[0] = cameraframe*isolaInfoWindow.xratio-
+						(int)(cameraframe*isolaInfoWindow.xratio)%2;
+		cameraframescaled[1] = cameraframe*isolaInfoWindow.yratio-
+						(int)(cameraframe*isolaInfoWindow.yratio)%2;
 	}
-	proj_glortho(-frame*sqrt(2)/8.,frame*sqrt(2)/8.,
-					-frame*sqrt(2)/8.,frame*sqrt(2)/8.,
-					0.125, 256., projection);
+	proj_glortho(-cameraframescaled[0]*(sqrt(2)/8),
+					cameraframescaled[0]*(sqrt(2)/8),
+					-cameraframescaled[1]*(sqrt(2)/8),
+					cameraframescaled[1]*(sqrt(2)/8),
+					0.250, 128., projection);
+
+
+	if (camerapos[0] < 0) {
+		camerapos[0] = 0;
+	}else if (camerapos[0] > levelsize) {
+		camerapos[0] = levelsize;
+	}
+	if (camerapos[1] < 0) {
+		camerapos[1] = 0;
+	}else if (camerapos[1] > levelsize) {
+		camerapos[1] = levelsize;
+	}
+	if (camerapos[2] < 0) {
+		camerapos[2] = 0;
+	}else if (camerapos[2] > levelsize) {
+		camerapos[2] = levelsize;
+	}
+	model[3*4+0] = -camerapos[0];
+	model[3*4+1] = -camerapos[1]/(sqrt(2)*cos(asin(0.5)));
+	model[3*4+2] = -camerapos[2];
 }
 
+
+
+void levelreset(void){
+	int i,j,k;
+	for(i = 0;i<levelsize;i++){
+		for(j = 0;j<levelsize;j++){
+			for(k = 0;k<levelsize;k++){
+				if (j==0) {
+					level[k+j*levelsize+i*levelsize*levelsize] = 1;
+				}else{
+					level[k+j*levelsize+i*levelsize*levelsize] = 0;
+				}
+			}
+		}
+	}
+}
+void recursetree(unsigned char head){
+	static unsigned short count = 0;
+	static unsigned short x=levelsize/2,y=0,z=levelsize/2;
+	int i;
+	switch (head) {
+		case 0:
+			if (y+1 < levelsize) {
+				y++;
+			}else {
+				return;
+			}
+		break;
+		case 1:
+			if (z+1 < levelsize) {
+				z++;
+			}else {
+				return;
+			}
+		break;
+		case 2:
+			if (x+1 < levelsize) {
+				x++;
+			}else {
+				return;
+			}
+		break;
+		case 3:
+			if (z != 0) {
+				z--;
+			}else {
+				return;
+			}
+		break;
+		case 4:
+			if (x != 0) {
+				x--;
+			}else {
+				return;
+			}
+		break;
+		case 5:
+			y--;
+		break;
+		case 6:
+			count = 0;
+			x = levelsize/2;
+			y = 0;
+			z = levelsize/2;
+			if (y+1 < levelsize) {
+				y++;
+			}else {
+				return;
+			}
+		break;
+	}
+
+	if (!level[z+y*levelsize+x*levelsize*levelsize]
+			&& count<pow(levelsize,2)
+			&& rand()%16
+			){
+		level[z+y*levelsize+x*levelsize*levelsize] = 1;
+		count++;
+	}else {
+		goto back;
+	}
+
+	if (!(rand()%2)) {
+		for (i = 0; i<5; i++) {
+			if (!(rand()%2)) {
+				recursetree(i+1);
+			}
+		}
+	}else {
+		recursetree(0);
+	}
+
+	back:
+	switch (head) {
+		case 0:
+			y--;
+		break;
+		case 1:
+			z--;
+		break;
+		case 2:
+			x--;
+		break;
+		case 3:
+			z++;
+		break;
+		case 4:
+			x++;
+		break;
+		case 5:
+			y++;
+		break;
+	}
+}
 
 
 
@@ -115,29 +293,32 @@ static unsigned int vertexBuffer[1];
 static unsigned int shaderProgram[1];
 void renderCreate(void){
 
-	unsigned short i,j,k;
+	unsigned short i = 0,j = 0,k = 0;
 	unsigned short u,o,l;
 	int locPos = 0,locCol = 1;
 	int id;
 	unsigned int vs, fs;
-	int locViw, locPrj, locDis;
+	int locMdl, locViw, locPrj, locDis;
 
 
 
-	levelsize = 16;
 	level = calloc(pow(levelsize,3),sizeof(unsigned char));
-	
-	for(i = 0;i<levelsize-2;i+=4){
-		for(j = 0;j<levelsize-2;j+=4){
-			for(k = 0;k<levelsize-2;k+=4){
 
-				for(u = 0;u<2;u++){
-					for(o = 0;o<2;o++){
-						for(l = 0;l<2;l++){
-							level[k+j*levelsize+i*levelsize*levelsize +
-									u+o*levelsize+l*levelsize*levelsize]
-/* 								= rand()%2; */
-								= 1;
+	for(i = 0;i<levelsize /* -3 */;i+=2){
+		for(j = 0;j<levelsize /* -3 */;j+=2){
+			for(k = 0;k<levelsize /* -3 */;k+=2){
+
+/* 				if(rand()%2){ */
+				if(1){
+					for(u = 0;u<1;u++){
+						for(o = 0;o<1;o++){
+							for(l = 0;l<1;l++){
+								level[k+j*levelsize+i*levelsize*levelsize +
+										u+o*levelsize+l*levelsize*levelsize]
+/* 									= rand()%3 & rand()%3 & rand()%3; */
+									= 1;
+
+							}
 						}
 					}
 				}
@@ -145,18 +326,45 @@ void renderCreate(void){
 			}
 		}
 	}
-	level[0+0*levelsize+0*levelsize*levelsize] = 1;
+	
+/* 	levelreset(); */
+/* 	recursetree(0); */
 
 
-	SDL_SetWindowSize(isolaWindow,480,480);
+
+	SDL_SetWindowResizable(isolaWindow,1);
+	SDL_SetWindowSize(isolaWindow,
+						isolaInfoWindow.desktopDisplayMode.w,
+						isolaInfoWindow.desktopDisplayMode.h);
 	isolaGetWindow();
-/* 	if(isolaInfoWindow.width>isolaInfoWindow.height){
-		frame = isolaInfoWindow.height/4;
-	}else {
-		frame = isolaInfoWindow.width/4;
-	} */
-	frame = 4;
 
+
+	cameraframe = levelsize*4.;
+
+	camerarot[0] = asin(0.5);
+
+	camerapos[0] = levelsize/2. -1 ;
+	camerapos[1] = levelsize/2. -1 ;
+	camerapos[2] = levelsize/2. -1 ;
+
+	cameraUpdate();
+
+
+	model[0*4+0] = 1.;
+	model[1*4+1] = 1.;
+	model[2*4+2] = 1.;
+	model[3*4+3] = 1.;
+
+	view[0*4+0] = 1.;
+	view[1*4+1] = 1.;
+	view[2*4+2] = 1.;
+	view[3*4+3] = 1.;
+
+	view[3*4+0] = 0.;
+	view[3*4+1] = 0.;
+	view[3*4+2] = -64.;
+
+	
 	glGenFramebuffers(1,&frameBuffer[0]);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,frameBuffer[0]);
 	glGenRenderbuffers(2,&renderBuffer[0]);
@@ -177,24 +385,6 @@ void renderCreate(void){
 
 	drawBuffers[0] = GL_COLOR_ATTACHMENT0;
 	glDrawBuffers(1,drawBuffers);
-	glViewport(0,0,frame,frame);
-
-	view[0*4+0] = 1.;
-	view[1*4+1] = 1.;
-	view[2*4+2] = 1.;
-
-	view[3*4+0] = 0.;
-/* 	view[3*4+1] = (3*sqrt(2)/ (2.*cos(asin(0.5)))) /
-					((mut_gcd(frame[0],frame[1])*2)); */
-	view[3*4+2] = -128.;
-	view[3*4+3] = 1.;
-
-	camerarota[0] = asin(0.5);
-	cameraUpdate();
-
-	proj_glortho(-frame*sqrt(2)/8.,frame*sqrt(2)/8.,
-					-frame*sqrt(2)/8.,frame*sqrt(2)/8.,
-					0.125, 256., projection);
 
 
 
@@ -250,6 +440,10 @@ void renderCreate(void){
 	id = 0;
 	glUseProgram(shaderProgram[id]);
 
+	locMdl = glGetUniformLocation(shaderProgram[id],"matModel");
+	if(locMdl == -1){SDL_Log("matModel not found in shader %d",id);}
+	glUniformMatrix4fv(locMdl,1,GL_FALSE,model);
+
 	locViw = glGetUniformLocation(shaderProgram[id],"matView");
 	if(locViw == -1){SDL_Log("matView not found in shader %d",id);}
 	glUniformMatrix4fv(locViw,1,GL_FALSE,view);
@@ -278,17 +472,19 @@ void renderDestroy(void){
 void renderDraw(void){
 
 	int id;
-	int locViw, locPrj, locLevel;
-	int i,j,k;
+	int locMdl, locViw, locPrj, locLevel;
+	unsigned int i,j,k;
 
 
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,frameBuffer[0]);
-	glViewport(0,0,frame,frame);
+	glViewport(0,0,cameraframescaled[0],cameraframescaled[1]);
 	glClear( GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT );
 
 	id = 0;
 	glBindVertexArray(vertexArrayObject[id]);
 	glUseProgram(shaderProgram[id]);
+	locMdl = glGetUniformLocation(shaderProgram[id],"matModel");
+	glUniformMatrix4fv(locMdl,1,GL_FALSE,model);
 	locViw = glGetUniformLocation(shaderProgram[id],"matView");
 	glUniformMatrix4fv(locViw,1,GL_FALSE,view);
 	locPrj = glGetUniformLocation(shaderProgram[id],"matProj");
@@ -312,8 +508,7 @@ void renderDraw(void){
 
 	glBindFramebuffer(GL_READ_FRAMEBUFFER,frameBuffer[0]);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
-	glViewport(0,0,isolaInfoWindow.width,isolaInfoWindow.height);
-	glBlitFramebuffer(0,0,frame,frame,
+	glBlitFramebuffer(0,0,cameraframescaled[0],cameraframescaled[1],
 						0,0,isolaInfoWindow.width,isolaInfoWindow.height,
 						GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT,GL_NEAREST);
 

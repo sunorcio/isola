@@ -62,12 +62,14 @@ void isolaGetWindow(void){
 						  &isolaInfoWindow.ypos);
 	SDL_GetWindowSize(isolaWindow, &isolaInfoWindow.width,
 					  &isolaInfoWindow.height);
-	if (isolaInfoWindow.width>isolaInfoWindow.height) {
-		isolaInfoWindow.xratio = isolaInfoWindow.width/isolaInfoWindow.height;
-		isolaInfoWindow.yratio = 1;
-	}else{
-		isolaInfoWindow.xratio = 1;
-		isolaInfoWindow.yratio = isolaInfoWindow.height/isolaInfoWindow.width;
+	if (isolaInfoWindow.width > isolaInfoWindow.height) {
+		isolaInfoWindow.yratio = 1.;
+		isolaInfoWindow.xratio = (double)isolaInfoWindow.width/
+									isolaInfoWindow.height;
+	}else {
+		isolaInfoWindow.xratio = 1.;
+		isolaInfoWindow.yratio = (double)isolaInfoWindow.height/
+									isolaInfoWindow.width;
 	}
 	isolaInfoWindow.flags = SDL_GetWindowFlags(isolaWindow);
 	isolaInfoWindow.displayIndex = SDL_GetWindowDisplayIndex(isolaWindow);

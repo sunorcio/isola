@@ -56,7 +56,7 @@ static void mut_print_m3(float m[3*3]){
 	SDL_Log("\n");
 }
 
-static void mut_cp_m3(float src[3*3],float dest[3*3]){
+static void mut_m3_cp(float src[3*3],float dest[3*3]){
 	dest[0*3+0] = src[0*3+0];
 	dest[0*3+1] = src[0*3+1];
 	dest[0*3+2] = src[0*3+2];
@@ -68,7 +68,7 @@ static void mut_cp_m3(float src[3*3],float dest[3*3]){
 	dest[2*3+2] = src[2*3+2];
 }
 
-static void mut_cp_m3_4(float src[3*3],float dest[4*4]){
+static void mut_m3_cp_m4(float src[3*3],float dest[4*4]){
 	dest[0*4+0] = src[0*3+0];
 	dest[0*4+1] = src[0*3+1];
 	dest[0*4+2] = src[0*3+2];
@@ -80,7 +80,7 @@ static void mut_cp_m3_4(float src[3*3],float dest[4*4]){
 	dest[2*4+2] = src[2*3+2];
 }
 
-static void mut_mul_m3(float a[3*3],float b[3*3],float dest[3*3]){
+static void mut_m3_mul(float a[3*3],float b[3*3],float dest[3*3]){
 	float c[3*3] = {0};
 	c[0*3+0] = a[0*3+0]*b[0*3+0] + a[1*3+0]*b[0*3+1] + a[2*3+0]*b[0*3+2];
 	c[0*3+1] = a[0*3+1]*b[0*3+0] + a[1*3+1]*b[0*3+1] + a[2*3+1]*b[0*3+2];
@@ -91,7 +91,7 @@ static void mut_mul_m3(float a[3*3],float b[3*3],float dest[3*3]){
 	c[2*3+0] = a[0*3+0]*b[2*3+0] + a[1*3+0]*b[2*3+1] + a[2*3+0]*b[2*3+2];
 	c[2*3+1] = a[0*3+1]*b[2*3+0] + a[1*3+1]*b[2*3+1] + a[2*3+1]*b[2*3+2];
 	c[2*3+2] = a[0*3+2]*b[2*3+0] + a[1*3+2]*b[2*3+1] + a[2*3+2]*b[2*3+2];
-	mut_cp_m3(c,dest);
+	mut_m3_cp(c,dest);
 }
 
 

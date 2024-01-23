@@ -8,7 +8,6 @@
 #include "isola.h"
 
 
-#include "mutil.h"
 #include "render.h"
 
 
@@ -30,48 +29,84 @@ void loop(void){
 	while(run){
 		while (SDL_PollEvent(&event)){
 			if(event.type == SDL_QUIT){run = 0;}
+			if(event.type == SDL_WINDOWEVENT){
+				switch(event.window.event){
+					case SDL_WINDOWEVENT_SIZE_CHANGED:
+						isolaGetWindow();
+					break;
+				}
+			}
 			if(event.type == SDL_KEYDOWN){
 				switch (event.key.keysym.sym){
 					case SDLK_ESCAPE:
 					case SDLK_q:
 						run = !run;
 					break;
+					case SDLK_SPACE:
+						levelreset();
+						recursetree(6);
 					break;
 					case SDLK_p:
 						pause = !pause;
 					break;
+					case SDLK_e:
+						integerscaling = !integerscaling;
+					break;
 					case SDLK_a:
-						cameradest[1] += M_PI/2;
+						cameradesrot[1] += M_PI/2;
 					break;
 					case SDLK_d:
-						cameradest[1] -= M_PI/2;
+						cameradesrot[1] -= M_PI/2;
 					break;
 					case SDLK_i:
-						cameraZoom(1);
+						camerapos[2] -= 1;
 					break;
 					case SDLK_k:
-						cameraZoom(-1);
+						camerapos[2] += 1;
+					break;
+					case SDLK_j:
+						camerapos[0] -= 1;
+					break;
+					case SDLK_l:
+						camerapos[0] += 1;
+					break;
+					case SDLK_o:
+						camerapos[1] += 1;
+					break;
+					case SDLK_n:
+						camerapos[1] -= 1;
+					break;
+					case SDLK_u:
+						cameraframe += 2;
+					break;
+					case SDLK_h:
+						cameraframe += -2;
+						if(cameraframe<4){
+							cameraframe = 4;
+						}
 					break;
 				}
 			}
 		}
 
 		if(!pause){
-			unsigned char down = 0;
 			if(SDL_GetPerformanceCounter()>=lastStep+clockFreq/isolaSPS){
 				lastStep = SDL_GetPerformanceCounter();
 
+				if (keyState[SDL_SCANCODE_X]){
+					cameradesrot[0] -= 2*asin(0.5);
+				}
 				if (keyState[SDL_SCANCODE_S]){
-					cameradest[0] -= asin(0.5);
+					cameradesrot[0] -= asin(0.5);
 				}
 				if (keyState[SDL_SCANCODE_W]){
-					cameradest[0] += M_PI/2-asin(0.5);
+					cameradesrot[0] += M_PI/2-asin(0.5)+0.0;
 				}
 /* 				if (keyState[SDL_SCANCODE_A]){
-					cameradest[1] += M_PI/2;
+					cameradesrot[1] += M_PI/2;
 				}
 				if (keyState[SDL_SCANCODE_D]){
-					cameradest[1] -= M_PI/2;
+					cameradesrot[1] -= M_PI/2;
 				} */
 
 				cameraUpdate();

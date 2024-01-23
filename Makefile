@@ -1,43 +1,47 @@
-
-default_rule: all
-	./$(BIN)
-
-
 BIN = isola_example
 CC = clang
 
-#CFLAGS = -Wall -Wextra -pedantic -std=c89 -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable
-CFLAGS = -Wall -Wextra -pedantic -std=c89 -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-unused-result -MJ $@.json
-OPT = -O3 -pipe -march=native
-#
+
+#CFLAGS = -Wall -Wextra -pedantic -std=c89
+CFLAGS = -Wall -Wextra -pedantic -std=c89 -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-unused-result -Wno-sign-compare -MJ $@.json
+OPT = -O3 -pipe -march=native -flto=full
+#OPT =
+
 
 LIBS = -lGLEW -lGL -lGLU -lSDL2 -lm
 LDFLAGS = ${LIBS}
 
-SRC = isola.c render.c main.c
+HDR = render.h isola.h mutil.h
+SRC = main.c render.c isola.c
 OBJ = ${SRC:.c=.o}
 
-DEPS = ${SRC}
+DEPS = ${SRC} ${HDR} Makefile
+
+
+
+default_rule: test
+
+test: ${BIN}
+	./${BIN}
 
 
 
 .c.o:
-#	${CC} -c ${CFLAGS} $<
 	${CC} -c ${CFLAGS} ${OPT} $<
 
 ${OBJ}: ${DEPS}
 
 
 
-all: $(BIN) Compdb clean
+all: ${BIN} Compdb clean
 
-$(BIN): ${OBJ}
-	${CC} -o $@ ${OBJ} ${LDFLAGS}
+${BIN}: ${OBJ}
+	${CC} -o $@ ${OBJ} ${LDFLAGS} ${OPT}
 
 Compdb: ${OBJ}
 	./Compdb
 
-clean: $(BIN)
+clean:
 	rm *.o*
 	
 
