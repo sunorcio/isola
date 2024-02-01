@@ -4,13 +4,16 @@
 
 
 
-#include "isola.h"
+#include <math.h>
+#include <stdlib.h>
+
+
 #include <SDL2/SDL.h>
 
 
 
 
-static void proj_glortho(float left, float right, float bottom, float top,
+static void mut_proj_glortho(float left, float right, float bottom, float top,
 								float nearZ, float farZ, float dest[4*4]){
 
 	float rl,tb,fn;

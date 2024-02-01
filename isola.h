@@ -41,6 +41,7 @@
  #error ISOLA_GLSLCHARMAX: invalid definition
 #endif
 
+
 #if(ISOLA_DEBUG)
  #define ISOLA_DBG 1
 #endif
@@ -97,33 +98,21 @@ struct ISOLA_Context{
 	int fbdefBluesize;
 	int fbdefAlphasize;
 	int fbdefDepthsize;
-	int fbdefStencilsize;
-/* 	GL_LINEAR or GL_SRGB */
+	int fbdefStencilsize;		/* GL_LINEAR or GL_SRGB */
 	int fbdefColorencoding;
 
 	int maxVertices;
-	int maxIndices;
-/* 	at least 16 */
-	int maxAttrib;
-/* 	at least 1024 */
-	int maxVertexUniforms;
-/* 	at least 1024 */
-	int maxFragmentUniforms;
-/* 	at least 64 */
-	int maxTexCombinedUnits;
-/* 	at least 16 */
-	int maxTexUnits;
-/* 	at least 1024 */
-	int maxTexSize;
-/* 	at least 64 */
-	int max3DTexSize;
-/* 	at least 1024 */
-	int maxCubeTexSize;
-/* 	at least 8 */
-	int maxDrawBuffers;
-/* 	at least 8 */
-	int maxColorAttachments;
-/* 	at least 8 */
+	int maxIndices;				/* at least 16 */
+	int maxAttrib;				/* at least 1024 */
+	int maxVertexUniforms;		/* at least 1024 */
+	int maxFragmentUniforms;	/* at least 64 */
+	int maxTexCombinedUnits;	/* at least 16 */
+	int maxTexUnits;			/* at least 1024 */
+	int maxTexSize;				/* at least 64 */
+	int max3DTexSize;			/* at least 1024 */
+	int maxCubeTexSize;			/* at least 8 */
+	int maxDrawBuffers;			/* at least 8 */
+	int maxColorAttachments;	/* at least 8 */
 	int maxRenderbufferSize;
 
 	int cpuCount;
@@ -131,7 +120,7 @@ struct ISOLA_Context{
 	int cacheSize;
 }extern isolaInfoContext;
 
-/* current window state, updated with isolaGetWindow() */
+/* current window state. updated with isolaGetWindow() */
 struct ISOLA_Window{
 	int xpos;
 	int ypos;
@@ -139,14 +128,13 @@ struct ISOLA_Window{
 	int height;
 	float xratio;
 	float yratio;
-/* see SDL_CreateWindow for a list of flags */
-	int flags;
+	int flags;	/* see SDL_WindowFlags for a list of flags */
 	int displayIndex;
 	SDL_DisplayMode displayMode;
 	SDL_DisplayMode desktopDisplayMode;
 }extern isolaInfoWindow;
 
-/* dysplay modes for all availiable devices, retrieved with isolaGetDisplay() */
+/* dysplay modes for all availiable devices. retrieved with isolaGetDisplay() */
 struct ISOLA_Display{
 /* 	number of display modes for the id, access array with desired display id */
 	int* displayModeCount;
@@ -155,22 +143,24 @@ struct ISOLA_Display{
 	SDL_DisplayMode* displayModes;
 }extern isolaInfoDisplay;
 
-#define isolaStateBLEND				0x0001
-#define isolaStateCOLORLOGIC		0x0002
-#define isolaStateCULLFACE 			0x0004
-#define isolaStateDEPTHTEST			0x0008
-#define isolaStateDITHER 			0x0010
-#define isolaStateDOUBLEBUFFER		0x0020
-#define isolaStateSCISSORTEST 		0x0040
-#define isolaStateSTENCILTEST 		0x0080
-#define isolaStateSRGBFRAMEBUFFER 	0x0100
-#define isolaStatePOINTSMOOTH 		0x0200
-#define isolaStateLINESMOOTH 		0x0400
-#define isolaStatePOLYGONSMOOTH		0x0800
-#define isolaStatePOINTSIZEPROGRAM	0x1000
-#define isolaStateMULTISAMPLE 		0x2000
-/* glEnable state information */
-extern unsigned int isolaInfoState;
+typedef enum {
+	ISOLA_STATE_BLEND				= 0x0001,
+	ISOLA_STATE_COLORLOGIC			= 0x0002,
+	ISOLA_STATE_CULLFACE 			= 0x0004,
+	ISOLA_STATE_DEPTHTEST			= 0x0008,
+	ISOLA_STATE_DITHER				= 0x0010,
+	ISOLA_STATE_DOUBLEBUFFER		= 0x0020,
+	ISOLA_STATE_SCISSORTEST 		= 0x0040,
+	ISOLA_STATE_STENCILTEST 		= 0x0080,
+	ISOLA_STATE_SRGBFRAMEBUFFER 	= 0x0100,
+	ISOLA_STATE_POINTSMOOTH 		= 0x0200,
+	ISOLA_STATE_LINESMOOTH			= 0x0400,
+	ISOLA_STATE_POLYGONSMOOTH		= 0x0800,
+	ISOLA_STATE_POINTSIZEPROGRAM	= 0x1000,
+	ISOLA_STATE_MULTISAMPLE 		= 0x2000
+}ISOLA_State;
+/* glEnable information. meant for quick debugging. see isolaGetState() */
+extern ISOLA_State isolaInfoState;
 
 
 /* update window information (isolaInfoWindow) */

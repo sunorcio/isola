@@ -1,13 +1,9 @@
-
-#include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
 
 
 #include "isola.h"
-
-
 #include "render.h"
 
 
@@ -23,6 +19,9 @@ void loop(void){
 	int keyLength;
 	const unsigned char* keyState = SDL_GetKeyboardState(&keyLength);
 
+	static unsigned char apressed = 0;
+	static unsigned char dpressed = 0;
+
 	SDL_Event event = {0};
 	unsigned char run = 1;
 	unsigned char pause = 0;
@@ -32,7 +31,11 @@ void loop(void){
 			if(event.type == SDL_WINDOWEVENT){
 				switch(event.window.event){
 					case SDL_WINDOWEVENT_SIZE_CHANGED:
+					case SDL_WINDOWEVENT_DISPLAY_CHANGED:
 						isolaGetWindow();
+					break;
+					case SDL_WINDOWEVENT_CLOSE:
+						run = !run;
 					break;
 				}
 			}
@@ -51,12 +54,6 @@ void loop(void){
 					break;
 					case SDLK_e:
 						integerscaling = !integerscaling;
-					break;
-					case SDLK_a:
-						cameradesrot[1] += M_PI/2;
-					break;
-					case SDLK_d:
-						cameradesrot[1] -= M_PI/2;
 					break;
 					case SDLK_i:
 						camerapos[2] -= 1;
@@ -102,12 +99,18 @@ void loop(void){
 				if (keyState[SDL_SCANCODE_W]){
 					cameradesrot[0] += M_PI/2-asin(0.5)+0.0;
 				}
-/* 				if (keyState[SDL_SCANCODE_A]){
-					cameradesrot[1] += M_PI/2;
-				}
+				if (keyState[SDL_SCANCODE_A]){
+					if (!apressed) {
+						cameradesrot[1] += M_PI/2;
+						apressed=!apressed;
+					}
+				}else { apressed=0; }
 				if (keyState[SDL_SCANCODE_D]){
-					cameradesrot[1] -= M_PI/2;
-				} */
+					if (!dpressed) {
+						cameradesrot[1] -= M_PI/2;
+						dpressed=!dpressed;
+					}
+				}else { dpressed=0;}
 
 				cameraUpdate();
 			}
@@ -138,8 +141,6 @@ int main(void){
 	renderDestroy();
 
 
-	isolaErrorGL();
-	isolaErrorSDL(-1);
 	isolaQuit();
 	return 0;
 }

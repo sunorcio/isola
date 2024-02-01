@@ -10,6 +10,7 @@
 
 #ifdef ISOLA_DBG
 signed char isolaErrorSDL(int SDLfunction){
+
 	if(*SDL_GetError() == 0){return 0;}
 
 	if(SDLfunction<0){ SDL_Log("%s",SDL_GetError());}
@@ -17,6 +18,7 @@ signed char isolaErrorSDL(int SDLfunction){
 	return -1;
 }
 signed char isolaErrorGL(void){
+
 	GLenum error = glGetError();
 	if (error == GL_NO_ERROR){ return 0; }
 
@@ -30,6 +32,7 @@ static void debugCallback(unsigned int source, unsigned int type,
 						  unsigned int id, unsigned int severity,
 						  int length, const char* message,
 						  const void* userParam){
+
 	SDL_Log("%s",message);
 	return;
 }
@@ -48,7 +51,7 @@ SDL_Window* isolaWindow = {0};
 struct ISOLA_Context isolaInfoContext = {0};
 struct ISOLA_Window isolaInfoWindow = {0};
 struct ISOLA_Display isolaInfoDisplay = {0};
-unsigned int isolaInfoState = {0};
+ISOLA_State isolaInfoState = {0};
 
 
 static char* isolaShaderSrc = {0};
@@ -58,6 +61,7 @@ static FILE* isolaLog = {0};
 
 
 void isolaGetWindow(void){
+
 	SDL_GetWindowPosition(isolaWindow, &isolaInfoWindow.xpos,
 						  &isolaInfoWindow.ypos);
 	SDL_GetWindowSize(isolaWindow, &isolaInfoWindow.width,
@@ -78,8 +82,10 @@ void isolaGetWindow(void){
 								&isolaInfoWindow.desktopDisplayMode);
 }
 void isolaGetDisplay(void){
+
 	int i,j;
 	int buff;
+
 	buff = SDL_GetNumVideoDisplays();
 	isolaInfoDisplay.displayModeCount = calloc(buff+1, sizeof(int));
 	for(i = 0;i<buff;i++){
@@ -101,6 +107,7 @@ void isolaGetDisplay(void){
 	}
 }
 static void isolaGetContext(void){
+
 	glBindFramebuffer(GL_FRAMEBUFFER,0);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
 									GL_FRONT_LEFT,
@@ -167,51 +174,38 @@ static void isolaGetContext(void){
 	isolaInfoContext.cacheSize = SDL_GetCPUCacheLineSize();
 }
 void isolaGetState(void){
+
 	int state;
+
 	isolaInfoState = 0x0000;
 	glGetIntegerv(GL_BLEND, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStateBLEND);
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_BLEND);
 	glGetIntegerv(GL_COLOR_LOGIC_OP, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStateCOLORLOGIC);
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_COLORLOGIC);
 	glGetIntegerv(GL_CULL_FACE, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStateCULLFACE);
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_CULLFACE);
 	glGetIntegerv(GL_DEPTH_TEST, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStateDEPTHTEST);
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_DEPTHTEST);
 	glGetIntegerv(GL_DITHER, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStateDITHER);
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_DITHER);
 	glGetIntegerv(GL_DOUBLEBUFFER, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStateDOUBLEBUFFER);
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_DOUBLEBUFFER);
 	glGetIntegerv(GL_SCISSOR_TEST, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStateSCISSORTEST);
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_SCISSORTEST);
 	glGetIntegerv(GL_STENCIL_TEST, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStateSTENCILTEST);
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_STENCILTEST);
 	glGetIntegerv(GL_FRAMEBUFFER_SRGB, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStateSRGBFRAMEBUFFER);
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_SRGBFRAMEBUFFER);
 	glGetIntegerv(GL_POINT_SMOOTH, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStatePOINTSMOOTH);
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_POINTSMOOTH);
 	glGetIntegerv(GL_LINE_SMOOTH, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStateLINESMOOTH);
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_LINESMOOTH);
 	glGetIntegerv(GL_POLYGON_SMOOTH, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStatePOLYGONSMOOTH);
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_POLYGONSMOOTH);
 	glGetIntegerv(GL_PROGRAM_POINT_SIZE, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStatePOINTSIZEPROGRAM);
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_POINTSIZEPROGRAM);
 	glGetIntegerv(GL_MULTISAMPLE, &state);
-	isolaInfoState = (isolaInfoState
-							| state*isolaStateMULTISAMPLE);
-
+	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_MULTISAMPLE);
 }
 
 
@@ -219,6 +213,7 @@ void isolaGetState(void){
 
 unsigned int isolaShaderCompile(const char* shaderFile,
 								unsigned int shaderType){
+
 	FILE* f;
 	int l;
 	unsigned int shaderObject;
@@ -251,6 +246,7 @@ unsigned int isolaShaderCompile(const char* shaderFile,
 }
 
 char* isolaShaderSrcLoad(const char* shaderFile){
+
 	FILE* f;
 	int l;
 	char* shaderSrc;
@@ -269,6 +265,7 @@ char* isolaShaderSrcLoad(const char* shaderFile){
 }
 unsigned char isolaShaderSrcCompare(char* shaderSrc,
 									const char* shaderFile){
+
 	int l;
 	FILE* f;
 	f = fopen(shaderFile, "a+");
@@ -294,6 +291,7 @@ unsigned char isolaShaderSrcCompare(char* shaderSrc,
 
 
 static void contextPromt(void){
+
 	int maj, min, flags, prof;
 
 	SDL_Log("\n");
@@ -339,6 +337,7 @@ static void contextPromt(void){
 }
 
 void isolaInit(void){
+
 	unsigned int contextFlags = 0;
 
 	isolaShaderSrc = calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
@@ -440,10 +439,10 @@ void isolaInit(void){
 	/* glewExperimental = GL_TRUE; */
 	glewInit();
 
+
 #ifdef ISOLA_DBG
 	contextPromt();
 #endif
-
 
 #ifdef ISOLA_DBG
 	 if( GLEW_KHR_debug || GLEW_ARB_debug_output ){
@@ -451,7 +450,7 @@ void isolaInit(void){
 	 }
 #endif
 
-	
+
 #if(ISOLA_DEPTH)
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -500,6 +499,7 @@ void isolaInit(void){
 	isolaGetDisplay();
 }
 void isolaQuit(void){
+
 #ifdef ISOLA_DBG
 	if( isolaErrorGL() || isolaErrorSDL(-1) ){
 		SDL_Log("Uncaught errors left");

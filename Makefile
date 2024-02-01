@@ -42,15 +42,15 @@ Compdb: ${OBJ}
 	./Compdb
 
 clean:
+	rm ${BIN}
 	rm *.o*
 	
-
 
 #TODO
 # Depends on these sources:
 # glew - https://github.com/nigels-com/glew
 # SDL - https://github.com/libsdl-org/SDL
-# consider using cglm (c) or glm (c++) for vector math and gl matrix setup
+# consider using cglm (c) or glm (c++) for opengl and vector math
 #
 # ____________________DYNAMIC COMPILE
 # 

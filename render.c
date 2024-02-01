@@ -3,36 +3,41 @@
 
 
 
+#include "mutil.h"
+
+
+
+
 static float vertexCube[] = {
-	-0.500,-0.500, 0.502,  	0.250, 0.250, 0.750,	/* 0.250, 0.125, 0.000, */
-	 0.500,-0.500, 0.502,  	0.250, 0.250, 0.750,    /* 0.250, 0.125, 0.000, */
-	 0.500, 0.500, 0.502,  	0.250, 0.250, 0.750,    /* 0.250, 0.125, 0.000, */
-	-0.500, 0.500, 0.502,  	0.250, 0.250, 0.750,    /* 0.250, 0.125, 0.000, */
-                                                    /*                      */
-	-0.500, 0.502, 0.500,  	0.250, 0.750, 0.250,    /* 0.000, 0.250, 0.000, */
-	 0.500, 0.502, 0.500,  	0.250, 0.750, 0.250,    /* 0.000, 0.250, 0.000, */
-	 0.500, 0.502,-0.500,  	0.250, 0.750, 0.250,    /* 0.000, 0.250, 0.000, */
-	-0.500, 0.502,-0.500,  	0.250, 0.750, 0.250,    /* 0.000, 0.250, 0.000, */
-                                                    /*                      */
-	 0.502,-0.500, 0.500,  	0.750, 0.250, 0.250,    /* 0.250, 0.125, 0.000, */
-	 0.502,-0.500,-0.500,  	0.750, 0.250, 0.250,    /* 0.250, 0.125, 0.000, */
-	 0.502, 0.500,-0.500,  	0.750, 0.250, 0.250,    /* 0.250, 0.125, 0.000, */
-	 0.502, 0.500, 0.500,  	0.750, 0.250, 0.250,    /* 0.250, 0.125, 0.000, */
-                                                    /*                      */
-	-0.500,-0.500,-0.502,  	0.625, 0.625, 0.000,    /* 0.250, 0.125, 0.000, */
-	-0.500, 0.500,-0.502,  	0.625, 0.625, 0.000,    /* 0.250, 0.125, 0.000, */
-	 0.500, 0.500,-0.502,  	0.625, 0.625, 0.000,    /* 0.250, 0.125, 0.000, */
-	 0.500,-0.500,-0.502,  	0.625, 0.625, 0.000,    /* 0.250, 0.125, 0.000, */
-                                                    /*                      */
-	-0.500,-0.502, 0.500,  	0.625, 0.000, 0.625,    /* 0.000, 0.250, 0.000, */
-	-0.500,-0.502,-0.500,  	0.625, 0.000, 0.625,    /* 0.000, 0.250, 0.000, */
-	 0.500,-0.502,-0.500,  	0.625, 0.000, 0.625,    /* 0.000, 0.250, 0.000, */
-	 0.500,-0.502, 0.500,  	0.625, 0.000, 0.625,    /* 0.000, 0.250, 0.000, */
-                                                    /*                      */
-	-0.502,-0.500, 0.500,  	0.000, 0.625, 0.625,    /* 0.250, 0.125, 0.000, */
-	-0.502, 0.500, 0.500,  	0.000, 0.625, 0.625,    /* 0.250, 0.125, 0.000, */
-	-0.502, 0.500,-0.500,  	0.000, 0.625, 0.625,    /* 0.250, 0.125, 0.000, */
-	-0.502,-0.500,-0.500,  	0.000, 0.625, 0.625,    /* 0.250, 0.125, 0.000, */
+	-0.500,-0.500, 0.502,	0.250, 0.250, 0.750,	/* 0.375, 0.250, 0.000,  */
+	 0.500,-0.500, 0.502,	0.250, 0.250, 0.750,	/* 0.375, 0.250, 0.000,  */
+	 0.500, 0.500, 0.502,	0.250, 0.250, 0.750,	/* 0.375, 0.250, 0.000,  */
+	-0.500, 0.500, 0.502,	0.250, 0.250, 0.750,	/* 0.375, 0.250, 0.000,  */
+	                        	                    /*                       */
+	-0.501, 0.502, 0.501,	0.250, 0.750, 0.250,	/* 0.000, 0.250, 0.000,  */
+	 0.501, 0.502, 0.501,	0.250, 0.750, 0.250,	/* 0.000, 0.250, 0.000,  */
+	 0.501, 0.502,-0.501,	0.250, 0.750, 0.250,	/* 0.000, 0.250, 0.000,  */
+	-0.501, 0.502,-0.501,	0.250, 0.750, 0.250,	/* 0.000, 0.250, 0.000,  */
+	                        	                    /*                       */
+	 0.502,-0.500, 0.500,	0.750, 0.250, 0.250,	/* 0.250, 0.125, 0.000,  */
+	 0.502,-0.500,-0.500,	0.750, 0.250, 0.250,	/* 0.250, 0.125, 0.000,  */
+	 0.502, 0.500,-0.500,	0.750, 0.250, 0.250,	/* 0.250, 0.125, 0.000,  */
+	 0.502, 0.500, 0.500,	0.750, 0.250, 0.250,	/* 0.250, 0.125, 0.000,  */
+	                        	                    /*                       */
+	-0.500,-0.500,-0.502,	0.625, 0.625, 0.000,	/* 0.375, 0.250, 0.000,  */
+	-0.500, 0.500,-0.502,	0.625, 0.625, 0.000,	/* 0.375, 0.250, 0.000,  */
+	 0.500, 0.500,-0.502,	0.625, 0.625, 0.000,	/* 0.375, 0.250, 0.000,  */
+	 0.500,-0.500,-0.502,	0.625, 0.625, 0.000,	/* 0.375, 0.250, 0.000,  */
+	                        	                    /*                       */
+	-0.501,-0.502, 0.501,	0.625, 0.000, 0.625,	/* 0.000, 0.250, 0.000,  */
+	-0.501,-0.502,-0.501,	0.625, 0.000, 0.625,	/* 0.000, 0.250, 0.000,  */
+	 0.501,-0.502,-0.501,	0.625, 0.000, 0.625,	/* 0.000, 0.250, 0.000,  */
+	 0.501,-0.502, 0.501,	0.625, 0.000, 0.625,	/* 0.000, 0.250, 0.000,  */
+	                        	                    /*                       */
+	-0.502,-0.500, 0.500,	0.000, 0.625, 0.625,	/* 0.250, 0.125, 0.000,  */
+	-0.502, 0.500, 0.500,	0.000, 0.625, 0.625,	/* 0.250, 0.125, 0.000,  */
+	-0.502, 0.500,-0.500,	0.000, 0.625, 0.625,	/* 0.250, 0.125, 0.000,  */
+	-0.502,-0.500,-0.500,	0.000, 0.625, 0.625,	/* 0.250, 0.125, 0.000,  */
 };
 static unsigned short elementsCube[] = {
 	0,1,2,			0,2,3,
@@ -43,6 +48,9 @@ static unsigned short elementsCube[] = {
 	20,21,22,		20,22,23,
 };
 
+
+
+
 #define levelsize 32
 static unsigned char* level;
 
@@ -51,13 +59,50 @@ static float view[4*4] = {0};
 static float projection[4*4] = {0};
 
 
+
+
 unsigned char integerscaling = 0;
 unsigned short cameraframe = 0;
 unsigned short cameraframescaled[2] = {0};
+
 float cameradesrot[3] = {0};
-int camerapos[3] = {0,0,0};
 static float cameraease = 2./16;
 static float camerarot[3] = {0,M_PI/4,0};
+int camerapos[3] = {0,0,0};
+
+void cameraSetup(void){
+
+	SDL_SetWindowResizable(isolaWindow,1);
+	SDL_SetWindowSize(isolaWindow,
+						isolaInfoWindow.desktopDisplayMode.w,
+						isolaInfoWindow.desktopDisplayMode.h);
+	isolaGetWindow();
+
+
+	cameraframe = levelsize*4.;
+
+	camerarot[0] = asin(0.5);
+
+	camerapos[0] = levelsize/2. -1 ;
+	camerapos[1] = levelsize/2. -1 ;
+	camerapos[2] = levelsize/2. -1 ;
+
+
+	model[0*4+0] = 1.;
+	model[1*4+1] = 1.;
+	model[2*4+2] = 1.;
+	model[3*4+3] = 1.;
+
+	view[0*4+0] = 1.;
+	view[1*4+1] = 1.;
+	view[2*4+2] = 1.;
+	view[3*4+3] = 1.;
+
+	view[3*4+0] = 0.;
+	view[3*4+1] = 0.;
+	view[3*4+2] = -64.;
+
+}
 void cameraUpdate(void){
 
 	float rot[3*3] = {0};
@@ -139,7 +184,7 @@ void cameraUpdate(void){
 		cameraframescaled[1] = cameraframe*isolaInfoWindow.yratio-
 						(int)(cameraframe*isolaInfoWindow.yratio)%2;
 	}
-	proj_glortho(-cameraframescaled[0]*(sqrt(2)/8),
+	mut_proj_glortho(-cameraframescaled[0]*(sqrt(2)/8),
 					cameraframescaled[0]*(sqrt(2)/8),
 					-cameraframescaled[1]*(sqrt(2)/8),
 					cameraframescaled[1]*(sqrt(2)/8),
@@ -168,59 +213,39 @@ void cameraUpdate(void){
 
 
 
-void levelreset(void){
-	int i,j,k;
-	for(i = 0;i<levelsize;i++){
-		for(j = 0;j<levelsize;j++){
-			for(k = 0;k<levelsize;k++){
-				if (j==0) {
-					level[k+j*levelsize+i*levelsize*levelsize] = 1;
-				}else{
-					level[k+j*levelsize+i*levelsize*levelsize] = 0;
-				}
-			}
-		}
-	}
-}
+
 void recursetree(unsigned char head){
+
 	static unsigned short count = 0;
 	static unsigned short x=levelsize/2,y=0,z=levelsize/2;
 	int i;
+
+
 	switch (head) {
 		case 0:
 			if (y+1 < levelsize) {
 				y++;
-			}else {
-				return;
-			}
+			}else { return; }
 		break;
 		case 1:
 			if (z+1 < levelsize) {
 				z++;
-			}else {
-				return;
-			}
+			}else { return; }
 		break;
 		case 2:
 			if (x+1 < levelsize) {
 				x++;
-			}else {
-				return;
-			}
+			}else { return; }
 		break;
 		case 3:
 			if (z != 0) {
 				z--;
-			}else {
-				return;
-			}
+			}else { return; }
 		break;
 		case 4:
 			if (x != 0) {
 				x--;
-			}else {
-				return;
-			}
+			}else { return; }
 		break;
 		case 5:
 			y--;
@@ -230,33 +255,24 @@ void recursetree(unsigned char head){
 			x = levelsize/2;
 			y = 0;
 			z = levelsize/2;
-			if (y+1 < levelsize) {
-				y++;
-			}else {
-				return;
-			}
+			y++;
 		break;
 	}
 
-	if (!level[z+y*levelsize+x*levelsize*levelsize]
+	if (	!level[z+y*levelsize+x*levelsize*levelsize]
 			&& count<pow(levelsize,2)
-			&& rand()%16
-			){
+			&& rand()%4	){
 		level[z+y*levelsize+x*levelsize*levelsize] = 1;
 		count++;
-	}else {
-		goto back;
-	}
+	}else {goto back;}
 
 	if (!(rand()%2)) {
 		for (i = 0; i<5; i++) {
-			if (!(rand()%2)) {
-				recursetree(i+1);
-			}
+/* 			if (!(rand()%2)) { */
+				recursetree((rand()%5)+1);
+/* 			} */
 		}
-	}else {
-		recursetree(0);
-	}
+	}else {recursetree(0);}
 
 	back:
 	switch (head) {
@@ -280,39 +296,23 @@ void recursetree(unsigned char head){
 		break;
 	}
 }
+void levelCreate(void){
 
-
-
-static unsigned int drawBuffers[1];
-static unsigned int renderBuffer[2];
-static unsigned int frameBuffer[1];
-
-static unsigned int elementBuffer[1];
-static unsigned int vertexArrayObject[1];
-static unsigned int vertexBuffer[1];
-static unsigned int shaderProgram[1];
-void renderCreate(void){
-
-	unsigned short i = 0,j = 0,k = 0;
+	unsigned short i,j,k;
 	unsigned short u,o,l;
-	int locPos = 0,locCol = 1;
-	int id;
-	unsigned int vs, fs;
-	int locMdl, locViw, locPrj, locDis;
-
 
 
 	level = calloc(pow(levelsize,3),sizeof(unsigned char));
 
-	for(i = 0;i<levelsize /* -3 */;i+=2){
-		for(j = 0;j<levelsize /* -3 */;j+=2){
-			for(k = 0;k<levelsize /* -3 */;k+=2){
+	for(i = 0;i<levelsize -3;i+=5){
+		for(j = 0;j<levelsize -3;j+=5){
+			for(k = 0;k<levelsize -3;k+=5){
 
 /* 				if(rand()%2){ */
 				if(1){
-					for(u = 0;u<1;u++){
-						for(o = 0;o<1;o++){
-							for(l = 0;l<1;l++){
+					for(u = 0;u<4;u++){
+						for(o = 0;o<4;o++){
+							for(l = 0;l<4;l++){
 								level[k+j*levelsize+i*levelsize*levelsize +
 										u+o*levelsize+l*levelsize*levelsize]
 /* 									= rand()%3 & rand()%3 & rand()%3; */
@@ -327,44 +327,53 @@ void renderCreate(void){
 		}
 	}
 	
-/* 	levelreset(); */
-/* 	recursetree(0); */
+/* 	levelreset();
+ 	recursetree(0); */
+
+}
+void levelreset(void){
+
+	int i,j,k;
+
+
+	for(i = 0;i<levelsize;i++){
+		for(j = 0;j<levelsize;j++){
+			for(k = 0;k<levelsize;k++){
+				if (j==0) {
+					level[k+j*levelsize+i*levelsize*levelsize] = 1;
+				}else{
+					level[k+j*levelsize+i*levelsize*levelsize] = 0;
+				}
+			}
+		}
+	}
+
+}
 
 
 
-	SDL_SetWindowResizable(isolaWindow,1);
-	SDL_SetWindowSize(isolaWindow,
-						isolaInfoWindow.desktopDisplayMode.w,
-						isolaInfoWindow.desktopDisplayMode.h);
-	isolaGetWindow();
+
+static unsigned int drawBuffers[1];
+static unsigned int renderBuffer[2];
+static unsigned int frameBuffer[1];
+
+static unsigned int elementBuffer[1];
+static unsigned int vertexArrayObject[1];
+static unsigned int vertexBuffer[1];
+static unsigned int shaderProgram[1];
+void renderCreate(void){
+
+	int locPos = 0,locCol = 1;
+	int id;
+	unsigned int vs, fs;
+	int locMdl, locViw, locPrj, locDis;
 
 
-	cameraframe = levelsize*4.;
-
-	camerarot[0] = asin(0.5);
-
-	camerapos[0] = levelsize/2. -1 ;
-	camerapos[1] = levelsize/2. -1 ;
-	camerapos[2] = levelsize/2. -1 ;
-
-	cameraUpdate();
+	levelCreate();
 
 
-	model[0*4+0] = 1.;
-	model[1*4+1] = 1.;
-	model[2*4+2] = 1.;
-	model[3*4+3] = 1.;
 
-	view[0*4+0] = 1.;
-	view[1*4+1] = 1.;
-	view[2*4+2] = 1.;
-	view[3*4+3] = 1.;
 
-	view[3*4+0] = 0.;
-	view[3*4+1] = 0.;
-	view[3*4+2] = -64.;
-
-	
 	glGenFramebuffers(1,&frameBuffer[0]);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,frameBuffer[0]);
 	glGenRenderbuffers(2,&renderBuffer[0]);
@@ -385,6 +394,9 @@ void renderCreate(void){
 
 	drawBuffers[0] = GL_COLOR_ATTACHMENT0;
 	glDrawBuffers(1,drawBuffers);
+
+	cameraSetup();
+
 
 
 
@@ -419,6 +431,7 @@ void renderCreate(void){
 
 
 
+
 	id = 0;
 	shaderProgram[id] = glCreateProgram();
 	vs = isolaShaderCompile("glsl/default.vert",GL_VERTEX_SHADER);
@@ -434,6 +447,7 @@ void renderCreate(void){
 	glDetachShader(shaderProgram[id],fs);
 	glDeleteShader(vs);
 	glDeleteShader(fs);
+
 
 
 
