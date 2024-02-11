@@ -5,7 +5,7 @@ CC = clang
 #CFLAGS = -Wall -Wextra -pedantic -std=c89
 CFLAGS = -Wall -Wextra -pedantic -std=c89 -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-unused-result -Wno-sign-compare -MJ $@.json
 OPT = -O3 -pipe -march=native -flto=full
-#OPT =
+#OPT = -DISOLA_DBG
 
 
 LIBS = -lGLEW -lGL -lGLU -lSDL2 -lm

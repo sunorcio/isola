@@ -7,14 +7,14 @@
 /* isola configuration _____________________________________________________ */
 
 /* alternatively, set -DISOLA_DBG flag */
-#define ISOLA_DEBUG			1  /* [1^0] */
+#define ISOLA_CONFIG_DEBUG			1  /* [1^0] */
 /* input stderr to file (./isola.log) */
-#define ISOLA_LOG			0  /* [1^0] */
+#define ISOLA_CONFIG_LOG			0  /* [1^0] */
 
-#define ISOLA_WINDOWTITLE	"isola_example"
 
 /* init parameters for SDL context creation ________________________________ */
 
+#define ISOLA_WINDOWTITLE		"isola_example"
 #define ISOLA_GAMEPAD			0  /* [1^0] */
 #define ISOLA_DEPTH				1  /* [1^0] */
 #define ISOLA_STENCIL			0  /* [1^0] */
@@ -30,11 +30,13 @@
 /* _________________________________________________________________________ */
 
 
+
+
 #if defined(ISOLA_GAMEPAD) && (ISOLA_GAMEPAD < 0 || ISOLA_GAMEPAD > 1)
  #error ISOLA_GAMEPAD: invalid definition
 #endif
 #if defined(ISOLA_MSANTIALIASING) && (ISOLA_MSANTIALIASING < 0                \
-									|| ISOLA_MSANTIALIASING > 16)
+			|| ISOLA_MSANTIALIASING > 16 || ISOLA_MSANTIALIASING%2)
  #error ISOLA_MSANTIALIASING: invalid definition
 #endif
 #if defined(ISOLA_GLSLCHARMAX) && ISOLA_GLSLCHARMAX <= 0
@@ -42,17 +44,15 @@
 #endif
 
 
-#if(ISOLA_DEBUG)
+#if(ISOLA_CONFIG_DEBUG)
  #define ISOLA_DBG 1
 #endif
 
 
 
 
-
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
-
 
 
 

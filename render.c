@@ -304,15 +304,15 @@ void levelCreate(void){
 
 	level = calloc(pow(levelsize,3),sizeof(unsigned char));
 
-	for(i = 0;i<levelsize -3;i+=5){
-		for(j = 0;j<levelsize -3;j+=5){
-			for(k = 0;k<levelsize -3;k+=5){
+	for(i = 0;i<levelsize -2;i+=3){
+		for(j = 0;j<levelsize -2;j+=3){
+			for(k = 0;k<levelsize -2;k+=3){
 
 /* 				if(rand()%2){ */
 				if(1){
-					for(u = 0;u<4;u++){
-						for(o = 0;o<4;o++){
-							for(l = 0;l<4;l++){
+					for(u = 0;u<2;u++){
+						for(o = 0;o<2;o++){
+							for(l = 0;l<2;l++){
 								level[k+j*levelsize+i*levelsize*levelsize +
 										u+o*levelsize+l*levelsize*levelsize]
 /* 									= rand()%3 & rand()%3 & rand()%3; */
