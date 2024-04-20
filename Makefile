@@ -42,8 +42,8 @@ Compdb: ${OBJ}
 	./Compdb
 
 clean:
-	rm ${BIN}
 	rm *.o*
+	rm ${BIN}
 	
 
 #TODO
