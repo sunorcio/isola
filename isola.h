@@ -18,9 +18,10 @@
 #define ISOLA_GAMEPAD			0  /* [1^0] */
 #define ISOLA_DEPTH				1  /* [1^0] */
 #define ISOLA_STENCIL			0  /* [1^0] */
-#define ISOLA_ALPHA				0  /* [1^0] */
+#define ISOLA_ALPHA				1  /* [1^0] */
 #define ISOLA_DOUBLEBUFFER		1  /* [1^0] */
 #define ISOLA_MSANTIALIASING	0  /* [0^2^4^8^16] (requires doublebuffer) */
+#define ISOLA_VSYNC				0  /* [1^0] */
 #define ISOLA_MAJOR_VERSION		3  /* gl version ( 4.6 == MAJ 4, MIN 6 ) */
 #define ISOLA_MINOR_VERSION		0
 /* SDL_GL_CONTEXT_PROFILE_[CORE^COMPATIBILITY]	(only since version 3.2) */
@@ -32,12 +33,15 @@
 
 
 
-#if defined(ISOLA_GAMEPAD) && (ISOLA_GAMEPAD < 0 || ISOLA_GAMEPAD > 1)
+#if defined(ISOLA_GAMEPAD) && (ISOLA_GAMEPAD != 0 && ISOLA_GAMEPAD != 1)
  #error ISOLA_GAMEPAD: invalid definition
 #endif
 #if defined(ISOLA_MSANTIALIASING) && (ISOLA_MSANTIALIASING < 0                \
 			|| ISOLA_MSANTIALIASING > 16 || ISOLA_MSANTIALIASING%2)
  #error ISOLA_MSANTIALIASING: invalid definition
+#endif
+#if defined(ISOLA_VSYNC) && (ISOLA_VSYNC != 0 && ISOLA_VSYNC != 1)
+ #error ISOLA_VSYNC: invalid definition
 #endif
 #if defined(ISOLA_GLSLCHARMAX) && ISOLA_GLSLCHARMAX <= 0
  #error ISOLA_GLSLCHARMAX: invalid definition
@@ -47,6 +51,10 @@
 #if(ISOLA_CONFIG_DEBUG)
  #define ISOLA_DBG 1
 #endif
+
+
+#define STR_(X) #X
+#define STR(X) STR_(X)
 
 
 

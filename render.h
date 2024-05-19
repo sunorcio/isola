@@ -9,19 +9,16 @@
 
 
 
-extern void levelreset(void);
-extern void recursetree(unsigned char head);
+extern unsigned char b_DigitFPS;
+extern float digitColor[3];
+extern void updateDigitFPS(void);
 
-extern unsigned char integerscaling;
-extern unsigned short cameraframe;
-extern unsigned short cameraframescaled[2];
-extern float cameradesrot[3];
-extern int camerapos[3];
-extern void cameraUpdate(void);
 
-extern void renderCreate(void);
-extern void renderDestroy(void);
-extern void renderDraw(void);
+
+
+extern void renderGlobalCreate(void);
+extern void renderGlobalDestroy(void);
+extern void renderGlobalDraw(void);
 
 
 
