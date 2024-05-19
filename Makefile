@@ -2,7 +2,11 @@ BIN = triakontadis
 CC = clang
 
 
+<<<<<<< HEAD
 #CFLAGS = 
+=======
+#CFLAGS =
+>>>>>>> 78c117ba3555663f33ab0277793cd4d3b921a663
 CFLAGS = -Wall -Wextra -pedantic -std=c89 -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-unused-result -Wno-sign-compare -MJ $@.json
 OPT = -Ofast3 -pipe -march=native -flto=full
 #OPT = -DISOLA_DBG -g
@@ -24,6 +28,10 @@ default_rule: test
 test: ${BIN}
 	./${BIN}
 	make clean
+<<<<<<< HEAD
+=======
+
+>>>>>>> 78c117ba3555663f33ab0277793cd4d3b921a663
 
 
 .c.o:
