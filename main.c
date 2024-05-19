@@ -1,3 +1,5 @@
+
+
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
@@ -133,7 +135,6 @@ int main(void){
 
 	srand(time(0));
 	isolaInit();
-	SDL_GL_SetSwapInterval(0);
 
 
 	renderCreate();
@@ -144,7 +145,5 @@ int main(void){
 	isolaQuit();
 	return 0;
 }
-
-
 
 

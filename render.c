@@ -3,12 +3,13 @@
 
 
 
+#include "mesh.h"
 #include "mutil.h"
 
 
 
 
-static float vertexCube[] = {
+static float vertexVoxel[] = {
 	-0.500,-0.500, 0.502,	0.250, 0.250, 0.750,	/* 0.375, 0.250, 0.000,  */
 	 0.500,-0.500, 0.502,	0.250, 0.250, 0.750,	/* 0.375, 0.250, 0.000,  */
 	 0.500, 0.500, 0.502,	0.250, 0.250, 0.750,	/* 0.375, 0.250, 0.000,  */
@@ -39,7 +40,7 @@ static float vertexCube[] = {
 	-0.502, 0.500,-0.500,	0.000, 0.625, 0.625,	/* 0.250, 0.125, 0.000,  */
 	-0.502,-0.500,-0.500,	0.000, 0.625, 0.625,	/* 0.250, 0.125, 0.000,  */
 };
-static unsigned short elementsCube[] = {
+static unsigned short elementsVoxel[] = {
 	0,1,2,			0,2,3,
 	4,5,6,			4,6,7,
 	8,9,10,			8,10,11,
@@ -409,25 +410,25 @@ void renderCreate(void){
 	glBindVertexArray(vertexArrayObject[id]);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,elementBuffer[id]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(elementsCube),
-				 elementsCube,GL_DYNAMIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(elementsVoxel),
+				 elementsVoxel,GL_DYNAMIC_DRAW);
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER,0,
-					sizeof(elementsCube),elementsCube);
+					sizeof(elementsVoxel),elementsVoxel);
 
 	glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer[id]);
-	glBufferData(GL_ARRAY_BUFFER,sizeof(vertexCube),
-				 vertexCube,GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER,sizeof(vertexVoxel),
+				 vertexVoxel,GL_DYNAMIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER,0,
-					sizeof(vertexCube),vertexCube);
+					sizeof(vertexVoxel),vertexVoxel);
 
 	glEnableVertexAttribArray(locPos);
 	glVertexAttribPointer(locPos,3,GL_FLOAT,GL_FALSE,
-						  sizeof(vertexCube[0])*6,(void*)0);
+						  sizeof(vertexVoxel[0])*6,(void*)0);
 	
 	glEnableVertexAttribArray(locCol);
 	glVertexAttribPointer(locCol,3,GL_FLOAT,GL_FALSE,
-						  sizeof(vertexCube[0])*6,
-						  (void*)(sizeof(vertexCube[0])*3));
+						  sizeof(vertexVoxel[0])*6,
+						  (void*)(sizeof(vertexVoxel[0])*3));
 
 
 
@@ -512,8 +513,8 @@ void renderDraw(void){
 				if (level[k+j*levelsize+i*levelsize*levelsize]) {
 					glUniform3f(locLevel,k,j+sqrt(2)/(8.*cos(asin(0.5))),i);
 					glDrawRangeElements(GL_TRIANGLES,0,
-							0-1+sizeof(elementsCube)/sizeof(elementsCube[0]),
-							sizeof(elementsCube)/sizeof(elementsCube[0]),
+							0-1+sizeof(elementsVoxel)/sizeof(elementsVoxel[0]),
+							sizeof(elementsVoxel)/sizeof(elementsVoxel[0]),
 							GL_UNSIGNED_SHORT,(void*)0);
 				}
 			}

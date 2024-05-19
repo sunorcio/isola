@@ -45,7 +45,7 @@ static void mut_print_m4(float m[4*4]){
 	int i;
 	SDL_Log("\n");
 	for(i = 0;i<4;i++){
-			SDL_Log("%f,%f,%f,%f,\n",m[0*4+i],m[1*4+i],m[2*4+i],m[3*4+i]);
+		SDL_Log("%f,%f,%f,%f,\n",m[0*4+i],m[1*4+i],m[2*4+i],m[3*4+i]);
 	}
 	SDL_Log("\n");
 }
@@ -54,7 +54,7 @@ static void mut_print_m3(float m[3*3]){
 	int i;
 	SDL_Log("\n");
 	for(i = 0;i<3;i++){
-			SDL_Log("%f,%f,%f,\n",m[0*3+i],m[1*3+i],m[2*3+i]);
+		SDL_Log("%f,%f,%f,\n",m[0*3+i],m[1*3+i],m[2*3+i]);
 	}
 	SDL_Log("\n");
 }

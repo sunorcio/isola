@@ -497,6 +497,7 @@ void isolaInit(void){
 #endif
 	isolaGetWindow();
 	isolaGetDisplay();
+	SDL_GL_SetSwapInterval(ISOLA_VSYNC);
 }
 void isolaQuit(void){
 

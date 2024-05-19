@@ -11,8 +11,8 @@ out vec4 fragColor;
 
 
 
-void main()
-{
+void main(){
+
 	fragColor = vec4(vfColor,1.);
 }
 
