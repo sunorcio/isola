@@ -3,24 +3,13 @@
 
 
 
-<<<<<<< HEAD
-uniform mat4 matProj;
-
-
-=======
 in vec3 vertPosition;
 in vec3 vertColor;
->>>>>>> 78c117ba3555663f33ab0277793cd4d3b921a663
 
 
-void main(){
-
-	float scale = 0.0625;
+out vec3 vfColor;
 
 
-<<<<<<< HEAD
-	gl_Position = matProj * vec4( position,-1.,1.);
-=======
 uniform mat4 matModel;
 uniform mat4 matView;
 uniform mat4 matProj;
@@ -43,7 +32,6 @@ void main(){
 					(vertPosition.y+position.y)*sqrt(2)/(2.*cos(asin(0.5))),
 					vertPosition.z+position.z,
 					1.);
->>>>>>> 78c117ba3555663f33ab0277793cd4d3b921a663
 }
 
 
