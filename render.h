@@ -10,7 +10,7 @@
 
 
 extern unsigned char b_DigitFPS;
-extern float digitColor[3];
+extern float digitColor[4];
 extern void updateDigitFPS(void);
 
 

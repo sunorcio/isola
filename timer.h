@@ -12,6 +12,7 @@ extern unsigned long frameDelay[255];
 
 
 
+/* #define TIMER_IMPLEMENTATION */
 #ifdef TIMER_IMPLEMENTATION
 
 

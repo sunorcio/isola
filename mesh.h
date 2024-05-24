@@ -27,12 +27,6 @@ static unsigned short elementDigit[12][12] = {
 };
 
 
-static float vertexBitfont[] = {
-	 0.,  1. ,			1/16.,	1. ,
-	 0.,  1.-1/8.,		1/16.,	1.-1/8.,
-};
-
-
 static float vertexPrimitive[] = 
 	{ -0.5, -0.5,  0. ,      0.5, -0.5,  0. ,      0. ,  0.5,  0.  };
 static unsigned short elementPrimitive[] = {0, 1 ,2};
