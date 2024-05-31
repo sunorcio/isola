@@ -1,15 +1,42 @@
+# to compile on linux, get the following binaries from its source or from your own distribution:
+#  glew - https://github.com/nigels-com/glew
+#  SDL2 - https://github.com/libsdl-org/SDL
+#  opengl drivers
+
+
+
+
+default_rule: test
+
+
+
+
+#(windows^linux)
+TARGET_OS = linux
+#(dynamic^static)
+TARGET_BUILD = dynamic
+
 BIN = isola_example
-CC = clang
 
 
-#CFLAGS =
-CFLAGS = -Wall -Wextra -pedantic -std=c89 -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-unused-result -Wno-sign-compare -MJ $@.json
-OPT = -O3 -pipe -march=native -flto=full
-#OPT = -DISOLA_DBG
 
 
-LIBS = -lGLEW -lGL -lGLU -lSDL2 -lm
-LDFLAGS = ${LIBS}
+ifeq (${TARGET_OS},linux)
+ CC = clang
+else ifeq (${TARGET_OS},windows)
+ CC = x86_64-w64-mingw32-gcc
+else
+ $(error wrong TARGET_OS value)
+endif
+
+ifeq (${TARGET_BUILD},dynamic)
+else ifeq (${TARGET_BUILD},static)
+else
+ $(error wrong TARGET_BUILD value)
+endif
+
+
+
 
 HDR = render.h isola.h mutil.h
 SRC = main.c render.c isola.c
@@ -19,54 +46,82 @@ DEPS = ${SRC} ${HDR} Makefile
 
 
 
-default_rule: test
 
-test: ${BIN}
-	./${BIN}
-	make clean
+ifeq (${TARGET_OS},linux)
+
+ INCS =
+ ifeq (${TARGET_BUILD},static)
+ # LIBS = -Wl,-Bstatic -lSDL2 -lGLEW -Wl,-Bdynamic -lGLU -lGL -lm -lX11 -lXext -lXcursor -lXi -lXfixes -lXrandr -lpthread
+  LIBS = -lSDL2 -lGLEW -lGLU -lGL -lm
+ else ifeq (${TARGET_BUILD},dynamic)
+  LIBS = -lSDL2 -lGLEW -lGLU -lGL -lm
+ endif
+
+
+ #CFLAGS = -g -DISOLA_DBG -D_REENTRANT -DGLEW_STATIC
+ CFLAGS = ${INCS} -Wall -Wextra -pedantic -std=c89 -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-unused-result -Wno-sign-compare -MJ $@.json \
+		  -Ofast3 -pipe -march=native
+ #LDFLAGS = -v
+ LDFLAGS = ${LIBS} -flto=full
+
+
+else ifeq (${TARGET_OS},windows)
+
+ INCS = -I./bin/glew-2.2.0/include -I./bin/SDL2-2.30.3/x86_64-w64-mingw32/include
+ LIBS = -L./bin/glew-2.2.0/lib/Release/x64 -L./bin/SDL2-2.30.3/x86_64-w64-mingw32/lib \
+		-Wl,-Bstatic -lmingw32 -lSDL2main -lSDL2 -lglew32s -lglu32 -lopengl32 -lm -static-libgcc \
+		-ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -lsetupapi -lcfgmgr32 -luuid
+
+
+ #CFLAGS =
+ CFLAGS = ${INCS} -mwindows -std=c89 -O3 -pipe -DGLEW_STATIC -D_REENTRANT
+ #LDFLAGS = 
+ LDFLAGS = ${LIBS} -mwindows
+
+
+endif
 
 
 
-.c.o:
-	${CC} -c ${CFLAGS} ${OPT} $<
+
+${OBJ}:%.o : %.c
+	${CC} -c $< ${CFLAGS}
 
 ${OBJ}: ${DEPS}
 
 
 
-all: ${BIN} Compdb clean
+
+ifeq (${TARGET_OS},linux)
+
+test: ${BIN} compdb
+	./${BIN}
+	make clean
+
+
+else ifeq (${TARGET_OS},windows)
+
+test: ${BIN}
+	make clean
+
+
+endif
+
+
+
+
+all: ${BIN}
 
 ${BIN}: ${OBJ}
-	${CC} -o $@ ${OBJ} ${LDFLAGS} ${OPT}
+	${CC} -o $@ ${OBJ} ${LDFLAGS}
 
-Compdb: ${OBJ}
-	./Compdb
+compdb: ${OBJ}
+	./compdb.sh
 
 clean:
 	rm *.o*
-	rm ${BIN}
-	
 
-#TODO
-# Depends on these sources:
-# glew - https://github.com/nigels-com/glew
-# SDL - https://github.com/libsdl-org/SDL
-# consider using cglm (c) or glm (c++) for opengl and vector math
-#
-# ____________________DYNAMIC COMPILE
-# 
-# Linux
-# 
-# clang sdlglExample_main.c -lm -lGLEW -lGL -lGLU -lSDL2 /
-# -O3 -march=native -pipe
-#  
-# ____________________STATIC COMPILE 
-# 
-# 	Linux
-# clang sdlglExample_main.c -I/usr/local/include/SDL2 -D_REENTRANT -L/usr/local/lib -Wl,-rpath,/usr/local/lib -Wl,--enable-new-dtags -Wl,-Bstatic -lSDL2 -lGLEW -lGLU -Wl,-Bdynamic -lGL -lm -ldl -lpthread -lrt -DGLEW_STATIC
-# 
-# 	Windows (Crosscompiled)	[GLEW windows binaries] : 
-#
-# x86_64-w64-mingw32-gcc sdlglExample_main.c -o win64.exe --static -I/usr/local/x86_64-w64-mingw32/include -I/[PATH_TO_GLEW_SOURCE]/include -L/usr/local/x86_64-w64-mingw32/lib -L/[PATH_TO_GLEW_SOURCE]/lib/Release/x64 -Wl,-Bstatic -lmingw32 -lSDL2main -lSDL2 -mwindows -lm -ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -lsetupapi -lcfgmgr32 -luuid -static-libgcc -lglew32s -lopengl32 -lglu32 -DGLEW_STATIC
-# 
-# i686-w64-mingw32-gcc sdlglExample_main.c -o win32.exe --static -I/usr/local/i686-w64-mingw32/include -I/[PATH_TO_GLEW_SOURCE]/include -L/usr/local/i686-w64-mingw32/lib -L/[PATH_TO_GLEW_SOURCE]/lib/Release/Win32 -Wl,-Bstatic -lmingw32 -lSDL2main -lSDL2 -mwindows -lm -ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -lsetupapi -lcfgmgr32 -luuid -static-libgcc -lglew32s -lopengl32 -lglu32 -DGLEW_STATIC
+
+
+
+.PHONY: test all clean compdb
