@@ -140,9 +140,8 @@ update: clean
 ISOLA_DIR = ~/main/isola/isola
 isola:
 	cp ${ISOLA_DIR} . -r
-	cp ${ISOLA_DIR}/../Makefile .
 
 
 
 
-.PHONY: default_rule test all clean compdb update
+.PHONY: default_rule test all clean compdb update isola
