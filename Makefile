@@ -99,7 +99,6 @@ test: ${TARGET_BIN} compdb
 
 
 bin:
-	mkdir bin
 
 
 else ifeq (${TARGET_OS},windows)
