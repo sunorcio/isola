@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-#include "isola.h"
+#include "isola/isola.h"
 #include "render.h"
 
 

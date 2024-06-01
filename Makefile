@@ -37,8 +37,8 @@ endif
 
 
 
-HDR = render.h isola.h mutil.h
-SRC = main.c render.c isola.c
+HDR = render.h isola/isola.h isola/mutil.h isola/mesh.h
+SRC = main.c render.c isola/isola.c
 OBJ = ${SRC:.c=.o}
 
 DEPS = ${SRC} ${HDR} Makefile bin
@@ -84,7 +84,7 @@ endif
 
 
 ${OBJ}:%.o : %.c
-	${CC} -c $< ${CFLAGS}
+	${CC} -c $< -o $@ ${CFLAGS}
 
 ${OBJ}: ${DEPS}
 
@@ -104,7 +104,7 @@ bin:
 else ifeq (${TARGET_OS},windows)
 
 test: ${TARGET_BIN}
-#	make clean
+	make clean
 
 
 bin:
@@ -137,6 +137,10 @@ clean:
 update: clean
 	rm bin -rf
 
+ISOLA_DIR = ~/main/isola/isola
+isola:
+	cp ${ISOLA_DIR} . -r
+	cp ${ISOLA_DIR}/../Makefile .
 
 
 
