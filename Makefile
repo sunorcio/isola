@@ -15,8 +15,7 @@ default_rule: test
 TARGET_OS = linux
 #(dynamic^static)
 TARGET_BUILD = dynamic
-
-BIN = isola_example
+TARGET_BIN = isola_example
 
 
 
@@ -42,7 +41,7 @@ HDR = render.h isola.h mutil.h
 SRC = main.c render.c isola.c
 OBJ = ${SRC:.c=.o}
 
-DEPS = ${SRC} ${HDR} Makefile
+DEPS = ${SRC} ${HDR} Makefile bin
 
 
 
@@ -94,15 +93,28 @@ ${OBJ}: ${DEPS}
 
 ifeq (${TARGET_OS},linux)
 
-test: ${BIN} compdb
-	./${BIN}
+test: ${TARGET_BIN} compdb
+	./${TARGET_BIN}
 	make clean
+
+
+bin:
+	mkdir bin
 
 
 else ifeq (${TARGET_OS},windows)
 
-test: ${BIN}
-	make clean
+test: ${TARGET_BIN}
+#	make clean
+
+
+bin:
+	mkdir bin
+	wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-devel-2.30.3-mingw.zip -P bin/
+	wget https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0-win32.zip -P bin/
+	unzip bin/SDL2* -d bin/
+	unzip bin/glew* -d bin/
+	rm bin/*.zip -f
 
 
 endif
@@ -110,18 +122,24 @@ endif
 
 
 
-all: ${BIN}
+all: ${TARGET_BIN}
 
-${BIN}: ${OBJ}
+${TARGET_BIN}: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
 
 compdb: ${OBJ}
 	./compdb.sh
+	rm ${OBJ:.o=.o.json} -f
 
 clean:
-	rm *.o*
+	rm ${OBJ} -f
+	rm ${OBJ:.o=.o.json} -f
+
+update: clean
+	rm bin -rf
 
 
 
 
-.PHONY: test all clean compdb
+
+.PHONY: default_rule test all clean compdb update
