@@ -72,10 +72,10 @@ else ifeq (${TARGET_OS},windows)
 		-ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -lsetupapi -lcfgmgr32 -luuid
 
 
- #CFLAGS =
- CFLAGS = ${INCS} -mwindows -std=c89 -O3 -pipe -DGLEW_STATIC -D_REENTRANT
- #LDFLAGS = 
- LDFLAGS = ${LIBS} -mwindows
+ #CFLAGS = -std=c89
+ CFLAGS = ${INCS} -O3 -pipe -DGLEW_STATIC -D_REENTRANT
+ #LDFLAGS = -mwindows
+ LDFLAGS = ${LIBS}
 
 
 endif
@@ -141,7 +141,11 @@ ISOLA_DIR = ~/main/isola/isola
 isola:
 	cp ${ISOLA_DIR} . -r
 
+windows:
+	make TARGET_OS=windows
+	git commit ${TARGET_BIN:%=%.exe} -u -m asdf
 
 
 
-.PHONY: default_rule test all clean compdb update isola
+
+.PHONY: default_rule test all clean compdb update isola windows
