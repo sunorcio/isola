@@ -72,10 +72,10 @@ else ifeq (${TARGET_OS},windows)
 		-ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -lsetupapi -lcfgmgr32 -luuid
 
 
- #CFLAGS = -std=c89
- CFLAGS = ${INCS} -O3 -pipe -DGLEW_STATIC -D_REENTRANT
- #LDFLAGS = -mwindows
- LDFLAGS = ${LIBS}
+ #CFLAGS =
+ CFLAGS = ${INCS} -std=c89 -O3 -pipe -DGLEW_STATIC -D_REENTRANT
+ #LDFLAGS =
+ LDFLAGS = ${LIBS} -mwindows
 
 
 endif
