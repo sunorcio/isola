@@ -104,7 +104,7 @@ bin:
 else ifeq (${TARGET_OS},windows)
 
 test: ${TARGET_BIN}
-	make clean
+#	make clean
 
 
 bin:
