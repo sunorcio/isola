@@ -143,7 +143,6 @@ isola:
 
 windows:
 	make TARGET_OS=windows
-	git commit ${TARGET_BIN:%=%.exe} -u -m asdf
 
 
 
