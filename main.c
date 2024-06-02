@@ -120,10 +120,11 @@ void loop(void){
 
 		if(SDL_GetPerformanceCounter()>=lastFrame+clockFreq/isolaFPS){
 			lastFrame = SDL_GetPerformanceCounter();
+			SDL_Log("%ld",SDL_GetPerformanceFrequency());
 
 			renderDraw();
 
-		}else{SDL_Delay(1);}
+		}else{SDL_Delay(0);}
 
 	}
 }
