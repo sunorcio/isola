@@ -4,6 +4,9 @@
 
 
 
+#include "isola/mesh.h"
+
+
 #include "isola/isola.h"
 
 
