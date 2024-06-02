@@ -68,7 +68,7 @@ else ifeq (${TARGET_OS},windows)
 
  INCS = -I./bin/glew-2.2.0/include -I./bin/SDL2-2.30.3/x86_64-w64-mingw32/include
  LIBS = -L./bin/glew-2.2.0/lib/Release/x64 -L./bin/SDL2-2.30.3/x86_64-w64-mingw32/lib \
-		-Wl,-Bstatic -lmingw32 -lSDL2main -lSDL2 -lglew32s -lglu32 -lopengl32 -lm -static-libgcc \
+		-Wl,-Bstatic -static-libgcc -lmingw32 -lSDL2main -lSDL2 -lglew32s -lglu32 -lopengl32 -lm \
 		-ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -lsetupapi -lcfgmgr32 -luuid
 
 
