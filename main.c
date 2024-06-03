@@ -89,8 +89,11 @@ void loop(void){
 		}
 
 		if(!pause){
-			if(SDL_GetPerformanceCounter()>=lastStep+clockFreq/isolaSPS){
-				lastStep = SDL_GetPerformanceCounter();
+			unsigned long currentFrame = SDL_GetPerformanceCounter();
+			unsigned char comparison = currentFrame>=lastStep+clockFreq/isolaSPS;
+			if(comparison){
+				SDL_Log("current %ld, sec %ld, last %ld, diff %ld",currentFrame,clockFreq/isolaSPS,lastStep,currentFrame-lastStep);
+				lastStep = currentFrame;
 
 				if (keyState[SDL_SCANCODE_X]){
 					cameradesrot[0] -= 2*asin(0.5);
@@ -120,7 +123,6 @@ void loop(void){
 
 		if(SDL_GetPerformanceCounter()>=lastFrame+clockFreq/isolaFPS){
 			lastFrame = SDL_GetPerformanceCounter();
-			SDL_Log("%ld, %ld",lastFrame,clockFreq/isolaFPS);
 
 			renderDraw();
 
