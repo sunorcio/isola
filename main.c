@@ -90,8 +90,7 @@ void loop(void){
 
 		if(!pause){
 			unsigned long currentFrame = SDL_GetPerformanceCounter();
-			unsigned char comparison = currentFrame>=lastStep+clockFreq/isolaSPS;
-			if(comparison){
+			if(currentFrame>=lastStep+clockFreq/isolaSPS){
 				SDL_Log("current %ld, sec %ld, last %ld, diff %ld",currentFrame,clockFreq/isolaSPS,lastStep,currentFrame-lastStep);
 				lastStep = currentFrame;
 
