@@ -89,10 +89,11 @@ void loop(void){
 		}
 
 		if(!pause){
-			unsigned long currentFrame = SDL_GetPerformanceCounter();
-			if(currentFrame>=lastStep+clockFreq/isolaSPS){
-				SDL_Log("current %ld, sec %ld, last %ld, diff %ld",currentFrame,clockFreq/isolaSPS,lastStep,currentFrame-lastStep);
-				lastStep = currentFrame;
+			unsigned long currentStep = SDL_GetPerformanceCounter();
+			if(currentStep>=lastStep+clockFreq/isolaSPS){
+				SDL_Log("sec %ld, diff %ld",
+					clockFreq/isolaSPS,currentStep-lastStep);
+				lastStep = currentStep;
 
 				if (keyState[SDL_SCANCODE_X]){
 					cameradesrot[0] -= 2*asin(0.5);
@@ -120,12 +121,13 @@ void loop(void){
 			}
 		}
 
-		if(SDL_GetPerformanceCounter()>=lastFrame+clockFreq/isolaFPS){
-			lastFrame = SDL_GetPerformanceCounter();
+		{ unsigned long currentFrame = SDL_GetPerformanceCounter();
+		if(currentFrame>=lastFrame+clockFreq/isolaFPS){
+			lastFrame = currentFrame;
 
 			renderDraw();
 
-		}else{SDL_Delay(0);}
+		}else{SDL_Delay(0);} }
 
 	}
 }
