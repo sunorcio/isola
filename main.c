@@ -127,7 +127,7 @@ void loop(void){
 
 			renderDraw();
 
-		}else{SDL_Delay(0);} }
+		}else{SDL_Delay(1);} }
 
 	}
 }
