@@ -433,27 +433,10 @@ void renderCreate(void){
 
 
 
-	id = 0;
-	shaderProgram[id] = glCreateProgram();
-	vs = isolaShaderCompile("glsl/default.vert",GL_VERTEX_SHADER);
-	fs = isolaShaderCompile("glsl/default.frag",GL_FRAGMENT_SHADER);
-	glAttachShader(shaderProgram[id],vs);
-	glAttachShader(shaderProgram[id],fs);
-
-	glBindAttribLocation(shaderProgram[id],locPos,"vertPosition");
-	glBindAttribLocation(shaderProgram[id],locCol,"vertColor");
-
-	glLinkProgram(shaderProgram[id]);
-	glDetachShader(shaderProgram[id],vs);
-	glDetachShader(shaderProgram[id],fs);
-	glDeleteShader(vs);
-	glDeleteShader(fs);
+	shaderProgram[0] = isolaShaderProgram("glsl/default.vert","glsl/default.frag");
 
 
-
-
-	id = 0;
-	glUseProgram(shaderProgram[id]);
+	glUseProgram(shaderProgram[0]);
 
 	locMdl = glGetUniformLocation(shaderProgram[id],"matModel");
 	if(locMdl == -1){SDL_Log("matModel not found in shader %d",id);}

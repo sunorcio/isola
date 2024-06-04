@@ -91,8 +91,8 @@ void loop(void){
 		if(!pause){
 			unsigned long currentStep = SDL_GetPerformanceCounter();
 			if(currentStep>=lastStep+clockFreq/isolaSPS){
-				SDL_Log("sec %ld, diff %ld",
-					clockFreq/isolaSPS,currentStep-lastStep);
+/* 				SDL_Log("sec %ld, diff %ld",
+						clockFreq/isolaSPS,currentStep-lastStep); */
 				lastStep = currentStep;
 
 				if (keyState[SDL_SCANCODE_X]){
@@ -127,7 +127,7 @@ void loop(void){
 
 			renderDraw();
 
-		}else{/* SDL_Delay(0); */} }
+		}else{SDL_Delay(0);} }
 
 	}
 }
