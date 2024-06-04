@@ -267,7 +267,7 @@ unsigned int isolaShaderProgram(const char* vertShaderFile,
 	glGetProgramiv(sp, GL_LINK_STATUS, &l);
 	if(!l){
 		glGetProgramiv(sp, GL_INFO_LOG_LENGTH, &l);
-		glGetShaderInfoLog(sp, l, &l, isolaShaderSrc);
+		glGetProgramInfoLog(sp, l, &l, isolaShaderSrc);
 		SDL_Log("Compilation failed  :  %s\n\n",isolaShaderSrc);
 		return 0;
 	}
