@@ -75,8 +75,8 @@ void cameraSetup(void){
 
 	SDL_SetWindowResizable(isolaWindow,1);
 	SDL_SetWindowSize(isolaWindow,
-						isolaInfoWindow.desktopDisplayMode.w,
-						isolaInfoWindow.desktopDisplayMode.h);
+			isolaInfoWindow.desktopDisplayMode.w,
+			isolaInfoWindow.desktopDisplayMode.h);
 	isolaGetWindow();
 
 
@@ -175,21 +175,21 @@ void cameraUpdate(void){
 
 
 	if(!integerscaling){
-		cameraframescaled[0] = cameraframe*isolaInfoWindow.xratio-
-						(int)(cameraframe*isolaInfoWindow.xratio)%2;
-		cameraframescaled[1] = cameraframe*isolaInfoWindow.yratio-
-						(int)(cameraframe*isolaInfoWindow.yratio)%2;
+		cameraframescaled[0] = cameraframe*isolaInfoWindow.xratio
+				-(int)(cameraframe*isolaInfoWindow.xratio)%2;
+		cameraframescaled[1] = cameraframe*isolaInfoWindow.yratio
+				-(int)(cameraframe*isolaInfoWindow.yratio)%2;
 	}else{
-		cameraframescaled[0] = cameraframe*isolaInfoWindow.xratio-
-						(int)(cameraframe*isolaInfoWindow.xratio)%2;
-		cameraframescaled[1] = cameraframe*isolaInfoWindow.yratio-
-						(int)(cameraframe*isolaInfoWindow.yratio)%2;
+		cameraframescaled[0] = cameraframe*isolaInfoWindow.xratio
+				-(int)(cameraframe*isolaInfoWindow.xratio)%2;
+		cameraframescaled[1] = cameraframe*isolaInfoWindow.yratio
+				-(int)(cameraframe*isolaInfoWindow.yratio)%2;
 	}
 	mut_proj_glortho(-cameraframescaled[0]*(sqrt(2)/8),
-					cameraframescaled[0]*(sqrt(2)/8),
-					-cameraframescaled[1]*(sqrt(2)/8),
-					cameraframescaled[1]*(sqrt(2)/8),
-					0.250, 128., projection);
+			cameraframescaled[0]*(sqrt(2)/8),
+			-cameraframescaled[1]*(sqrt(2)/8),
+			cameraframescaled[1]*(sqrt(2)/8),
+			0.250, 128., projection);
 
 
 	if (camerapos[0] < 0) {
@@ -260,9 +260,8 @@ void recursetree(unsigned char head){
 		break;
 	}
 
-	if (	!level[z+y*levelsize+x*levelsize*levelsize]
-			&& count<pow(levelsize,2)
-			&& rand()%4	){
+	if ( !level[z+y*levelsize+x*levelsize*levelsize]
+			&& count<pow(levelsize,2) && rand()%4 ) {
 		level[z+y*levelsize+x*levelsize*levelsize] = 1;
 		count++;
 	}else {goto back;}
@@ -380,18 +379,18 @@ void renderCreate(void){
 	glGenRenderbuffers(2,&renderBuffer[0]);
 
 	glBindRenderbuffer(GL_RENDERBUFFER,renderBuffer[0]);
-	glRenderbufferStorage(GL_RENDERBUFFER,GL_RGB,
-							isolaInfoWindow.desktopDisplayMode.w,
-							isolaInfoWindow.desktopDisplayMode.h);
+	glRenderbufferStorage(GL_RENDERBUFFER,GL_RGB, 
+			isolaInfoWindow.desktopDisplayMode.w,
+			isolaInfoWindow.desktopDisplayMode.h);
 	glBindRenderbuffer(GL_RENDERBUFFER,renderBuffer[1]);
 	glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT24,
-							isolaInfoWindow.desktopDisplayMode.w,
-							isolaInfoWindow.desktopDisplayMode.h);
+			isolaInfoWindow.desktopDisplayMode.w,
+			isolaInfoWindow.desktopDisplayMode.h);
 
 	glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,
-							  GL_RENDERBUFFER,renderBuffer[0]);
+			GL_RENDERBUFFER,renderBuffer[0]);
 	glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,
-							  GL_RENDERBUFFER,renderBuffer[1]);
+			GL_RENDERBUFFER,renderBuffer[1]);
 
 	drawBuffers[0] = GL_COLOR_ATTACHMENT0;
 	glDrawBuffers(1,drawBuffers);
@@ -411,29 +410,29 @@ void renderCreate(void){
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,elementBuffer[id]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(elementsVoxel),
-				 elementsVoxel,GL_DYNAMIC_DRAW);
+			elementsVoxel,GL_DYNAMIC_DRAW);
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER,0,
-					sizeof(elementsVoxel),elementsVoxel);
+			sizeof(elementsVoxel),elementsVoxel);
 
 	glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer[id]);
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertexVoxel),
-				 vertexVoxel,GL_DYNAMIC_DRAW);
+			vertexVoxel,GL_DYNAMIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER,0,
-					sizeof(vertexVoxel),vertexVoxel);
+			sizeof(vertexVoxel),vertexVoxel);
 
 	glEnableVertexAttribArray(locPos);
 	glVertexAttribPointer(locPos,3,GL_FLOAT,GL_FALSE,
-						  sizeof(vertexVoxel[0])*6,(void*)0);
+			sizeof(vertexVoxel[0])*6, (void*)0);
 	
 	glEnableVertexAttribArray(locCol);
 	glVertexAttribPointer(locCol,3,GL_FLOAT,GL_FALSE,
-						  sizeof(vertexVoxel[0])*6,
-						  (void*)(sizeof(vertexVoxel[0])*3));
+			sizeof(vertexVoxel[0])*6, (void*)(sizeof(vertexVoxel[0])*3));
 
 
 
 
-	shaderProgram[0] = isolaShaderProgram("glsl/default.vert","glsl/default.frag");
+	shaderProgram[0] = 
+			isolaShaderProgram("glsl/default.vert","glsl/default.frag");
 
 
 	glUseProgram(shaderProgram[0]);
@@ -507,8 +506,8 @@ void renderDraw(void){
 	glBindFramebuffer(GL_READ_FRAMEBUFFER,frameBuffer[0]);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
 	glBlitFramebuffer(0,0,cameraframescaled[0],cameraframescaled[1],
-						0,0,isolaInfoWindow.width,isolaInfoWindow.height,
-						GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT,GL_NEAREST);
+			0,0,isolaInfoWindow.width,isolaInfoWindow.height,
+			GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT,GL_NEAREST);
 
 	SDL_GL_SwapWindow(isolaWindow);
 }
