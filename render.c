@@ -77,6 +77,8 @@ void cameraSetup(void){
 	SDL_SetWindowSize(isolaWindow,
 			isolaInfoWindow.desktopDisplayMode.w,
 			isolaInfoWindow.desktopDisplayMode.h);
+	SDL_SetWindowPosition(isolaWindow, 
+			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	isolaGetWindow();
 
 
