@@ -96,17 +96,17 @@ void loop(void){
 				lastStep = currentStep;
 
 				if (keyState[SDL_SCANCODE_X]){
-					cameradesrot[0] -= 2*asin(0.5);
+					cameradesrot[0] -= 2*(float)asin(0.5);
 				}
 				if (keyState[SDL_SCANCODE_S]){
-					cameradesrot[0] -= asin(0.5);
+					cameradesrot[0] -= (float)asin(0.5);
 				}
 				if (keyState[SDL_SCANCODE_W]){
-					cameradesrot[0] += M_PI/2-asin(0.5)+0.0;
+					cameradesrot[0] += (float)(M_PI/2-asin(0.5)+0.0);
 				}
 				if (keyState[SDL_SCANCODE_A]){
 					if (!apressed) {
-						cameradesrot[1] += M_PI/2;
+						cameradesrot[1] += (float)(M_PI/2.);
 						apressed=!apressed;
 					}
 				}else { apressed=0; }

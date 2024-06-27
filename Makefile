@@ -1,4 +1,4 @@
-# to compile on linux, get the following binaries from its source or from your own distribution:
+# to compile for linux, get the following binaries from its source or from your own distribution:
 #  glew - https://github.com/nigels-com/glew
 #  SDL2 - https://github.com/libsdl-org/SDL
 #  opengl drivers
@@ -50,6 +50,7 @@ ifeq (${TARGET_OS},linux)
 
  INCS =
  ifeq (${TARGET_BUILD},static)
+ # needs to call 'sdl2-config --static-libs'
  # LIBS = -Wl,-Bstatic -lSDL2 -lGLEW -Wl,-Bdynamic -lGLU -lGL -lm -lX11 -lXext -lXcursor -lXi -lXfixes -lXrandr -lpthread
   LIBS = -lSDL2 -lGLEW -lGLU -lGL -lm
  else ifeq (${TARGET_BUILD},dynamic)
@@ -57,9 +58,9 @@ ifeq (${TARGET_OS},linux)
  endif
 
 
- #CFLAGS = -g -DISOLA_DBG -D_REENTRANT -DGLEW_STATIC
+ #CFLAGS = -g -DISOLA_DBG -DGLEW_STATIC -Weverything
  CFLAGS = ${INCS} -Wall -Wextra -pedantic -std=c89 -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-unused-result -Wno-sign-compare -MJ $@.json \
-		  -Ofast3 -pipe -march=native
+		  -Wno-c99-designator -Wno-unsafe-buffer-usage -Ofast3 -pipe -march=native -D_REENTRANT
  #LDFLAGS = -v
  LDFLAGS = ${LIBS} -flto=full
 
@@ -72,9 +73,9 @@ else ifeq (${TARGET_OS},windows)
 		-ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -lsetupapi -lcfgmgr32 -luuid
 
 
- #CFLAGS =
- CFLAGS = ${INCS} -std=c89 -O3 -pipe -DGLEW_STATIC -D_REENTRANT
- #LDFLAGS =
+ #CFLAGS = -DISOLA_DBG /* -g */
+ CFLAGS = ${INCS} -std=c89 -O3 -pipe -DGLEW_STATIC -D_REENTRANT -DWIN32_LEAN_AND_MEAN
+ #LDFLAGS = /* -v */
  LDFLAGS = ${LIBS} -mwindows
 
 

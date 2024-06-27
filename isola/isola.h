@@ -15,6 +15,8 @@
 /* init parameters for SDL context creation ________________________________ */
 
 #define ISOLA_WINDOWTITLE		"isola_example"
+#define ISOLA_WINDOWWIDTH		480
+#define ISOLA_WINDOWHEIGHT		360
 #define ISOLA_GAMEPAD			0  /* [1^0] */
 #define ISOLA_DEPTH				1  /* [1^0] */
 #define ISOLA_STENCIL			0  /* [1^0] */
@@ -74,7 +76,8 @@ extern void isolaQuit(void);
 
 
 #ifdef ISOLA_DBG
- #define isolaDBG_(x) if(isolaErrorGL()){                                     \
+ #define isolaDBG_(x)                                                         \
+	if(isolaErrorGL()){                                                       \
 		SDL_Log(" UNEXPECTED ERROR, line : %d, function : %d, file : %s",     \
 				__LINE__,__FUNCTION__,__FILE__);                              \
 	}                                                                         \
@@ -137,7 +140,7 @@ struct ISOLA_Window{
 	int height;
 	float xratio;
 	float yratio;
-	int flags;	/* see SDL_WindowFlags for a list of flags */
+	unsigned int flags;	/* see SDL_WindowFlags for a list of flags */
 	int displayIndex;
 	SDL_DisplayMode displayMode;
 	SDL_DisplayMode desktopDisplayMode;
@@ -153,6 +156,7 @@ struct ISOLA_Display{
 }extern isolaInfoDisplay;
 
 typedef enum {
+	ISOLA_STATE_NONE				= 0x00000000,
 	ISOLA_STATE_BLEND				= 0x00000001,
 	ISOLA_STATE_COLORLOGIC			= 0x00000002,
 	ISOLA_STATE_CULLFACE 			= 0x00000004,

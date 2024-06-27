@@ -32,7 +32,7 @@ signed char isolaErrorGL(void){
  #if(  defined(GLEW_KHR_debug) || defined(GLEW_ARB_debug_output)  )
 static void debugCallback(unsigned int source, unsigned int type,
 		unsigned int id, unsigned int severity,
-		int length, const char* message, const void* userParam){
+		int length,const char* message, const void* userParam){
 
 	SDL_Log("%s",message);
 	return;
@@ -377,7 +377,7 @@ static void contextPromt(void){
 	if(flags & SDL_GL_CONTEXT_DEBUG_FLAG){
 		SDL_Log(" debug context");
 	}else{
-		SDL_Log(" no debug context");
+		SDL_Log(" non-debug context");
 	}
 
 	SDL_Log("\n");
@@ -396,7 +396,7 @@ static void contextPromt(void){
 	if(flags & GL_CONTEXT_FLAG_DEBUG_BIT){
 		SDL_Log(" debug context");
 	}else{
-		SDL_Log(" no debug context");
+		SDL_Log(" non-debug context");
 	}
 
 	SDL_Log("\n\n\n");
@@ -404,11 +404,11 @@ static void contextPromt(void){
 
 void isolaInit(void){
 
-	unsigned int contextFlags = 0;
+	int contextFlags = 0;
 
 	isolaShaderSrc = calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
 
-#if ISOLA_LOG
+#if ISOLA_CONFIG_LOG
 	isolaLog = freopen("isola.log","a+",stderr);
 #endif
 	
@@ -463,7 +463,8 @@ void isolaInit(void){
 
 	isolaWindow = SDL_CreateWindow( ISOLA_WINDOWTITLE,
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-			480, 360, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL );
+			ISOLA_WINDOWWIDTH, ISOLA_WINDOWHEIGHT,
+			SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL );
 
 	if (!isolaWindow) {
 		isolaErrorSDL(-1);
@@ -489,8 +490,9 @@ void isolaInit(void){
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
 				SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
 
-		isolaWindow = SDL_CreateWindow( "isola", SDL_WINDOWPOS_UNDEFINED,
-				SDL_WINDOWPOS_UNDEFINED, 480, 360,
+		isolaWindow = SDL_CreateWindow( ISOLA_WINDOWTITLE,
+				SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+				ISOLA_WINDOWWIDTH, ISOLA_WINDOWHEIGHT,
 				SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
 		if (!isolaWindow) {
 			SDL_Log("window creation failed (again)");
@@ -574,7 +576,7 @@ void isolaQuit(void){
 #endif
 
 
-#if ISOLA_LOG
+#if ISOLA_CONFIG_LOG
 	fclose(isolaLog);
 #endif
 	free(isolaShaderSrc);
