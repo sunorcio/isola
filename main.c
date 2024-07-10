@@ -12,6 +12,7 @@
 
 
 void loop(void){
+
 	#define isolaFPS 60
 	#define isolaSPS 60
 	const unsigned long clockFreq = SDL_GetPerformanceFrequency();

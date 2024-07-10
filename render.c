@@ -3,7 +3,7 @@
 
 
 
-#include "isola/mesh.h"
+#include "mesh.h"
 #include "isola/mutil.h"
 
 
