@@ -4,8 +4,8 @@
 
 
 
-#define isolaSTRl_(X) #X
-#define isolaSTR_(X) isolaSTRl_(X)
+#define isolaSTRL_(X) #X
+#define isolaSTR_(X) isolaSTRL_(X)
 
 
 #define isolaARRAYSIZE_(x) (sizeof(x)/sizeof(x[0]))
