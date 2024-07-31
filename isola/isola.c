@@ -68,6 +68,7 @@ void isolaGetWindow(void){
 			&isolaInfoWindow.ypos);
 	SDL_GetWindowSize(isolaWindow, &isolaInfoWindow.width,
 			&isolaInfoWindow.height);
+
 	if (isolaInfoWindow.width > isolaInfoWindow.height) {
 		isolaInfoWindow.yratio = 1.;
 		isolaInfoWindow.xratio = (double)isolaInfoWindow.width
@@ -77,11 +78,16 @@ void isolaGetWindow(void){
 		isolaInfoWindow.yratio = (double)isolaInfoWindow.height 
 				/isolaInfoWindow.width;
 	}
+	isolaInfoWindow.pixelWidth = (double)2./isolaInfoWindow.width;
+	isolaInfoWindow.pixelHeight = (double)2./isolaInfoWindow.height;
+
 	isolaInfoWindow.flags = SDL_GetWindowFlags(isolaWindow);
 	isolaInfoWindow.displayIndex = SDL_GetWindowDisplayIndex(isolaWindow);
 	SDL_GetWindowDisplayMode(isolaWindow, &isolaInfoWindow.displayMode);
 	SDL_GetDesktopDisplayMode(isolaInfoWindow.displayIndex,
 			&isolaInfoWindow.desktopDisplayMode);
+
+	glGetFloatv(GL_COLOR_CLEAR_VALUE,isolaInfoWindow.clearColor);
 }
 
 
@@ -562,9 +568,9 @@ void isolaInit(void){
 #endif
 
 
-	glClearColor(0.75f,0.5f,0.75f,1.f);
+	glClearColor(0.5f,0.375f,0.5f,1.f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	SDL_GL_SwapWindow(isolaWindow);
+/* 	SDL_GL_SwapWindow(isolaWindow); */
 
 
 #ifdef ISOLA_DBG
@@ -581,7 +587,7 @@ void isolaQuit(void){
 
 #ifdef ISOLA_DBG
 	if( isolaErrorGL() || isolaErrorSDL(-1) ){
-		SDL_Log("Uncaught errors left");
+		SDL_Log("UNCAUGHT ERRORS LEFT");
 	}
 #endif
 
@@ -596,7 +602,6 @@ void isolaQuit(void){
 	SDL_DestroyWindow(isolaWindow);
 	SDL_Quit();
 }
-
 
 
 
