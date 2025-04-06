@@ -1,5 +1,4 @@
-
-
+#define ISOLA_C
 #include "isola.h"
 
 
@@ -13,15 +12,16 @@
 
 
 #ifdef ISOLA_DBG
-signed char isolaErrorSDL(int SDLfunction){
+signed char isola_error_sdl(int sdlFunction){
 
 	if(*SDL_GetError() == 0){return 0;}
 
-	if(SDLfunction<0){ SDL_Log("%s",SDL_GetError());}
+	if(sdlFunction<0){ SDL_Log("%s",SDL_GetError());}
 	SDL_ClearError();
 	return -1;
 }
-signed char isolaErrorGL(void){
+
+signed char isola_error_gl(void){
 
 	GLenum error = glGetError();
 	if (error == GL_NO_ERROR){ return 0; }
@@ -41,104 +41,104 @@ static void debugCallback(unsigned int source, unsigned int type,
 }
  #endif
 #else
-signed char isolaErrorSDL(int SDLfunction){return 0;}
-signed char isolaErrorGL(void){return 0;}
+signed char isola_error_sdl(int sdlFunction){return 0;}
+signed char isola_error_gl(void){return 0;}
 #endif
 
 
 
 
-SDL_GLContext* isolaContext = {0};
-SDL_Window* isolaWindow = {0};    
+SDL_GLContext* isola_context = {0};
+SDL_Window* isola_window = {0};    
 
 
-struct ISOLA_Context isolaInfoContext = {0};
-struct ISOLA_Window isolaInfoWindow = {0};
-struct ISOLA_Display isolaInfoDisplay = {0};
-ISOLA_State isolaInfoState = {0};
+struct ISOLA_context isola_info_context = {0};
+struct ISOLA_window isola_info_window = {0};
+struct ISOLA_display isola_info_display = {0};
+ISOLA_state isola_info_state = {0};
 
 
-static char* isolaShaderSrc = {0};
-static FILE* isolaLog = {0};
+static char* isola_shaderSrc = {0};
+static FILE* isola_log = {0};
 
 
 
 
-void isolaGetWindow(void){
+void isola_get_window(void){
 
-	SDL_GetWindowPosition(isolaWindow, &isolaInfoWindow.xpos,
-			&isolaInfoWindow.ypos);
-	SDL_GetWindowSize(isolaWindow, &isolaInfoWindow.width,
-			&isolaInfoWindow.height);
+	SDL_GetWindowPosition(isola_window, &isola_info_window.pos_x,
+			&isola_info_window.pos_y);
+	SDL_GetWindowSize(isola_window, &isola_info_window.scale_width,
+			&isola_info_window.scale_height);
 
-	if (isolaInfoWindow.width > isolaInfoWindow.height) {
-		isolaInfoWindow.yratio = 1.;
-		isolaInfoWindow.xratio = (double)isolaInfoWindow.width
-				/isolaInfoWindow.height;
+	if (isola_info_window.scale_width > isola_info_window.scale_height) {
+		isola_info_window.ratio_y = 1.;
+		isola_info_window.ratio_x = (double)isola_info_window.scale_width
+				/isola_info_window.scale_height;
 	}else {
-		isolaInfoWindow.xratio = 1.;
-		isolaInfoWindow.yratio = (double)isolaInfoWindow.height 
-				/isolaInfoWindow.width;
+		isola_info_window.ratio_x = 1.;
+		isola_info_window.ratio_y = (double)isola_info_window.scale_height 
+				/isola_info_window.scale_width;
 	}
-	isolaInfoWindow.pixelWidth = (double)2./isolaInfoWindow.width;
-	isolaInfoWindow.pixelHeight = (double)2./isolaInfoWindow.height;
+	isola_info_window.pixel_width = (double)2./isola_info_window.scale_width;
+	isola_info_window.pixel_height = (double)2./isola_info_window.scale_height;
 
-	isolaInfoWindow.flags = SDL_GetWindowFlags(isolaWindow);
-	isolaInfoWindow.displayIndex = SDL_GetWindowDisplayIndex(isolaWindow);
-	SDL_GetWindowDisplayMode(isolaWindow, &isolaInfoWindow.displayMode);
-	SDL_GetDesktopDisplayMode(isolaInfoWindow.displayIndex,
-			&isolaInfoWindow.desktopDisplayMode);
+	isola_info_window.flags = SDL_GetWindowFlags(isola_window);
+	isola_info_window.displayIndex = SDL_GetWindowDisplayIndex(isola_window);
+	SDL_GetWindowDisplayMode(isola_window, &isola_info_window.displayMode);
+	SDL_GetDesktopDisplayMode(isola_info_window.displayIndex,
+			&isola_info_window.desktopDisplayMode);
 
-	glGetFloatv(GL_COLOR_CLEAR_VALUE,isolaInfoWindow.clearColor);
+	glGetFloatv(GL_COLOR_CLEAR_VALUE,isola_info_window.clearColor);
 }
 
 
-void isolaGetDisplay(void){
+void isola_get_display(void){
 
 	int i,j;
-	int buff;
+	int buffer;
 
-	buff = SDL_GetNumVideoDisplays();
-	isolaInfoDisplay.displayModeCount = calloc(buff+1, sizeof(int));
-	for(i = 0;i<buff;i++){
-		isolaInfoDisplay.displayModeCount[i] = SDL_GetNumDisplayModes(
-				isolaInfoWindow.displayIndex);
+	buffer = SDL_GetNumVideoDisplays();
+	isola_info_display.displayModeCount = calloc(buffer+1, sizeof(int));
+	for(i = 0;i<buffer;i++){
+		isola_info_display.displayModeCount[i] = SDL_GetNumDisplayModes(
+				isola_info_window.displayIndex);
 	}
 
-	for(i = 0;isolaInfoDisplay.displayModeCount[i]==0;i++){
-		buff += isolaInfoDisplay.displayModeCount[i];
+	for(i = 0;isola_info_display.displayModeCount[i]==0;i++){
+		buffer += isola_info_display.displayModeCount[i];
 	}
-	isolaInfoDisplay.displayModes = malloc(buff*sizeof(SDL_DisplayMode));
+	isola_info_display.displayModes = malloc(buffer*sizeof(SDL_DisplayMode));
 
-	buff = 0;
-	for(i = 0;isolaInfoDisplay.displayModeCount[i]==0;i++){
-		for(j = 0;j<isolaInfoDisplay.displayModeCount[i];j++){
-			SDL_GetDisplayMode(i,j,&isolaInfoDisplay.displayModes[buff+j]);
+	buffer = 0;
+	for(i = 0;isola_info_display.displayModeCount[i]==0;i++){
+		for(j = 0;j<isola_info_display.displayModeCount[i];j++){
+			SDL_GetDisplayMode(i,j,&isola_info_display.displayModes[buffer+j]);
 		}
-		buff += isolaInfoDisplay.displayModeCount[i];
+		buffer += isola_info_display.displayModeCount[i];
 	}
 }
 
 
-static void isolaGetContext(void){
+static void isola_get_context(void){
 
 	glBindFramebuffer(GL_FRAMEBUFFER,0);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
 			GL_FRONT_LEFT, GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE,
-			&isolaInfoContext.fbdefRedsize);
+			&isola_info_context.fbdef_redSize);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, 
 			GL_FRONT_LEFT, GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE,
-			&isolaInfoContext.fbdefGreensize);
+			&isola_info_context.fbdef_greenSize);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
 			GL_FRONT_LEFT, GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE,
-			&isolaInfoContext.fbdefBluesize);
+			&isola_info_context.fbdef_blueSize);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
 			GL_FRONT_LEFT, GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE,
-			&isolaInfoContext.fbdefAlphasize);
+			&isola_info_context.fbdef_alphaSize);
 #if ISOLA_DEPTH
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
 			GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE,
-			&isolaInfoContext.fbdefDepthsize);
+			&isola_info_context.fbdef_depthSize);
 #endif
 #if ISOLA_STENCIL
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
@@ -147,71 +147,71 @@ static void isolaGetContext(void){
 #endif
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
 			GL_FRONT_LEFT, GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING,
-			&isolaInfoContext.fbdefColorencoding);
+			&isola_info_context.fbdef_colorEncoding);
 
-	glGetIntegerv(GL_DOUBLEBUFFER, &isolaInfoContext.fbdefDoublebuffer);
+	glGetIntegerv(GL_DOUBLEBUFFER, &isola_info_context.fbdef_doubleBuffer);
 
-	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &isolaInfoContext.maxVertices);
-	glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &isolaInfoContext.maxIndices);
-	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &isolaInfoContext.maxAttrib);
+	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &isola_info_context.max_vertices);
+	glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &isola_info_context.max_indices);
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &isola_info_context.max_attrib);
 	glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS,
-			&isolaInfoContext.maxVertexUniforms);
+			&isola_info_context.max_vertexUniforms);
 	glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS,
-			&isolaInfoContext.maxFragmentUniforms);
+			&isola_info_context.max_fragmentUniforms);
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
-			&isolaInfoContext.maxTexCombinedUnits);
-	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &isolaInfoContext.maxTexUnits);
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &isolaInfoContext.maxTexSize);
-	glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &isolaInfoContext.max3DTexSize);
+			&isola_info_context.max_texCombinedUnits);
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &isola_info_context.max_texUnits);
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &isola_info_context.max_texSize);
+	glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &isola_info_context.max_3dTexSize);
 	glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE,
-			&isolaInfoContext.maxCubeTexSize);
-	glGetIntegerv(GL_MAX_DRAW_BUFFERS, &isolaInfoContext.maxDrawBuffers);
+			&isola_info_context.max_cubeTexSize);
+	glGetIntegerv(GL_MAX_DRAW_BUFFERS, &isola_info_context.max_drawBuffers);
 	glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS,
-			&isolaInfoContext.maxColorAttachments);
+			&isola_info_context.max_colorAttachments);
 	glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE,
-			&isolaInfoContext.maxRenderbufferSize);
+			&isola_info_context.max_renderbufferSize);
 
-	isolaInfoContext.cpuCount = SDL_GetCPUCount();
-	isolaInfoContext.systemRAM = SDL_GetSystemRAM();
-	isolaInfoContext.cacheSize = SDL_GetCPUCacheLineSize();
+	isola_info_context.cpuCount = SDL_GetCPUCount();
+	isola_info_context.systemRAM = SDL_GetSystemRAM();
+	isola_info_context.cacheSize = SDL_GetCPUCacheLineSize();
 }
 
 
-void isolaGetState(void){
+void isola_get_state(void){
 
 	int state = {0};
 
-	isolaInfoState = 0x0000;
+	isola_info_state = 0x0000;
 	glGetIntegerv(GL_BLEND, &state);
-	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_BLEND);
+	isola_info_state = (isola_info_state | state*ISOLA_STATE_BLEND);
 	glGetIntegerv(GL_COLOR_LOGIC_OP, &state);
-	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_COLORLOGIC);
+	isola_info_state = (isola_info_state | state*ISOLA_STATE_COLORLOGIC);
 	glGetIntegerv(GL_CULL_FACE, &state);
-	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_CULLFACE);
+	isola_info_state = (isola_info_state | state*ISOLA_STATE_CULLFACE);
 	glGetIntegerv(GL_DEPTH_TEST, &state);
-	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_DEPTHTEST);
+	isola_info_state = (isola_info_state | state*ISOLA_STATE_DEPTHTEST);
 	glGetIntegerv(GL_DITHER, &state);
-	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_DITHER);
+	isola_info_state = (isola_info_state | state*ISOLA_STATE_DITHER);
 	glGetIntegerv(GL_SCISSOR_TEST, &state);
-	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_SCISSORTEST);
+	isola_info_state = (isola_info_state | state*ISOLA_STATE_SCISSORTEST);
 	glGetIntegerv(GL_STENCIL_TEST, &state);
-	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_STENCILTEST);
+	isola_info_state = (isola_info_state | state*ISOLA_STATE_STENCILTEST);
 	glGetIntegerv(GL_FRAMEBUFFER_SRGB, &state);
-	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_SRGBFRAMEBUFFER);
+	isola_info_state = (isola_info_state | state*ISOLA_STATE_SRGBFRAMEBUFFER);
 	glGetIntegerv(GL_POINT_SMOOTH, &state);
-	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_POINTSMOOTH);
+	isola_info_state = (isola_info_state | state*ISOLA_STATE_POINTSMOOTH);
 	glGetIntegerv(GL_LINE_SMOOTH, &state);
-	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_LINESMOOTH);
+	isola_info_state = (isola_info_state | state*ISOLA_STATE_LINESMOOTH);
 	glGetIntegerv(GL_POLYGON_SMOOTH, &state);
-	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_POLYGONSMOOTH);
+	isola_info_state = (isola_info_state | state*ISOLA_STATE_POLYGONSMOOTH);
 	glGetIntegerv(GL_PROGRAM_POINT_SIZE, &state);
-	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_POINTSIZEPROGRAM);
+	isola_info_state = (isola_info_state | state*ISOLA_STATE_POINTSIZEPROGRAM);
 	glGetIntegerv(GL_MULTISAMPLE, &state);
-	isolaInfoState = (isolaInfoState | state*ISOLA_STATE_MULTISAMPLE);
+	isola_info_state = (isola_info_state | state*ISOLA_STATE_MULTISAMPLE);
 }
 
 
-void isolaSetState(ISOLA_State state){
+void isola_set_state(ISOLA_state state){
 
 	if (state&ISOLA_STATE_BLEND) {glEnable(GL_BLEND);}
 	else {glDisable(GL_BLEND);}
@@ -244,7 +244,7 @@ void isolaSetState(ISOLA_State state){
 
 
 
-unsigned int isolaShaderCompile(const char* shaderFile,
+unsigned int isola_shader_compile(const char* shaderFile,
 		unsigned int shaderType){
 
 	unsigned int shaderObject;
@@ -254,24 +254,28 @@ unsigned int isolaShaderCompile(const char* shaderFile,
 	f = fopen(shaderFile, "a+");
 	fseek(f, 0, SEEK_END);
 	l = ftell(f);
-	if(!l){SDL_Log("Shader file missing or empty\n");fclose(f);return 0;}
-	if(l>ISOLA_GLSLCHARMAX){SDL_Log("Shader exceeds character limit \
-		(defined in isola.h)\n");fclose(f);return 0;}
-	memset(isolaShaderSrc, 0, ISOLA_GLSLCHARMAX);
+	if(!l){
+		SDL_Log("Shader file missing or empty\n");
+		fclose(f);return 0;}
+	if(l>ISOLA_GLSLCHARMAX){
+		SDL_Log("Shader exceeds character limit (defined in isola.h)\n");
+		fclose(f);return 0;
+	}
+	memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
 	fseek(f, 0, SEEK_SET);
-	fread(isolaShaderSrc, 1, l, f);
+	fread(isola_shaderSrc, 1, l, f);
 	fclose(f);
 		
 	shaderObject = glCreateShader(shaderType);
-	glShaderSource(shaderObject,1,(const char**)&isolaShaderSrc,0);
+	glShaderSource(shaderObject,1,(const char**)&isola_shaderSrc,0);
 	glCompileShader(shaderObject);
 
 #ifdef ISOLA_DBG
 	glGetShaderiv(shaderObject, GL_COMPILE_STATUS, &l);
 	if(!l){
 		glGetShaderiv(shaderObject, GL_INFO_LOG_LENGTH, &l);
-		glGetShaderInfoLog(shaderObject, l, &l, isolaShaderSrc);
-		SDL_Log("Compilation failed  :  %s\n\n",isolaShaderSrc);
+		glGetShaderInfoLog(shaderObject, l, &l, isola_shaderSrc);
+		SDL_Log("Compilation failed  :  %s\n\n",isola_shaderSrc);
 		return 0;
 	}
 #endif
@@ -280,27 +284,27 @@ unsigned int isolaShaderCompile(const char* shaderFile,
 }
 
 
-unsigned int isolaShaderProgram(const char* vertShaderFile,
+unsigned int isola_shader_buildProgram(const char* vertShaderFile,
 		const char* fragShaderFile){
 
 	unsigned int sp;
 	unsigned int vs, fs;
-	int l;
+	int length;
 
 	sp = glCreateProgram();
-	vs = isolaShaderCompile(vertShaderFile,GL_VERTEX_SHADER);
-	fs = isolaShaderCompile(fragShaderFile,GL_FRAGMENT_SHADER);
+	vs = isola_shader_compile(vertShaderFile,GL_VERTEX_SHADER);
+	fs = isola_shader_compile(fragShaderFile,GL_FRAGMENT_SHADER);
 	glAttachShader(sp,vs);
 	glAttachShader(sp,fs);
 	
 	glLinkProgram(sp);
 
 #ifdef ISOLA_DBG
-	glGetProgramiv(sp, GL_LINK_STATUS, &l);
-	if(!l){
-		glGetProgramiv(sp, GL_INFO_LOG_LENGTH, &l);
-		glGetProgramInfoLog(sp, l, &l, isolaShaderSrc);
-		SDL_Log("Compilation failed  :  %s\n\n",isolaShaderSrc);
+	glGetProgramiv(sp, GL_LINK_STATUS, &length);
+	if(!length){
+		glGetProgramiv(sp, GL_INFO_LOG_LENGTH, &length);
+		glGetProgramInfoLog(sp, length, &length, isola_shaderSrc);
+		SDL_Log("Compilation failed  :  %s\n\n",isola_shaderSrc);
 		return 0;
 	}
 #endif
@@ -314,30 +318,34 @@ unsigned int isolaShaderProgram(const char* vertShaderFile,
 }
 
 
-char* isolaShaderSrcLoad(const char* shaderFile){
+char* isola_shader_srcLoad(const char* shaderFile){
 
-	FILE* f;
-	int l;
+	FILE* file;
+	int length;
 	char* shaderSrc;
 
 	shaderSrc = calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
-	f = fopen(shaderFile, "a+");
-	fseek(f, 0, SEEK_END);
-	l = ftell(f);
-	if(!l){SDL_Log("Shader file missing or empty\n");fclose(f);return 0;}
-	if(l>ISOLA_GLSLCHARMAX){SDL_Log("Shader exceeds character limit \
-		(defined in isola.h)\n");fclose(f);return 0;}
+	file = fopen(shaderFile, "a+");
+	fseek(file, 0, SEEK_END);
+	length = ftell(file);
+	if(!length){
+		SDL_Log("Shader file missing or empty\n");
+		fclose(file);return 0;
+	}
+	if(length>ISOLA_GLSLCHARMAX){
+		SDL_Log("Shader exceeds character limit (defined in isola.h)\n");
+		fclose(file);return 0;
+	}
 	memset(shaderSrc, 0, ISOLA_GLSLCHARMAX);
-	fseek(f, 0, SEEK_SET);
-	(void)fread(shaderSrc, 1, l, f);
-	fclose(f);
+	fseek(file, 0, SEEK_SET);
+	(void)fread(shaderSrc, 1, length, file);
+	fclose(file);
 
 	return shaderSrc;
 }
 
 
-unsigned char isolaShaderSrcCompare(char* shaderSrc,
-		const char* shaderFile){
+unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 
 	int l;
 	FILE* f;
@@ -348,14 +356,14 @@ unsigned char isolaShaderSrcCompare(char* shaderSrc,
 	if(!l){SDL_Log("Shader file missing or empty\n");fclose(f);return 0;}
 	if(l>ISOLA_GLSLCHARMAX){SDL_Log("Shader exceeds character limit \
 			(defined in isola.h)\n");fclose(f);return 0;}
-	memset(isolaShaderSrc, 0, ISOLA_GLSLCHARMAX);
+	memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
 	fseek(f, 0, SEEK_SET);
-	fread(isolaShaderSrc, 1, l, f);
+	fread(isola_shaderSrc, 1, l, f);
 	fclose(f);
 	
-	if(strcmp(shaderSrc, isolaShaderSrc)){
+	if(strcmp(shaderSrc, isola_shaderSrc)){
 		memset(shaderSrc, 0, ISOLA_GLSLCHARMAX);
-		memcpy(shaderSrc, isolaShaderSrc, l);
+		memcpy(shaderSrc, isola_shaderSrc, l);
 		return 1;
 	}
 
@@ -365,7 +373,7 @@ unsigned char isolaShaderSrcCompare(char* shaderSrc,
 
 
 
-static void contextPromt(void){
+static void isola_contextPromt(void){
 
 	int maj, min, flags, prof;
 
@@ -418,12 +426,12 @@ static void contextPromt(void){
 }
 
 
-void isolaInit(void){
+void isola_init(void){
 
 	int contextFlags = 0;
 
-	isolaShaderSrc = calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
-	if (!isolaShaderSrc) {SDL_Log("Failed allocation");exit(EXIT_FAILURE);}
+	isola_shaderSrc = calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
+	if (!isola_shaderSrc) {SDL_Log("Failed allocation");exit(EXIT_FAILURE);}
 
 #if ISOLA_CONFIG_LOG
 	isolaLog = freopen("isola.log","a+",stderr);
@@ -478,13 +486,13 @@ void isolaInit(void){
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, ISOLA_MSANTIALIASING);
 #endif
 
-	isolaWindow = SDL_CreateWindow( ISOLA_WINDOWTITLE,
+	isola_window = SDL_CreateWindow( ISOLA_WINDOWTITLE,
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 			ISOLA_WINDOWWIDTH, ISOLA_WINDOWHEIGHT,
 			SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL );
 
-	if (!isolaWindow) {
-		isolaErrorSDL(-1);
+	if (!isola_window) {
+		isola_error_sdl(-1);
 		SDL_Log("window creation failed, using default sdl hints");
 		SDL_Log("\n");
 
@@ -507,18 +515,18 @@ void isolaInit(void){
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
 				SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
 
-		isolaWindow = SDL_CreateWindow( ISOLA_WINDOWTITLE,
+		isola_window = SDL_CreateWindow( ISOLA_WINDOWTITLE,
 				SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 				ISOLA_WINDOWWIDTH, ISOLA_WINDOWHEIGHT,
 				SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
-		if (!isolaWindow) {
+		if (!isola_window) {
 			SDL_Log("window creation failed (again)");
 			SDL_Log("\n");
 		}
 	}
 
-	isolaContext = SDL_GL_CreateContext(isolaWindow);
-	SDL_GL_MakeCurrent(isolaWindow, isolaContext);
+	isola_context = SDL_GL_CreateContext(isola_window);
+	SDL_GL_MakeCurrent(isola_window, isola_context);
 
 
 	/* glewExperimental = GL_TRUE; */
@@ -526,13 +534,13 @@ void isolaInit(void){
 
 
 #ifdef ISOLA_DBG
-	contextPromt();
+	isola_contextPromt();
 #endif
 
 #ifdef ISOLA_DBG
-	 if( GLEW_KHR_debug || GLEW_ARB_debug_output ){
-	 glDebugMessageCallbackARB(&debugCallback, 0);
-	 }
+	if( GLEW_KHR_debug || GLEW_ARB_debug_output ){
+		glDebugMessageCallbackARB(&debugCallback, 0);
+	}
 #endif
 
 
@@ -577,19 +585,19 @@ void isolaInit(void){
 
 
 #ifdef ISOLA_DBG
-	isolaGetContext();
-	isolaGetState();
+	isola_get_context();
+	isola_get_state();
 #endif
-	isolaGetWindow();
-	isolaGetDisplay();
+	isola_get_window();
+	isola_get_display();
 	SDL_GL_SetSwapInterval(ISOLA_VSYNC);
 }
 
 
-void isolaQuit(void){
+void isola_quit(void){
 
 #ifdef ISOLA_DBG
-	if( isolaErrorGL() || isolaErrorSDL(-1) ){
+	if( isola_error_gl() || isola_error_sdl(-1) ){
 		SDL_Log("UNCAUGHT ERRORS LEFT");
 	}
 #endif
@@ -598,11 +606,11 @@ void isolaQuit(void){
 #if ISOLA_CONFIG_LOG
 	fclose(isolaLog);
 #endif
-	free(isolaShaderSrc);
-	free(isolaInfoDisplay.displayModeCount);
-	free(isolaInfoDisplay.displayModes);
-	SDL_GL_DeleteContext(isolaContext);
-	SDL_DestroyWindow(isolaWindow);
+	free(isola_shaderSrc);
+	free(isola_info_display.displayModeCount);
+	free(isola_info_display.displayModes);
+	SDL_GL_DeleteContext(isola_context);
+	SDL_DestroyWindow(isola_window);
 	SDL_Quit();
 }
 

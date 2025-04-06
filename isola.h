@@ -13,7 +13,7 @@
  #error ISOLA_GAMEPAD: invalid definition
 #endif
 #if defined(ISOLA_MSANTIALIASING) && (ISOLA_MSANTIALIASING < 0                \
-			|| ISOLA_MSANTIALIASING > 16 || ISOLA_MSANTIALIASING%2)
+	|| ISOLA_MSANTIALIASING > 16 || ISOLA_MSANTIALIASING%2)
  #error ISOLA_MSANTIALIASING: invalid definition
 #endif
 #if defined(ISOLA_VSYNC) && (ISOLA_VSYNC != 0 && ISOLA_VSYNC != 1)
@@ -38,152 +38,168 @@
 
 
 /* extended replacement for SDL_Init() */ 
-extern void isolaInit(void);
+extern void isola_init(void);
 /* extended replacement for SDL_Quit() */ 
-extern void isolaQuit(void);
+extern void isola_quit(void);
 
 
 
 
 #ifdef ISOLA_DBG
- #define isolaGLDBG_(x)                                                         \
-	if(isolaErrorGL()){                                                       \
-		SDL_Log(" UNEXPECTED ERROR, line : %d, function : %d, file : %s",     \
-				__LINE__,__FUNCTION__,__FILE__);                              \
-	}                                                                         \
-	x;                                                                        \
-	if(isolaErrorGL()){                                                       \
-		SDL_Log(" ^- in line : %d, function : %d, file : %s\n",               \
-				__LINE__,__FUNCTION__,__FILE__);                              \
+ #define ISOLA_GLDBG_(x)																											\
+	if(isola_error_gl()){																												\
+		SDL_Log(" UNEXPECTED ERROR, line : %d, function : %d, file : %s",					\
+				__LINE__,__FUNCTION__,__FILE__);																			\
+	}																																						\
+	x;																																					\
+	if(isola_error_gl()){																												\
+		SDL_Log(" ^- in line : %d, function : %d, file : %s\n",										\
+				__LINE__,__FUNCTION__,__FILE__);																			\
 	}
 #else
- #define isolaGLDBG_(x) x;
+ #define ISOLA_GLDBG_(x) x;
 #endif
 
 
 /* print & clear sdl errors, returns -1 if error, else 0 */
-extern signed char isolaErrorSDL(int SDLfunction);
+extern signed char isola_error_sdl(int SDLfunction);
 /* print & clear opengl errors, returns -1 if error, else 0 */
-extern signed char isolaErrorGL(void);
+extern signed char isola_error_gl(void);
 
 
 
 
-extern SDL_GLContext* isolaContext;
-extern SDL_Window* isolaWindow;
+extern SDL_GLContext* isola_context;
+extern SDL_Window* isola_window;
 
 
 /* system resources and specification related information */
-struct ISOLA_Context{
-	int fbdefRedsize;
-	int fbdefGreensize;
-	int fbdefBluesize;
-	int fbdefAlphasize;
-	int fbdefDepthsize;
-	int fbdefStencilsize;		/* GL_LINEAR or GL_SRGB */
-	int fbdefColorencoding;
-	int fbdefDoublebuffer;
+struct ISOLA_context{
+	int fbdef_redSize;
+	int fbdef_greenSize;
+	int fbdef_blueSize;
+	int fbdef_alphaSize;
+	int fbdef_depthSize;
+	int fbdef_stencilSize;	/* GL_LINEAR or GL_SRGB */
+	int fbdef_colorEncoding;
+	int fbdef_doubleBuffer;
 
-	int maxVertices;
-	int maxIndices;
-	int maxAttrib;				/* at least 16 */
-	int maxVertexUniforms;		/* at least 1024 */
-	int maxFragmentUniforms;	/* at least 1024 */
-	int maxTexCombinedUnits;	/* at least 48 */
-	int maxTexUnits;			/* at least 16 */
-	int maxTexSize;				/* at least 1024 */
-	int max3DTexSize;			/* at least 64 */
-	int maxCubeTexSize;			/* at least 1024 */
-	int maxDrawBuffers;			/* at least 8 */
-	int maxColorAttachments;	/* at least 8 */
-	int maxRenderbufferSize;    /* at least 8 */
+	int max_vertices;
+	int max_indices;
+	int max_attrib;	/* at least 16 */
+	int max_vertexUniforms;	/* at least 1024 */
+	int max_fragmentUniforms;	/* at least 1024 */
+	int max_texCombinedUnits;	/* at least 48 */
+	int max_texUnits;	/* at least 16 */
+	int max_texSize;	/* at least 1024 */
+	int max_3dTexSize;	/* at least 64 */
+	int max_cubeTexSize;	/* at least 1024 */
+	int max_drawBuffers;	/* at least 8 */
+	int max_colorAttachments;	/* at least 8 */
+	int max_renderbufferSize;	/* at least 8 */
 
 	int cpuCount;
 	int systemRAM;
 	int cacheSize;
-}extern isolaInfoContext;
+}extern isola_info_context;
 
 
 /* current window state. updated with isolaGetWindow() */
-struct ISOLA_Window{
-	int xpos, ypos;
-	int width, height;
-	double xratio, yratio;
-	double pixelWidth, pixelHeight;
+struct ISOLA_window{
+	int pos_x, pos_y;
+	int scale_width, scale_height;
+	double ratio_x, ratio_y;
+	double pixel_width, pixel_height;
 	unsigned int flags;	/* see SDL_WindowFlags for a list of flags */
 	int displayIndex;
 	SDL_DisplayMode displayMode;
 	SDL_DisplayMode desktopDisplayMode;
 	float clearColor[4];
-}extern isolaInfoWindow;
+}extern isola_info_window;
 
 
 /* dysplay modes for all availiable devices. retrieved with isolaGetDisplay() */
-struct ISOLA_Display{
-/* 	number of display modes for the id, access array with desired display id */
+struct ISOLA_display{
+/* number of display modes for the id, access array with desired display id */
 	int* displayModeCount;
-/*	contains ALL display modes, for specific display id, its modes range from
-	(sum of previous counts - 1) to (sum of previous counts + count - 1) */
+/* contains ALL display modes, for specific display id, its modes range from
+ * (sum of previous counts - 1) to (sum of previous counts + count - 1) */
 	SDL_DisplayMode* displayModes;
-}extern isolaInfoDisplay;
+}extern isola_info_display;
 
 
 typedef enum {
-	ISOLA_STATE_NONE				= 0x00000000,
-	ISOLA_STATE_BLEND				= 0x00000001,
-	ISOLA_STATE_COLORLOGIC			= 0x00000002,
-	ISOLA_STATE_CULLFACE 			= 0x00000004,
-	ISOLA_STATE_DEPTHTEST			= 0x00000008,
-	ISOLA_STATE_DITHER				= 0x00000010,
-	ISOLA_STATE_SCISSORTEST 		= 0x00000020,
-	ISOLA_STATE_STENCILTEST 		= 0x00000040,
-	ISOLA_STATE_SRGBFRAMEBUFFER 	= 0x00000080,
-	ISOLA_STATE_POINTSMOOTH 		= 0x00000100,
-	ISOLA_STATE_LINESMOOTH			= 0x00000200,
-	ISOLA_STATE_POLYGONSMOOTH		= 0x00000400,
-	ISOLA_STATE_POINTSIZEPROGRAM	= 0x00000800,
-	ISOLA_STATE_MULTISAMPLE 		= 0x00001000
-}ISOLA_State;
+	ISOLA_STATE_NONE = 0x00000000,
+	ISOLA_STATE_BLEND = 0x00000001,
+	ISOLA_STATE_COLORLOGIC = 0x00000002,
+	ISOLA_STATE_CULLFACE = 0x00000004,
+	ISOLA_STATE_DEPTHTEST = 0x00000008,
+	ISOLA_STATE_DITHER = 0x00000010,
+	ISOLA_STATE_SCISSORTEST = 0x00000020,
+	ISOLA_STATE_STENCILTEST = 0x00000040,
+	ISOLA_STATE_SRGBFRAMEBUFFER = 0x00000080,
+	ISOLA_STATE_POINTSMOOTH = 0x00000100,
+	ISOLA_STATE_LINESMOOTH = 0x00000200,
+	ISOLA_STATE_POLYGONSMOOTH = 0x00000400,
+	ISOLA_STATE_POINTSIZEPROGRAM = 0x00000800,
+	ISOLA_STATE_MULTISAMPLE = 0x00001000
+}ISOLA_state;
 /* glEnable information. meant for quick debugging. see isolaGetState() */
-extern ISOLA_State isolaInfoState;
+extern ISOLA_state isola_info_state;
 
 
 /* update window information (isolaInfoWindow) */
-extern void isolaGetWindow(void);
+extern void isola_get_window(void);
 
 
 /* retrieve all availiable display information (isolaInfoDisplay) */
-extern void isolaGetDisplay(void);
+extern void isola_get_display(void);
 
 
 /* update currently enabled opengl state (isolaInfoState) */
-extern void isolaGetState(void);
+extern void isola_get_state(void);
 
 
 /* sets opengl state to match an ISOLA_State snapshot */
-extern void isolaSetState(ISOLA_State state);
+extern void isola_set_state(ISOLA_state state);
 
 
 
 
 /* compile source file into returned opengl shader object id */
-extern unsigned int isolaShaderCompile(const char* shaderFile,
+extern unsigned int isola_shader_compile(const char* shaderFile,
 		unsigned int shaderType);
 
 
 /* compile and link source files into returned opengl shader program */
-extern unsigned int isolaShaderProgram(const char* vertShaderFile,
+extern unsigned int isola_shader_buildProgram(const char* vertShaderFile,
 		const char* fragShaderFile);
 
 
 /* loads srcfile into heap, returns a pointer that can be issued to
-   isolaShaderSrcCompare(), you must free this pointer yourself */
-extern char* isolaShaderSrcLoad(const char* shaderFile);
+ * isolaShaderSrcCompare(), you must free this pointer yourself */
+extern char* isola_shader_srcLoad(const char* shaderFile);
 
 
 /* compares srcfile with loaded src, if !=, src is updated and return !0 */
-extern unsigned char isolaShaderSrcCompare(char* shaderSrc,
+extern unsigned char isola_shader_srcCompare(char* shaderSrc,
 		const char* shaderFile);
+
+
+
+
+#endif
+#ifdef ISOLA_C
+
+
+
+
+static char* isola_shaderSrc;
+static FILE* isola_log;
+
+
+static void isola_get_context(void);
+static void isola_contextPromt(void);
 
 
 

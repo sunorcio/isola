@@ -1,3 +1,5 @@
+#define MUTIL_C
+#include "mutil.h"
 
 
 
@@ -7,7 +9,7 @@
 
 
 
-void mut_projGLortho(float left, float right,
+void mut_glproj_ortho(float left, float right,
 		float bottom, float top, float nearZ, float farZ, float dest[4*4]){
 
 	float rl,tb,fn;
@@ -27,7 +29,7 @@ void mut_projGLortho(float left, float right,
 }
 
 
-void mut_printM4(float m[4*4]){
+void mut_print_m4(float m[4*4]){
 
 	int i;
 
@@ -40,7 +42,7 @@ void mut_printM4(float m[4*4]){
 }
 
 
-void mut_printM3(float m[3*3]){
+void mut_print_m3(float m[3*3]){
 
 	int i;
 
@@ -53,7 +55,7 @@ void mut_printM3(float m[3*3]){
 }
 
 
-void mut_M3cp(float src[3*3],float dest[3*3]){
+void mut_cp_m3(float src[3*3],float dest[3*3]){
 
 	dest[0*3+0] = src[0*3+0];
 	dest[0*3+1] = src[0*3+1];
@@ -67,7 +69,7 @@ void mut_M3cp(float src[3*3],float dest[3*3]){
 }
 
 
-void mut_M3cpM4(float src[3*3],float dest[4*4]){
+void mut_cp_m3m4(float src[3*3],float dest[4*4]){
 
 	dest[0*4+0] = src[0*3+0];
 	dest[0*4+1] = src[0*3+1];
@@ -81,7 +83,7 @@ void mut_M3cpM4(float src[3*3],float dest[4*4]){
 }
 
 
-void mut_M3mul(float a[3*3],float b[3*3],float dest[3*3]){
+void mut_mul_m3(float a[3*3],float b[3*3],float dest[3*3]){
 
 	float c[3*3] = {0};
 	c[0*3+0] = a[0*3+0]*b[0*3+0] + a[1*3+0]*b[0*3+1] + a[2*3+0]*b[0*3+2];
@@ -93,7 +95,7 @@ void mut_M3mul(float a[3*3],float b[3*3],float dest[3*3]){
 	c[2*3+0] = a[0*3+0]*b[2*3+0] + a[1*3+0]*b[2*3+1] + a[2*3+0]*b[2*3+2];
 	c[2*3+1] = a[0*3+1]*b[2*3+0] + a[1*3+1]*b[2*3+1] + a[2*3+1]*b[2*3+2];
 	c[2*3+2] = a[0*3+2]*b[2*3+0] + a[1*3+2]*b[2*3+1] + a[2*3+2]*b[2*3+2];
-	mut_M3cp(c,dest);
+	mut_cp_m3(c,dest);
 }
 
 

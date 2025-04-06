@@ -4,19 +4,23 @@
 
 
 
-#define isolaLIT_TO_STR_(x) #x
-#define isolaDEF_TO_STR_(X) isolaLIT_TO_STR_(X)
+#define ISOLA_LITtoSTR_(x) #x
+#define ISOLA_DEFtoSTR_(X) ISOLA_LITtoSTR_(X)
 
 
-#define isolaCONCAT_STR_(x,y) x##y
-#define isolaCONCAT_DEF_(X,Y) isolaCONCAT_STR_(X,Y)
+#define ISOLA_CONCAT_STR_(x,y) x##y
+#define ISOLA_CONCAT_DEF_(X,Y) ISOLA_CONCAT_STR_(X,Y)
 
 
-#define isolaARRAY_COUNT_(x) (sizeof(x)/sizeof(x[0]))
+#define ISOLA_ARRAYCOUNT_(x) (sizeof(x)/sizeof(x[0]))
 
 
 /* linux only */
-#define isolaCLEARTERMINAL_() SDL_Log("\033[2J");;
+#ifdef SDL_h_
+ #define ISOLA_CLEARTERMINAL_() SDL_Log("\033[2J");;
+#else
+ #define ISOLA_CLEARTERMINAL_() printf("\033[2J");;
+#endif
 	
 
 

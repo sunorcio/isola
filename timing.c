@@ -1,5 +1,4 @@
-
-
+#define TIMING_C
 #include "timing.h"
 
 
@@ -10,14 +9,14 @@
 
 
 
-unsigned long clockFreq = 0;
+unsigned long isola_clockFreq = 0;
 
 
 
 
-void timerSetup(struct TIMING_timer* timer,unsigned long stepsPerSecond){
+void isola_timerSetup(struct ISOLA_timer* timer,unsigned long stepsPerSecond){
 
-	clockFreq = SDL_GetPerformanceFrequency();
+	isola_clockFreq = SDL_GetPerformanceFrequency();
 
 
 	timer->sps = stepsPerSecond;
@@ -25,16 +24,17 @@ void timerSetup(struct TIMING_timer* timer,unsigned long stepsPerSecond){
 }
 
 
-void counterSetup(struct TIMING_counter* counter,unsigned long stepsPerSecond){
+void isola_counterSetup(struct ISOLA_counter* counter,
+		unsigned long stepsPerSecond){
 
-	clockFreq = SDL_GetPerformanceFrequency();
+	isola_clockFreq = SDL_GetPerformanceFrequency();
 
 
 	counter->sps = stepsPerSecond;
 
 	{unsigned int i;
 	for(i = 0;i<256;i++){
-		counter->stepDelay[i] = clockFreq/counter->sps;
+		counter->stepDelay[i] = isola_clockFreq/counter->sps;
 	}}
 
 	counter->lastStep = SDL_GetPerformanceCounter();
@@ -43,10 +43,10 @@ void counterSetup(struct TIMING_counter* counter,unsigned long stepsPerSecond){
 
 
 
-unsigned char timerStep(struct TIMING_timer* timer){
+unsigned char isola_timerStep(struct ISOLA_timer* timer){
 
 	timer->currentStep = SDL_GetPerformanceCounter();
-	if(timer->currentStep >= timer->lastStep + clockFreq/timer->sps){
+	if(timer->currentStep >= timer->lastStep + isola_clockFreq/timer->sps){
 
 		timer->lastStep = timer->currentStep;
 		return 1;
@@ -56,12 +56,13 @@ unsigned char timerStep(struct TIMING_timer* timer){
 }
 
 
-unsigned char counterStep(struct TIMING_counter* counter){
+unsigned char isola_counterStep(struct ISOLA_counter* counter){
 
 	counter->currentStep = SDL_GetPerformanceCounter();
-	if(counter->currentStep >= counter->lastStep + clockFreq/counter->sps){
-		counter->stepDelay[counter->stepIndex] = counter->currentStep-
-				counter->lastStep;
+	if(counter->currentStep >= counter->lastStep
+			+ isola_clockFreq/counter->sps){
+		counter->stepDelay[counter->stepIndex] = counter->currentStep 
+			- counter->lastStep;
 		counter->stepIndex++;
 
 		counter->lastStep = counter->currentStep;

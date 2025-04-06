@@ -4,28 +4,28 @@
 
 
 
-extern unsigned long clockFreq;
+extern unsigned long isola_clockFreq;
 
 
 
 
-struct TIMING_timer{
+struct ISOLA_timer{
 	unsigned long sps;
 	unsigned long currentStep;
 	unsigned long lastStep;
 };
 
 
-extern void timerSetup(struct TIMING_timer* timer,
+extern void isola_timerSetup(struct ISOLA_timer* timer,
 		unsigned long stepsPerSecond);
 
 
-extern unsigned char timerStep(struct TIMING_timer* timer);
+extern unsigned char isola_timerStep(struct ISOLA_timer* timer);
 
 
 
 
-struct TIMING_counter{
+struct ISOLA_counter{
 	unsigned long sps;
 	unsigned long currentStep;
 	unsigned long lastStep;
@@ -34,11 +34,17 @@ struct TIMING_counter{
 };
 
 
-extern void counterSetup(struct TIMING_counter* counter, 
+extern void isola_counterSetup(struct ISOLA_counter* counter, 
 		unsigned long stepsPerSecond);
 
 
-extern unsigned char counterStep(struct TIMING_counter* timer);
+extern unsigned char isola_counterStep(struct ISOLA_counter* timer);
+
+
+
+
+#endif
+#ifdef TIMING_C
 
 
 
