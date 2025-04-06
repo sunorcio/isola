@@ -104,7 +104,7 @@ struct ISOLA_context{
 }extern isola_info_context;
 
 
-/* current window state. updated with isolaGetWindow() */
+/* current window state. updated with isola_get_window() */
 struct ISOLA_window{
 	int pos_x, pos_y;
 	int scale_width, scale_height;
@@ -144,23 +144,23 @@ typedef enum {
 	ISOLA_STATE_POINTSIZEPROGRAM = 0x00000800,
 	ISOLA_STATE_MULTISAMPLE = 0x00001000
 }ISOLA_state;
-/* glEnable information. meant for quick debugging. see isolaGetState() */
+/* glEnable information. meant for quick debugging. see isola_get_state() */
 extern ISOLA_state isola_info_state;
 
 
-/* update window information (isolaInfoWindow) */
+/* update window information (isola_info_window) */
 extern void isola_get_window(void);
 
 
-/* retrieve all availiable display information (isolaInfoDisplay) */
+/* retrieve all availiable display information (isola_info_display) */
 extern void isola_get_display(void);
 
 
-/* update currently enabled opengl state (isolaInfoState) */
+/* update currently enabled opengl state (isola_info_state) */
 extern void isola_get_state(void);
 
 
-/* sets opengl state to match an ISOLA_State snapshot */
+/* sets opengl state to match an ISOLA_state snapshot */
 extern void isola_set_state(ISOLA_state state);
 
 
