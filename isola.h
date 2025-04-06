@@ -107,7 +107,7 @@ struct ISOLA_context{
 /* current window state. updated with isola_get_window() */
 struct ISOLA_window{
 	int pos_x, pos_y;
-	int scale_width, scale_height;
+	int width, height;
 	double ratio_x, ratio_y;
 	double pixel_width, pixel_height;
 	unsigned int flags;	/* see SDL_WindowFlags for a list of flags */
