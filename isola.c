@@ -581,7 +581,7 @@ void isola_init(void){
 
 	glClearColor(0.5f,0.375f,0.5f,1.f);
 	glClear(GL_COLOR_BUFFER_BIT);
-/* 	SDL_GL_SwapWindow(isolaWindow); */
+/* 	SDL_GL_SwapWindow(isola_window); */
 
 
 #ifdef ISOLA_DBG
