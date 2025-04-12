@@ -7,8 +7,6 @@
 #include "isola_config.h"
 
 
-
-
 #if defined(ISOLA_GAMEPAD) && (ISOLA_GAMEPAD != 0 && ISOLA_GAMEPAD != 1)
  #error ISOLA_GAMEPAD: invalid definition
 #endif
@@ -184,22 +182,6 @@ extern char* isola_shader_srcLoad(const char* shaderFile);
 /* compares srcfile with loaded src, if !=, src is updated and return !0 */
 extern unsigned char isola_shader_srcCompare(char* shaderSrc,
 		const char* shaderFile);
-
-
-
-
-#endif
-#ifdef ISOLA_C
-
-
-
-
-static char* isola_shaderSrc;
-static FILE* isola_log;
-
-
-static void isola_get_context(void);
-static void isola_contextPromt(void);
 
 
 

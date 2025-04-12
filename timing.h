@@ -44,9 +44,3 @@ extern unsigned char isola_counterStep(struct ISOLA_counter* timer);
 
 
 #endif
-#ifdef TIMING_C
-
-
-
-
-#endif

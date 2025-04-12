@@ -1,4 +1,3 @@
-#define TIMING_C
 #include "timing.h"
 
 

@@ -1,4 +1,3 @@
-#define ISOLA_C
 #include "isola.h"
 
 
@@ -7,6 +6,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+
+
+
+static char* isola_shaderSrc;
+static FILE* isola_log;
+static void isola_get_context(void);
+static void isola_contextPromt(void);
 
 
 
