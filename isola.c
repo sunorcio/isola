@@ -73,22 +73,22 @@ static FILE* isola_log = {0};
 
 void isola_get_window(void){
 
-	SDL_GetWindowPosition(isola_window, &isola_info_window.pos_x,
-			&isola_info_window.pos_y);
+	SDL_GetWindowPosition(isola_window, &isola_info_window.xPos,
+			&isola_info_window.yPos);
 	SDL_GetWindowSize(isola_window, &isola_info_window.width,
 			&isola_info_window.height);
 
 	if (isola_info_window.width > isola_info_window.height) {
-		isola_info_window.ratio_y = 1.;
-		isola_info_window.ratio_x = (double)isola_info_window.width
+		isola_info_window.yRatio = 1.;
+		isola_info_window.xRatio = (double)isola_info_window.width
 				/isola_info_window.height;
 	}else {
-		isola_info_window.ratio_x = 1.;
-		isola_info_window.ratio_y = (double)isola_info_window.height 
+		isola_info_window.xRatio = 1.;
+		isola_info_window.yRatio = (double)isola_info_window.height 
 				/isola_info_window.width;
 	}
-	isola_info_window.pixel_width = (double)2./isola_info_window.width;
-	isola_info_window.pixel_height = (double)2./isola_info_window.height;
+	isola_info_window.pixelWidth = (double)2./isola_info_window.width;
+	isola_info_window.pixelHeight = (double)2./isola_info_window.height;
 
 	isola_info_window.flags = SDL_GetWindowFlags(isola_window);
 	isola_info_window.displayIndex = SDL_GetWindowDisplayIndex(isola_window);
