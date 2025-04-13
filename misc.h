@@ -4,8 +4,8 @@
 
 
 
-#define ISOLA_LITtoSTR_(x) #x
-#define ISOLA_DEFtoSTR_(X) ISOLA_LITtoSTR_(X)
+#define ISOLA_LIT_STR_(x) #x
+#define ISOLA_DEF_STR_(X) ISOLA_LIT_STR_(X)
 
 
 #define ISOLA_CONCAT_STR_(x,y) x##y
