@@ -28,7 +28,7 @@ const unsigned char* isola_keyState;
 unsigned char isola_keyRepeat[SDL_NUM_SCANCODES];
 
 
-void isola_clear(void){
+void isola_inputClear(void){
 
 	if (isola_keyState == 0) {
 		isola_keyState = SDL_GetKeyboardState(&isola_keyNum);
@@ -40,7 +40,7 @@ void isola_clear(void){
 }
 
 
-void isola_repeat(void){
+void isola_inputRepeat(void){
 
 	memcpy(isola_keyRepeat,isola_keyState,
 			isola_keyNum*sizeof(unsigned char));

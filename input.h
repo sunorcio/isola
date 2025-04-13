@@ -13,8 +13,8 @@ extern const unsigned char* isola_keyState;
 extern unsigned char isola_keyRepeat[SDL_NUM_SCANCODES];
 
 
-extern void isola_clear(void);
-extern void isola_repeat(void);
+extern void isola_inputClear(void);
+extern void isola_inputRepeat(void);
 
 
 
