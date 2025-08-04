@@ -114,42 +114,42 @@ unsigned int isola_mut_gcd(int a, int b){
 
 
 
-/* unsigned long mut_rotl64(unsigned long x,unsigned char n){
+/* Uint64 mut_rotl64(Uint64 x,unsigned char n){
 	return (x<<n | (x>>(64-n)));
 }
 
 
-unsigned long mut_rotr64(unsigned long x,unsigned char n){
+Uint64 mut_rotr64(Uint64 x,unsigned char n){
 	return (x>>n | (x<<(64-n)));
 }
 
 
-unsigned int mut_rotl32(unsigned int x,unsigned char n){
+Uint32 mut_rotl32(Uint32 x,unsigned char n){
 	return (x<<n | (x>>(32-n)));
 }
 
 
-unsigned int mut_rotr32(unsigned int x,unsigned char n){
+Uint32 mut_rotr32(Uint32 x,unsigned char n){
 	return (x>>n | (x<<(32-n)));
 }
 
 
-unsigned short mut_rotl16(unsigned short x,unsigned char n){
+Uint16 mut_rotl16(Uint16 x,unsigned char n){
 	return (x<<n | (x>>(16-n)));
 }
 
 
-unsigned short mut_rotr16(unsigned short x,unsigned char n){
+Uint16 mut_rotr16(Uint16 x,unsigned char n){
 	return (x>>n | (x<<(16-n)));
 }
 
 
-unsigned char mut_rotl8(unsigned char x,unsigned char n){
+Uint8 mut_rotl8(Uint8 x,unsigned char n){
 	return (x<<n | (x>>(8-n)));
 }
 
 
-unsigned char mut_rotr8(unsigned char x,unsigned char n){
+Uint8 mut_rotr8(Uint8 x,unsigned char n){
 	return (x>>n | (x<<(8-n)));
 } */
 

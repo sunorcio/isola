@@ -8,12 +8,12 @@
 
 
 
-unsigned long isola_clockFreq = 0;
+Uint64 isola_clockFreq = 0;
 
 
 
 
-void isola_timerSetup(struct ISOLA_timer* timer,unsigned long stepsPerSecond){
+void isola_timerSetup(struct ISOLA_timer* timer,Uint64 stepsPerSecond){
 
 	isola_clockFreq = SDL_GetPerformanceFrequency();
 
@@ -24,7 +24,7 @@ void isola_timerSetup(struct ISOLA_timer* timer,unsigned long stepsPerSecond){
 
 
 void isola_counterSetup(struct ISOLA_counter* counter,
-		unsigned long stepsPerSecond){
+		Uint64 stepsPerSecond){
 
 	isola_clockFreq = SDL_GetPerformanceFrequency();
 

@@ -4,20 +4,25 @@
 
 
 
-extern unsigned long isola_clockFreq;
+#include <SDL2/SDL.h>
+
+
+
+
+extern Uint64 isola_clockFreq;
 
 
 
 
 struct ISOLA_timer{
-	unsigned long sps;
-	unsigned long currentStep;
-	unsigned long lastStep;
+	Uint64 sps;
+	Uint64 currentStep;
+	Uint64 lastStep;
 };
 
 
 extern void isola_timerSetup(struct ISOLA_timer* timer,
-		unsigned long stepsPerSecond);
+		Uint64 stepsPerSecond);
 
 
 extern unsigned char isola_timerStep(struct ISOLA_timer* timer);
@@ -26,16 +31,16 @@ extern unsigned char isola_timerStep(struct ISOLA_timer* timer);
 
 
 struct ISOLA_counter{
-	unsigned long sps;
-	unsigned long currentStep;
-	unsigned long lastStep;
-	unsigned long stepDelay[256];
+	Uint64 sps;
+	Uint64 currentStep;
+	Uint64 lastStep;
+	Uint64 stepDelay[256];
 	unsigned char stepIndex;
 };
 
 
 extern void isola_counterSetup(struct ISOLA_counter* counter, 
-		unsigned long stepsPerSecond);
+		Uint64 stepsPerSecond);
 
 
 extern unsigned char isola_counterStep(struct ISOLA_counter* timer);
