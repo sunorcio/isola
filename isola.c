@@ -21,9 +21,9 @@ static void isola_contextPromt(void);
 #ifdef ISOLA_DBG
 signed char isola_error_sdl(int sdlFunction){
 
-	if(*SDL_GetError() == 0){return 0;}
+	if(*SDL_GetError() == 0){ return 0; }
 
-	if(sdlFunction<0){ SDL_Log("%s",SDL_GetError());}
+	if(!sdlFunction){ SDL_Log("%s",SDL_GetError()); }
 	SDL_ClearError();
 	return -1;
 }
@@ -33,15 +33,15 @@ signed char isola_error_gl(void){
 	GLenum error = glGetError();
 	if (error == GL_NO_ERROR){ return 0; }
 
-	do{ SDL_Log("GLerror : %s", gluErrorString(error));}
+	do{ SDL_Log("GLerror : %s", gluErrorString(error)); }
 	while( (error = glGetError()) != GL_NO_ERROR );
 	return -1;
 }
 
  #if(  defined(GLEW_KHR_debug) || defined(GLEW_ARB_debug_output)  )
 static void debugCallback(unsigned int source, unsigned int type,
-		unsigned int id, unsigned int severity,
-		int length,const char* message, const void* userParam){
+		unsigned int id, unsigned int severity, int length,
+		const char* message, const void* userParam){
 
 	SDL_Log("%s",message);
 	return;
@@ -55,8 +55,8 @@ signed char isola_error_gl(void){return 0;}
 
 
 
-SDL_GLContext* isola_context = {0};
-SDL_Window* isola_window = {0};    
+SDL_GLContext isola_context = {0};
+SDL_Window* isola_window = {0};
 
 
 struct ISOLA_context isola_info_context = {0};
@@ -104,26 +104,13 @@ void isola_get_display(void){
 
 	int i,j;
 	int buffer;
+	SDL_DisplayID* displayIdList;
+	SDL_DisplayMode** displayModeList;
 
-	buffer = SDL_GetNumVideoDisplays();
-	isola_info_display.displayModeCount = calloc(buffer+1, sizeof(int));
-	for(i = 0;i<buffer;i++){
-		isola_info_display.displayModeCount[i] = SDL_GetNumDisplayModes(
-				isola_info_window.displayIndex);
-	}
-
-	for(i = 0;isola_info_display.displayModeCount[i]==0;i++){
-		buffer += isola_info_display.displayModeCount[i];
-	}
-	isola_info_display.displayModes = malloc(buffer*sizeof(SDL_DisplayMode));
-
-	buffer = 0;
-	for(i = 0;isola_info_display.displayModeCount[i]==0;i++){
-		for(j = 0;j<isola_info_display.displayModeCount[i];j++){
-			SDL_GetDisplayMode(i,j,&isola_info_display.displayModes[buffer+j]);
-		}
-		buffer += isola_info_display.displayModeCount[i];
-	}
+	displayIdList = SDL_GetDisplays(&buffer);
+	displayModeList = SDL_GetFullscreenDisplayModes(
+			isola_info_window.displayIndex, &buffer);
+	displayModeList[1].;
 }
 
 
@@ -444,8 +431,8 @@ void isola_init(void){
 	isolaLog = freopen("isola.log","a+",stderr);
 #endif
 	
-	SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER |
-			ISOLA_GAMEPAD*(SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC) );
+	SDL_Init( SDL_INIT_VIDEO | ISOLA_GAMEPAD*(SDL_INIT_GAMEPAD
+			| SDL_INIT_HAPTIC) );
 
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ISOLA_MAJOR_VERSION);
@@ -494,9 +481,8 @@ void isola_init(void){
 #endif
 
 	isola_window = SDL_CreateWindow( ISOLA_WINDOWTITLE,
-			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 			ISOLA_WINDOWWIDTH, ISOLA_WINDOWHEIGHT,
-			SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL );
+			SDL_WINDOW_OPENGL );
 
 	if (!isola_window) {
 		isola_error_sdl(-1);
@@ -523,9 +509,8 @@ void isola_init(void){
 				SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
 
 		isola_window = SDL_CreateWindow( ISOLA_WINDOWTITLE,
-				SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 				ISOLA_WINDOWWIDTH, ISOLA_WINDOWHEIGHT,
-				SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
+				SDL_WINDOW_OPENGL );
 		if (!isola_window) {
 			SDL_Log("window creation failed (again)");
 			SDL_Log("\n");
@@ -616,7 +601,7 @@ void isola_quit(void){
 	free(isola_shaderSrc);
 	free(isola_info_display.displayModeCount);
 	free(isola_info_display.displayModes);
-	SDL_GL_DeleteContext(isola_context);
+	SDL_GL_DestroyContext(isola_context);
 	SDL_DestroyWindow(isola_window);
 	SDL_Quit();
 }

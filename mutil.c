@@ -3,7 +3,10 @@
 
 
 
-#include <SDL2/SDL.h>
+#include <stdlib.h>
+
+
+#include <SDL3/SDL.h>
 
 
 
@@ -25,32 +28,6 @@ void isola_mut_glproj_ortho(float left, float right,
 	dest[3*4+1] = -(top+bottom)*tb;
 	dest[3*4+2] = (farZ+nearZ)*fn;
 	dest[3*4+3] = 1.;
-}
-
-
-void isola_mut_print_m4(float m[4*4]){
-
-	int i;
-
-
-	SDL_Log("\n");
-	for(i = 0;i<4;i++){
-		SDL_Log("%f,%f,%f,%f,\n",m[0*4+i],m[1*4+i],m[2*4+i],m[3*4+i]);
-	}
-	SDL_Log("\n");
-}
-
-
-void isola_mut_print_m3(float m[3*3]){
-
-	int i;
-
-
-	SDL_Log("\n");
-	for(i = 0;i<3;i++){
-		SDL_Log("%f,%f,%f,\n",m[0*3+i],m[1*3+i],m[2*3+i]);
-	}
-	SDL_Log("\n");
 }
 
 
@@ -85,6 +62,8 @@ void isola_mut_cp_m3m4(float src[3*3],float dest[4*4]){
 void isola_mut_mul_m3(float a[3*3],float b[3*3],float dest[3*3]){
 
 	float c[3*3] = {0};
+
+
 	c[0*3+0] = a[0*3+0]*b[0*3+0] + a[1*3+0]*b[0*3+1] + a[2*3+0]*b[0*3+2];
 	c[0*3+1] = a[0*3+1]*b[0*3+0] + a[1*3+1]*b[0*3+1] + a[2*3+1]*b[0*3+2];
 	c[0*3+2] = a[0*3+2]*b[0*3+0] + a[1*3+2]*b[0*3+1] + a[2*3+2]*b[0*3+2];
@@ -112,6 +91,30 @@ unsigned int isola_mut_gcd(int a, int b){
 }
 
 
+/* void isola_mut_print_m4(float m[4*4]){
+
+	int i;
+
+
+	SDL_Log("\n");
+	for(i = 0;i<4;i++){
+		SDL_Log("%f,%f,%f,%f,\n",m[0*4+i],m[1*4+i],m[2*4+i],m[3*4+i]);
+	}
+	SDL_Log("\n");
+}
+
+
+void isola_mut_print_m3(float m[3*3]){
+
+	int i;
+
+
+	SDL_Log("\n");
+	for(i = 0;i<3;i++){
+		SDL_Log("%f,%f,%f,\n",m[0*3+i],m[1*3+i],m[2*3+i]);
+	}
+	SDL_Log("\n");
+} */
 
 
 /* Uint64 mut_rotl64(Uint64 x,unsigned char n){

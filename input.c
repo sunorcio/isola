@@ -3,7 +3,10 @@
 
 
 
-#include <SDL2/SDL.h>
+#include <stdlib.h>
+
+
+#include <SDL3/SDL.h>
 
 
 
@@ -25,16 +28,16 @@ static void isola_buildTextString(void);
 
 static int isola_keyNum;
 const unsigned char* isola_keyState;
-unsigned char isola_keyRepeat[SDL_NUM_SCANCODES];
+unsigned char isola_keyRepeat[SDL_SCANCODE_COUNT];
 
 
-void isola_inputClear(void){
+void isola_inputClear(SDL_Window* isola_window){
 
 	if (isola_keyState == 0) {
-		isola_keyState = SDL_GetKeyboardState(&isola_keyNum);
+		isola_keyState = (unsigned char*)SDL_GetKeyboardState(&isola_keyNum);
 	}
 
-	if (SDL_IsTextInputActive()) {SDL_StopTextInput();}
+	if (SDL_IsTextInputActive()) {SDL_StopTextInput(isola_window);}
 
 /* 	memset(keyRepeat,0,keyNum*sizeof(unsigned char)); */
 }
@@ -67,7 +70,8 @@ static void isola_buildTextString(void){
 }
 
 
-void isola_textEditStart(unsigned int textLength, char(* textLoad)[32]){
+void isola_textEditStart(unsigned int textLength, char(* textLoad)[32],
+		SDL_Window* isola_window){
 
 	if (isola_textEditing) {
 		return;
@@ -102,7 +106,7 @@ void isola_textEditStart(unsigned int textLength, char(* textLoad)[32]){
 	}
 
 
-	SDL_StartTextInput();
+	SDL_StartTextInput(isola_window);
 	isola_textEditing = 1;
 }
 
@@ -145,7 +149,7 @@ void isola_textEditPop(void){
 }
 
 
-void isola_textEditStop(void){
+void isola_textEditStop(SDL_Window* isola_window){
 
 	if (isola_textEditing) {
 		free(isola_textChars);
@@ -154,7 +158,7 @@ void isola_textEditStop(void){
 		return;
 	}
 
-	SDL_StopTextInput();
+	SDL_StopTextInput(isola_window);
 	isola_textEditing = 0;
 }
 

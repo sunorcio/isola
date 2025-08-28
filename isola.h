@@ -29,7 +29,9 @@
 
 
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
+/* #define SDL_MAIN_USE_CALLBACKS */
+/* #include <SDL3/SDL_main.h> */
 #include <GL/glew.h>
 
 
@@ -67,7 +69,7 @@ extern signed char isola_error_gl(void);
 
 
 
-extern SDL_GLContext* isola_context;
+extern SDL_GLContext isola_context;
 extern SDL_Window* isola_window;
 
 
@@ -116,7 +118,7 @@ struct ISOLA_window{
 }extern isola_info_window;
 
 
-/* dysplay modes for all availiable devices. retrieved with isolaGetDisplay() */
+/* display modes for all availiable devices. retrieved with isolaGetDisplay() */
 struct ISOLA_display{
 /* number of display modes for the id, access array with desired display id */
 	int* displayModeCount;
