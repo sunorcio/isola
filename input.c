@@ -37,7 +37,7 @@ void isola_inputClear(SDL_Window* isola_window){
 		isola_keyState = (unsigned char*)SDL_GetKeyboardState(&isola_keyNum);
 	}
 
-	if (SDL_IsTextInputActive()) {SDL_StopTextInput(isola_window);}
+	if (SDL_TextInputActive(isola_window)) {SDL_StopTextInput(isola_window);}
 
 /* 	memset(keyRepeat,0,keyNum*sizeof(unsigned char)); */
 }

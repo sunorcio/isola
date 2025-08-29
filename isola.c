@@ -162,7 +162,7 @@ static void isola_get_context(void){
 	glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE,
 			&isola_info_context.max_renderbufferSize);
 
-	isola_info_context.cpuCount = SDL_GetCPUCount();
+	isola_info_context.cpuCount = SDL_GetNumLogicalCPUCores();
 	isola_info_context.systemRAM = SDL_GetSystemRAM();
 	isola_info_context.cacheSize = SDL_GetCPUCacheLineSize();
 }
