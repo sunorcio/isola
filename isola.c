@@ -91,26 +91,23 @@ void isola_get_window(void){
 	isola_info_window.pixelHeight = (double)2./isola_info_window.height;
 
 	isola_info_window.flags = SDL_GetWindowFlags(isola_window);
-	isola_info_window.displayIndex = SDL_GetWindowDisplayIndex(isola_window);
-	SDL_GetWindowDisplayMode(isola_window, &isola_info_window.displayMode);
-	SDL_GetDesktopDisplayMode(isola_info_window.displayIndex,
-			&isola_info_window.desktopDisplayMode);
+	isola_info_window.displayIndex = SDL_GetDisplayForWindow(isola_window);
+	isola_info_window.displayMode = SDL_GetWindowFullscreenMode(isola_window);
+	isola_info_window.desktopDisplayMode = SDL_GetDesktopDisplayMode(isola_info_window.displayIndex);
 
 	glGetFloatv(GL_COLOR_CLEAR_VALUE,isola_info_window.clearColor);
 }
 
 
-void isola_get_display(void){
+void isola_get_displays(void){
 
-	int i,j;
-	int buffer;
-	SDL_DisplayID* displayIdList;
-	SDL_DisplayMode** displayModeList;
+/* 	int numDisplays,numDisplaymodes;
+	SDL_DisplayID* displayList;
+	SDL_DisplayMode** displaymodeList; */
 
-	displayIdList = SDL_GetDisplays(&buffer);
-	displayModeList = SDL_GetFullscreenDisplayModes(
-			isola_info_window.displayIndex, &buffer);
-	displayModeList[1].;
+/* 	displayList = SDL_GetDisplays(&numDisplays); */
+	isola_info_display.displaymodeList = SDL_GetFullscreenDisplayModes(
+			isola_info_window.displayIndex, &isola_info_display.numDisplaymodes);
 }
 
 
@@ -581,7 +578,7 @@ void isola_init(void){
 	isola_get_state();
 #endif
 	isola_get_window();
-	isola_get_display();
+	isola_get_displays();
 	SDL_GL_SetSwapInterval(ISOLA_VSYNC);
 }
 
@@ -599,8 +596,7 @@ void isola_quit(void){
 	fclose(isolaLog);
 #endif
 	free(isola_shaderSrc);
-	free(isola_info_display.displayModeCount);
-	free(isola_info_display.displayModes);
+	SDL_free(isola_info_display.displaymodeList);
 	SDL_GL_DestroyContext(isola_context);
 	SDL_DestroyWindow(isola_window);
 	SDL_Quit();

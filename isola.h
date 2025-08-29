@@ -111,20 +111,18 @@ struct ISOLA_window{
 	double xRatio, yRatio;
 	double pixelWidth, pixelHeight;
 	unsigned int flags;	/* see SDL_WindowFlags for a list of flags */
-	int displayIndex;
-	SDL_DisplayMode displayMode;
-	SDL_DisplayMode desktopDisplayMode;
+	SDL_DisplayID displayIndex;
+	const SDL_DisplayMode* displayMode;
+	const SDL_DisplayMode* desktopDisplayMode;
 	float clearColor[4];
 }extern isola_info_window;
 
 
-/* display modes for all availiable devices. retrieved with isolaGetDisplay() */
+/* initial display info
+ * TODO all displays info, update according to display events*/
 struct ISOLA_display{
-/* number of display modes for the id, access array with desired display id */
-	int* displayModeCount;
-/* contains ALL display modes, for specific display id, its modes range from
- * (sum of previous counts - 1) to (sum of previous counts + count - 1) */
-	SDL_DisplayMode* displayModes;
+	int numDisplaymodes;
+	SDL_DisplayMode** displaymodeList;
 }extern isola_info_display;
 
 
@@ -153,7 +151,7 @@ extern void isola_get_window(void);
 
 
 /* retrieve all availiable display information (isola_info_display) */
-extern void isola_get_display(void);
+extern void isola_get_displays(void);
 
 
 /* update currently enabled opengl state (isola_info_state) */
