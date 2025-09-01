@@ -3,9 +3,6 @@
 
 
 
-#include <stdlib.h>
-
-
 #include <SDL3/SDL.h>
 
 
@@ -87,7 +84,7 @@ unsigned int isola_mut_gcd(int a, int b){
 		b=a%b;
 		a=t;
 	}
-	return abs(a);
+	return SDL_abs(a);
 }
 
 

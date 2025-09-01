@@ -3,7 +3,6 @@
 
 
 
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -315,7 +314,7 @@ char* isola_shader_srcLoad(const char* shaderFile){
 	int length;
 	char* shaderSrc;
 
-	shaderSrc = calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
+	shaderSrc = SDL_calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
 	file = fopen(shaderFile, "a+");
 	fseek(file, 0, SEEK_END);
 	length = ftell(file);
@@ -421,8 +420,8 @@ void isola_init(void){
 
 	int contextFlags = 0;
 
-	isola_shaderSrc = calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
-	if (!isola_shaderSrc) {SDL_Log("Failed allocation");exit(EXIT_FAILURE);}
+	isola_shaderSrc = SDL_calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
+/* 	if (!isola_shaderSrc) {SDL_Log("Failed allocation");SDL_assert(0);} */
 
 #if ISOLA_CONFIG_LOG
 	isolaLog = freopen("isola.log","a+",stderr);
@@ -595,7 +594,7 @@ void isola_quit(void){
 #if ISOLA_CONFIG_LOG
 	fclose(isolaLog);
 #endif
-	free(isola_shaderSrc);
+	SDL_free(isola_shaderSrc);
 	SDL_free(isola_info_display.displaymodeList);
 	SDL_GL_DestroyContext(isola_context);
 	SDL_DestroyWindow(isola_window);

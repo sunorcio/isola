@@ -3,9 +3,6 @@
 
 
 
-#include <stdlib.h>
-
-
 #include <SDL3/SDL.h>
 
 
@@ -88,9 +85,9 @@ void isola_textEditStart(unsigned int textLength, char(* textLoad)[32],
 
 
 	isola_textCharLength = textLength;
-	isola_textChars = calloc(sizeof(char)*TEXT_CHAR_SIZE,
+	isola_textChars = SDL_calloc(sizeof(char)*TEXT_CHAR_SIZE,
 			isola_textCharLength);
-	isola_textString = calloc(sizeof(char),
+	isola_textString = SDL_calloc(sizeof(char),
 			TEXT_CHAR_SIZE*isola_textCharLength);
 	isola_textCursor = 0;
 
@@ -152,8 +149,8 @@ void isola_textEditPop(void){
 void isola_textEditStop(SDL_Window* isola_window){
 
 	if (isola_textEditing) {
-		free(isola_textChars);
-		free(isola_textString);
+		SDL_free(isola_textChars);
+		SDL_free(isola_textString);
 	}else {
 		return;
 	}
