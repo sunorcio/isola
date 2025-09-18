@@ -85,10 +85,10 @@ void isola_textEditStart(unsigned int textLength, char(* textLoad)[32],
 
 
 	isola_textCharLength = textLength;
-	isola_textChars = SDL_calloc(sizeof(char)*TEXT_CHAR_SIZE,
-			isola_textCharLength);
-	isola_textString = SDL_calloc(sizeof(char),
-			TEXT_CHAR_SIZE*isola_textCharLength);
+	isola_textChars = SDL_calloc(isola_textCharLength,
+			TEXT_CHAR_SIZE*sizeof(char));
+	isola_textString = SDL_calloc(isola_textCharLength,
+			TEXT_CHAR_SIZE*sizeof(char));
 	isola_textCursor = 0;
 
 
