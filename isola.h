@@ -158,7 +158,7 @@ extern void isola_get_state(void);
 
 
 /* sets opengl state to match an ISOLA_state snapshot */
-extern void isola_set_state(ISOLA_state state);
+extern void isola_set_state(enum ISOLA_state state);
 
 
 
