@@ -585,7 +585,7 @@ void isola_init(void){
 void isola_quit(void){
 
 #ifdef ISOLA_DBG
-	if( isola_error_gl() || isola_error_sdl(-1) ){
+	if( isola_error_gl() || isola_error_sdl(0) ){
 		SDL_Log("UNCAUGHT ERRORS LEFT");
 	}
 #endif

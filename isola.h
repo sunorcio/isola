@@ -61,9 +61,9 @@ extern void isola_quit(void);
 #endif
 
 
-/* print & clear sdl errors, returns -1 if error, else 0 */
+/* print first SDL error & clear errors, returns -1 if error, else 0 */
 extern signed char isola_error_sdl(int SDLfunction);
-/* print & clear opengl errors, returns -1 if error, else 0 */
+/* print first openGL error & clear errors, returns -1 if error, else 0 */
 extern signed char isola_error_gl(void);
 
 
@@ -126,7 +126,8 @@ struct ISOLA_display{
 }extern isola_info_display;
 
 
-typedef enum {
+/* glEnable information. meant for quick debugging. see isola_get_state() */
+enum ISOLA_state{
 	ISOLA_STATE_NONE = 0x00000000,
 	ISOLA_STATE_BLEND = 0x00000001,
 	ISOLA_STATE_COLORLOGIC = 0x00000002,
@@ -141,9 +142,7 @@ typedef enum {
 	ISOLA_STATE_POLYGONSMOOTH = 0x00000400,
 	ISOLA_STATE_POINTSIZEPROGRAM = 0x00000800,
 	ISOLA_STATE_MULTISAMPLE = 0x00001000
-}ISOLA_state;
-/* glEnable information. meant for quick debugging. see isola_get_state() */
-extern ISOLA_state isola_info_state;
+}extern isola_info_state;
 
 
 /* update window information (isola_info_window) */
