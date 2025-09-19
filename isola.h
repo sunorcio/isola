@@ -53,7 +53,7 @@ extern void isola_quit(void);
 	}																																						\
 	x;																																					\
 	if(isola_error_gl()){																												\
-		SDL_Log(" ^- in line : %d, function : %s, file : %s\n",										\
+		SDL_Log(" ^- in line : %d, function : %s, file : %s\n\n",										\
 				__LINE__,__FUNCTION__,__FILE__);																			\
 	}
 #else
