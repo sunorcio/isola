@@ -42,7 +42,7 @@ static void debugCallback(unsigned int source, unsigned int type,
 		unsigned int id, unsigned int severity, int length,
 		const char* message, const void* userParam){
 
-	SDL_Log("GL callback: %s\n\n",message);
+	SDL_Log("GL callback: %s\n\n\n",message);
 	return;
 }
  #endif
