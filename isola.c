@@ -368,17 +368,17 @@ static void isola_contextPromt(void){
 	int maj, min, flags, prof;
 
 	SDL_Log("\n");
-	SDL_Log("Vendor        : %s", glGetString(GL_VENDOR));
-	SDL_Log("Renderer      : %s", glGetString(GL_RENDERER));
-	SDL_Log("Version       : %s", glGetString(GL_VERSION));
-	SDL_Log("GLSL          : %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
-	SDL_Log("Platform      : %s", SDL_GetPlatform());
+	SDL_Log("Vendor          : %s", glGetString(GL_VENDOR));
+	SDL_Log("Renderer        : %s", glGetString(GL_RENDERER));
+	SDL_Log("Version         : %s", glGetString(GL_VERSION));
+	SDL_Log("GLSL            : %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	SDL_Log("Platform        : %s", SDL_GetPlatform());
 
 
 	SDL_Log("\n");
 	SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &maj);
 	SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &min);
-	SDL_Log("Context(SDL)  : %d.%d", maj, min);
+	SDL_Log("GL Context(SDL) : %d.%d", maj, min);
 
 	SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &prof);
 	if(prof == GL_CONTEXT_CORE_PROFILE_BIT){
@@ -397,7 +397,7 @@ static void isola_contextPromt(void){
 	SDL_Log("\n");
 	glGetIntegerv(GL_MAJOR_VERSION, &maj);
 	glGetIntegerv(GL_MINOR_VERSION, &min);
-	SDL_Log("Context(GL)   : %d.%d", maj, min);
+	SDL_Log("GL Context(GL)  : %d.%d", maj, min);
 
 	glGetIntegerv(GL_CONTEXT_PROFILE_MASK, &prof);
 	if(prof == GL_CONTEXT_CORE_PROFILE_BIT){
@@ -413,7 +413,7 @@ static void isola_contextPromt(void){
 		SDL_Log(" non-debug context");
 	}
 
-	SDL_Log("\n\n\n");
+	SDL_Log("\n\n\n\n");
 }
 
 
