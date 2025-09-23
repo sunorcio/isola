@@ -48,12 +48,12 @@ extern void isola_quit(void);
 #ifdef ISOLA_DBG
  #define ISOLA_GLDBG_(x)                                                      \
 	if(isola_error_gl()){                                                       \
-		SDL_Log(" UNEXPECTED ERROR, line : %d, function : %s, file : %s",         \
+		SDL_Log(" UNEXPECTED ERROR,  line: %d,    function: %s,    file: %s",  \
 				__LINE__,__FUNCTION__,__FILE__);                                      \
 	}                                                                           \
 	x;                                                                          \
 	if(isola_error_gl()){                                                       \
-		SDL_Log(" ^- in line : %d, function : %s, file : %s\n\n",                 \
+		SDL_Log(" ^- in  line: %d,    function: %s,    file: %s\n\n\n",           \
 				__LINE__,__FUNCTION__,__FILE__);                                      \
 	}
 #else
