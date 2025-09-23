@@ -53,8 +53,8 @@ extern void isola_quit(void);
 	}                                                                           \
 	x;                                                                          \
 	if(isola_error_gl()){                                                       \
-		SDL_Log(" ^- in  line: %d,    function: %s,    file: %s\n arguments:"     \
-				ISOLA_LIT_STR_(x)"\n\n\n", __LINE__, __FUNCTION__, __FILE__);         \
+		SDL_Log(" ^- in  line: %d,    function: %s,    file: %s\n arguments: '"   \
+				ISOLA_LIT_STR_(x)"'\n\n\n", __LINE__, __FUNCTION__, __FILE__);        \
 	}
 #else
  #define ISOLA_GLDBG_(x) x;
