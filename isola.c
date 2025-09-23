@@ -367,7 +367,7 @@ static void isola_contextPromt(void){
 
 	int maj, min, flags, prof;
 
-	SDL_Log("\n");
+	SDL_Log("\n\n\n");
 	SDL_Log("Vendor          : %s", glGetString(GL_VENDOR));
 	SDL_Log("Renderer        : %s", glGetString(GL_RENDERER));
 	SDL_Log("Version         : %s", glGetString(GL_VERSION));
