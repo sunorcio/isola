@@ -42,7 +42,7 @@ static void debugCallback(unsigned int source, unsigned int type,
 		unsigned int id, unsigned int severity, int length,
 		const char* message, const void* userParam){
 
-	SDL_Log("openGL debug callback: %s\n\n",message);
+	SDL_Log("GL callback: %s\n\n",message);
 	return;
 }
  #endif
@@ -372,6 +372,7 @@ static void isola_contextPromt(void){
 	SDL_Log("Renderer      : %s", glGetString(GL_RENDERER));
 	SDL_Log("Version       : %s", glGetString(GL_VERSION));
 	SDL_Log("GLSL          : %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	SDL_Log("Platform      : %s", SDL_GetPlatform());
 
 
 	SDL_Log("\n");

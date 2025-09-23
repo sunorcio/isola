@@ -11,7 +11,7 @@
  #error ISOLA_GAMEPAD: invalid definition
 #endif
 #if defined(ISOLA_MSANTIALIASING) && (ISOLA_MSANTIALIASING < 0                \
-	|| ISOLA_MSANTIALIASING > 16 || ISOLA_MSANTIALIASING%2)
+		|| ISOLA_MSANTIALIASING > 16 || ISOLA_MSANTIALIASING%2)
  #error ISOLA_MSANTIALIASING: invalid definition
 #endif
 #if defined(ISOLA_VSYNC) && (ISOLA_VSYNC != 0 && ISOLA_VSYNC != 1)
@@ -46,15 +46,15 @@ extern void isola_quit(void);
 
 
 #ifdef ISOLA_DBG
- #define ISOLA_GLDBG_(x)																											\
-	if(isola_error_gl()){																												\
-		SDL_Log(" UNEXPECTED ERROR, line : %d, function : %s, file : %s",					\
-				__LINE__,__FUNCTION__,__FILE__);																			\
-	}																																						\
-	x;																																					\
-	if(isola_error_gl()){																												\
-		SDL_Log(" ^- in line : %d, function : %s, file : %s\n\n",										\
-				__LINE__,__FUNCTION__,__FILE__);																			\
+ #define ISOLA_GLDBG_(x)                                                      \
+	if(isola_error_gl()){                                                       \
+		SDL_Log(" UNEXPECTED ERROR, line : %d, function : %s, file : %s",         \
+				__LINE__,__FUNCTION__,__FILE__);                                      \
+	}                                                                           \
+	x;                                                                          \
+	if(isola_error_gl()){                                                       \
+		SDL_Log(" ^- in line : %d, function : %s, file : %s\n\n",                 \
+				__LINE__,__FUNCTION__,__FILE__);                                      \
 	}
 #else
  #define ISOLA_GLDBG_(x) x;
@@ -80,23 +80,23 @@ struct ISOLA_context{
 	int fbdef_blueSize;
 	int fbdef_alphaSize;
 	int fbdef_depthSize;
-	int fbdef_stencilSize;	/* GL_LINEAR or GL_SRGB */
+	int fbdef_stencilSize; /* GL_LINEAR or GL_SRGB */
 	int fbdef_colorEncoding;
 	int fbdef_doubleBuffer;
 
 	int max_vertices;
 	int max_indices;
-	int max_attrib;	/* at least 16 */
-	int max_vertexUniforms;	/* at least 1024 */
-	int max_fragmentUniforms;	/* at least 1024 */
-	int max_texCombinedUnits;	/* at least 48 */
-	int max_texUnits;	/* at least 16 */
-	int max_texSize;	/* at least 1024 */
-	int max_3dTexSize;	/* at least 64 */
-	int max_cubeTexSize;	/* at least 1024 */
-	int max_drawBuffers;	/* at least 8 */
-	int max_colorAttachments;	/* at least 8 */
-	int max_renderbufferSize;	/* at least 8 */
+	int max_attrib; /* at least 16 */
+	int max_vertexUniforms; /* at least 1024 */
+	int max_fragmentUniforms; /* at least 1024 */
+	int max_texCombinedUnits; /* at least 48 */
+	int max_texUnits; /* at least 16 */
+	int max_texSize; /* at least 1024 */
+	int max_3dTexSize; /* at least 64 */
+	int max_cubeTexSize; /* at least 1024 */
+	int max_drawBuffers; /* at least 8 */
+	int max_colorAttachments; /* at least 8 */
+	int max_renderbufferSize; /* at least 8 */
 
 	int cpuCount;
 	int systemRAM;
@@ -110,7 +110,7 @@ struct ISOLA_window{
 	int width, height;
 	double xRatio, yRatio;
 	double pixelWidth, pixelHeight;
-	unsigned int flags;	/* see SDL_WindowFlags for a list of flags */
+	unsigned int flags; /* see SDL_WindowFlags for a list of flags */
 	SDL_DisplayID displayIndex;
 	const SDL_DisplayMode* displayMode;
 	const SDL_DisplayMode* desktopDisplayMode;
