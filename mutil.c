@@ -84,6 +84,7 @@ unsigned int isola_mut_gcd(int a, int b){
 		b=a%b;
 		a=t;
 	}
+
 	return SDL_abs(a);
 }
 

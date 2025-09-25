@@ -4,7 +4,6 @@
 
 
 #include <stdio.h>
-#include <string.h>
 
 
 
@@ -245,16 +244,23 @@ unsigned int isola_shader_compile(const char* shaderFile,
 	fseek(f, 0, SEEK_END);
 	l = ftell(f);
 	if(!l){
-		SDL_Log("Shader file missing or empty\n");
-		fclose(f);return 0;}
+		SDL_Log("isola_shader_compile: shader file missing or empty");
+		fclose(f);
+		return 0;
+	}
 	if(l>ISOLA_GLSLCHARMAX){
-		SDL_Log("Shader exceeds character limit (defined in isola.h)\n");
-		fclose(f);return 0;
+		SDL_Log("isola_shader_compile: shader exceeds character limit "
+				"(defined in isola_config.h)");
+		fclose(f);
+		return 0;
 	}
 	memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
 	fseek(f, 0, SEEK_SET);
 	fread(isola_shaderSrc, 1, l, f);
 	fclose(f);
+
+/* 	TODO */
+	SDL_Log("%s",isola_shaderSrc);
 		
 	shaderObject = glCreateShader(shaderType);
 	glShaderSource(shaderObject,1,(const char**)&isola_shaderSrc,0);
@@ -320,11 +326,13 @@ char* isola_shader_srcLoad(const char* shaderFile){
 	length = ftell(file);
 	if(!length){
 		SDL_Log("Shader file missing or empty\n");
-		fclose(file);return 0;
+		fclose(file);
+		return 0;
 	}
 	if(length>ISOLA_GLSLCHARMAX){
 		SDL_Log("Shader exceeds character limit (defined in isola.h)\n");
-		fclose(file);return 0;
+		fclose(file);
+		return 0;
 	}
 	memset(shaderSrc, 0, ISOLA_GLSLCHARMAX);
 	fseek(file, 0, SEEK_SET);
@@ -343,9 +351,16 @@ unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 	f = fopen(shaderFile, "a+");
 	fseek(f, 0, SEEK_END);
 	l = ftell(f);
-	if(!l){SDL_Log("Shader file missing or empty\n");fclose(f);return 0;}
-	if(l>ISOLA_GLSLCHARMAX){SDL_Log("Shader exceeds character limit \
-			(defined in isola.h)\n");fclose(f);return 0;}
+	if(!l){
+		SDL_Log("Shader file missing or empty\n");
+		fclose(f);
+		return 0;
+	}
+	if(l>ISOLA_GLSLCHARMAX){
+		SDL_Log("Shader exceeds character limit (defined in isola.h)\n");
+		fclose(f);
+		return 0;
+	}
 	memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
 	fseek(f, 0, SEEK_SET);
 	fread(isola_shaderSrc, 1, l, f);
@@ -365,17 +380,25 @@ unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 
 static void isola_contextPromt(void){
 
-	int maj, min, flags, prof;
+	int vers, maj, min, prof, flags;
 
 	SDL_Log("\n\n\n");
 	SDL_Log("Vendor          : %s", glGetString(GL_VENDOR));
 	SDL_Log("Renderer        : %s", glGetString(GL_RENDERER));
-	SDL_Log("Version         : %s", glGetString(GL_VERSION));
+	SDL_Log("GL Version      : %s", glGetString(GL_VERSION));
 	SDL_Log("GLSL            : %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
-	SDL_Log("Platform        : %s", SDL_GetPlatform());
-
-
 	SDL_Log("\n");
+
+	vers = SDL_GetVersion();
+	SDL_Log("Platform        : %s", SDL_GetPlatform());
+	SDL_Log("SDL (revision)  : %s", SDL_GetRevision());
+	SDL_Log("SDL (header)    : %d.%d.%d", SDL_VERSIONNUM_MAJOR(SDL_VERSION),
+			SDL_VERSIONNUM_MINOR(SDL_VERSION),SDL_VERSIONNUM_MICRO(SDL_VERSION));
+	SDL_Log("SDL (shared)    : %d.%d.%d", SDL_VERSIONNUM_MAJOR(vers),
+			SDL_VERSIONNUM_MINOR(vers),SDL_VERSIONNUM_MICRO(vers));
+	SDL_Log("\n");
+
+
 	SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &maj);
 	SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &min);
 	SDL_Log("GL Context(SDL) : %d.%d", maj, min);
@@ -417,19 +440,22 @@ static void isola_contextPromt(void){
 }
 
 
-void isola_init(void){
+unsigned char isola_init(void){
 
 	int contextFlags = 0;
 
 	isola_shaderSrc = SDL_calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
-/* 	if (!isola_shaderSrc) {SDL_Log("Failed allocation");SDL_assert(0);} */
-
-#if ISOLA_CONFIG_LOG
-	isolaLog = freopen("isola.log","a+",stderr);
-#endif
+	if(!isola_shaderSrc) {
+		SDL_Log("isola_init: failed shader buffer allocation");
+		return 0;
+	}
 	
-	SDL_Init( SDL_INIT_VIDEO | ISOLA_GAMEPAD*(SDL_INIT_GAMEPAD
-			| SDL_INIT_HAPTIC) );
+	if(!SDL_Init( SDL_INIT_VIDEO | ISOLA_GAMEPAD*(SDL_INIT_GAMEPAD
+			| SDL_INIT_HAPTIC) )){
+		SDL_Log("isola_init: failed SDL initialization");
+		isola_error_sdl(0);
+		return 0;
+	}
 
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ISOLA_MAJOR_VERSION);
@@ -482,9 +508,9 @@ void isola_init(void){
 			SDL_WINDOW_OPENGL );
 
 	if (!isola_window) {
-		isola_error_sdl(-1);
-		SDL_Log("window creation failed, using default sdl hints");
-		SDL_Log("\n");
+		SDL_Log("isola_init: failed window creation. "
+				"trying again using default sdl hints");
+		isola_error_sdl(0);
 
 		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 3);
 		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 3);
@@ -509,12 +535,18 @@ void isola_init(void){
 				ISOLA_WINDOWWIDTH, ISOLA_WINDOWHEIGHT,
 				SDL_WINDOW_OPENGL );
 		if (!isola_window) {
-			SDL_Log("window creation failed (again)");
-			SDL_Log("\n");
+			SDL_Log("isola_init: failed window creation a second time");
+			isola_error_sdl(0);
+			return 0;
 		}
 	}
 
 	isola_context = SDL_GL_CreateContext(isola_window);
+	if (!isola_context) {
+		SDL_Log("isola_init: failed GL context creation");
+		isola_error_sdl(0);
+		return 0;
+	}
 	SDL_GL_MakeCurrent(isola_window, isola_context);
 
 
@@ -580,6 +612,15 @@ void isola_init(void){
 	isola_get_window();
 	isola_get_displays();
 	SDL_GL_SetSwapInterval(ISOLA_VSYNC);
+
+
+#ifdef ISOLA_DBG
+	if( isola_error_gl() || isola_error_sdl(0) ){
+		SDL_Log("UNCAUGHT ISOLA INITIALIZATION ERRORS");
+	}
+#endif
+
+	return 1;
 }
 
 
@@ -587,14 +628,11 @@ void isola_quit(void){
 
 #ifdef ISOLA_DBG
 	if( isola_error_gl() || isola_error_sdl(0) ){
-		SDL_Log("UNCAUGHT ERRORS LEFT");
+		SDL_Log("UNCAUGHT APPLICATION ERRORS");
 	}
 #endif
 
 
-#if ISOLA_CONFIG_LOG
-	fclose(isolaLog);
-#endif
 	SDL_free(isola_shaderSrc);
 	SDL_free(isola_info_display.displaymodeList);
 	SDL_GL_DestroyContext(isola_context);
