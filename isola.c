@@ -3,11 +3,6 @@
 
 
 
-#include <stdio.h>
-
-
-
-
 static char* isola_shaderSrc;
 static FILE* isola_log;
 static void isola_get_context(void);
@@ -237,10 +232,11 @@ unsigned int isola_shader_compile(const char* shaderFile,
 		unsigned int shaderType){
 
 	unsigned int shaderObject;
-	FILE* f;
 	int l;
+	size_t s;
+/* 	FILE* f; */
 
-	f = fopen(shaderFile, "a+");
+/* 	f = fopen(shaderFile, "a+");
 	fseek(f, 0, SEEK_END);
 	l = ftell(f);
 	if(!l){
@@ -257,7 +253,8 @@ unsigned int isola_shader_compile(const char* shaderFile,
 	memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
 	fseek(f, 0, SEEK_SET);
 	fread(isola_shaderSrc, 1, l, f);
-	fclose(f);
+	fclose(f); */
+	isola_shaderSrc = SDL_LoadFile(shaderFile,&s);
 
 /* 	TODO */
 	SDL_Log("%s",isola_shaderSrc);
