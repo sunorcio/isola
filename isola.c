@@ -240,6 +240,7 @@ unsigned int isola_shader_compile(const char* shaderFile,
 	if(!data){
 		SDL_Log("isola_shader_compile: failed loading file '%s'",shaderFile);
 		isola_error_sdl(0);
+		SDL_Log("\n\n");
 		return 0;
 	}else if(size>ISOLA_GLSLCHARMAX){
 		SDL_Log("isola_shader_compile: shader exceeds character limit "
@@ -333,6 +334,7 @@ char* isola_shader_srcLoad(const char* shaderFile){
 	if(!shaderSrc){
 		SDL_Log("isola_shader_srcLoad: failed loading file '%s'",shaderFile);
 		isola_error_sdl(0);
+		SDL_Log("\n\n");
 		return 0;
 	}else if(size>ISOLA_GLSLCHARMAX){
 		SDL_Log("isola_shader_srcLoad: shader exceeds character limit "
@@ -357,6 +359,7 @@ unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 	if(!data){
 		SDL_Log("isola_shader_srcCompare: failed loading file '%s'",shaderFile);
 		isola_error_sdl(0);
+		SDL_Log("\n\n");
 		return 0;
 	}else if(size>ISOLA_GLSLCHARMAX){
 		SDL_Log("isola_shader_srcCompare: shader exceeds character limit "
@@ -461,6 +464,7 @@ unsigned char isola_init(void){
 			| SDL_INIT_HAPTIC) )){
 		SDL_Log("isola_init: failed SDL initialization");
 		isola_error_sdl(0);
+		SDL_Log("\n\n");
 		return 0;
 	}
 
@@ -518,6 +522,7 @@ unsigned char isola_init(void){
 		SDL_Log("isola_init: failed window creation. "
 				"trying again using default sdl hints");
 		isola_error_sdl(0);
+		SDL_Log("\n\n");
 
 		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 3);
 		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 3);
@@ -544,6 +549,7 @@ unsigned char isola_init(void){
 		if (!isola_window) {
 			SDL_Log("isola_init: failed window creation a second time");
 			isola_error_sdl(0);
+			SDL_Log("\n\n");
 			return 0;
 		}
 	}
@@ -552,6 +558,7 @@ unsigned char isola_init(void){
 	if (!isola_context) {
 		SDL_Log("isola_init: failed GL context creation");
 		isola_error_sdl(0);
+		SDL_Log("\n\n");
 		return 0;
 	}
 	SDL_GL_MakeCurrent(isola_window, isola_context);
