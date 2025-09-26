@@ -4,7 +4,6 @@
 
 
 static char* isola_shaderSrc;
-static FILE* isola_log;
 static void isola_get_context(void);
 static void isola_contextPromt(void);
 
@@ -59,7 +58,6 @@ enum ISOLA_state isola_info_state = {0};
 
 
 static char* isola_shaderSrc = {0};
-static FILE* isola_log = {0};
 
 
 
