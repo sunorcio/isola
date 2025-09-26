@@ -312,7 +312,7 @@ unsigned int isola_shader_buildProgram(const char* vertShaderFile,
 
 char* isola_shader_srcLoad(const char* shaderFile){
 
-	FILE* file;
+/* 	FILE* file; */
 	int length;
 	char* shaderSrc;
 
@@ -342,7 +342,7 @@ char* isola_shader_srcLoad(const char* shaderFile){
 unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 
 	int l;
-	FILE* f;
+/* 	FILE* f; */
 
 /* 	f = fopen(shaderFile, "a+");
 	fseek(f, 0, SEEK_END);
