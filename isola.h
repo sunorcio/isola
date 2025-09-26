@@ -35,6 +35,9 @@
 #include <GL/glew.h>
 
 
+#include "misc.h"
+
+
 
 
 /* extended replacement for SDL_Init() */ 

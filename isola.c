@@ -254,6 +254,7 @@ unsigned int isola_shader_compile(const char* shaderFile,
 	fread(isola_shaderSrc, 1, l, f);
 	fclose(f); */
 	p = SDL_LoadFile(shaderFile,&s);
+	memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
 	memcpy(isola_shaderSrc,p,s);
 
 /* 	TODO */
