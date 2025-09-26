@@ -163,6 +163,7 @@ void isola_get_state(void){
 
 	int state = {0};
 
+
 	isola_info_state = 0x0000;
 	glGetIntegerv(GL_BLEND, &state);
 	isola_info_state = (isola_info_state | state*ISOLA_STATE_BLEND);
@@ -230,49 +231,48 @@ unsigned int isola_shader_compile(const char* shaderFile,
 		unsigned int shaderType){
 
 	unsigned int shaderObject;
-	int l;
-	size_t s;
-	char* p;
-/* 	FILE* f; */
+	GLint temp;
+	char* data;
+	size_t size;
 
-/* 	f = fopen(shaderFile, "a+");
-	fseek(f, 0, SEEK_END);
-	l = ftell(f);
-	if(!l){
-		SDL_Log("isola_shader_compile: shader file missing or empty");
-		fclose(f);
+
+	data = SDL_LoadFile(shaderFile,&size);
+	if(!data){
+		SDL_Log("isola_shader_compile: failed loading file '%s'",shaderFile);
+		isola_error_sdl(0);
 		return 0;
-	}
-	if(l>ISOLA_GLSLCHARMAX){
+	}else if(size>ISOLA_GLSLCHARMAX){
 		SDL_Log("isola_shader_compile: shader exceeds character limit "
-				"(defined in isola_config.h)");
-		fclose(f);
+				"(defined as ISOLA_GLSLCHARMAX in isola_config.h)\n"
+				"current limit: %d\n""requested file: %lu\n\n\n",
+				ISOLA_GLSLCHARMAX,size);
+		SDL_free(data);
 		return 0;
 	}
-	memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
-	fseek(f, 0, SEEK_SET);
-	fread(isola_shaderSrc, 1, l, f);
-	fclose(f); */
-	p = SDL_LoadFile(shaderFile,&s);
-	memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
-	memcpy(isola_shaderSrc,p,s);
 
-/* 	TODO */
-	SDL_Log("###SHADER START###");
-	SDL_Log("%s",isola_shaderSrc);
-	SDL_Log("###SHADER END###");
-		
+	SDL_memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
+	SDL_memcpy(isola_shaderSrc,data,size);
+
+
 	shaderObject = glCreateShader(shaderType);
 	glShaderSource(shaderObject,1,(const char**)&isola_shaderSrc,0);
 	glCompileShader(shaderObject);
 
 #ifdef ISOLA_DBG
-	glGetShaderiv(shaderObject, GL_COMPILE_STATUS, &l);
-	if(!l){
-		glGetShaderiv(shaderObject, GL_INFO_LOG_LENGTH, &l);
-		glGetShaderInfoLog(shaderObject, l, &l, isola_shaderSrc);
-		SDL_Log("Compilation failed  :  %s\n\n",isola_shaderSrc);
+	glGetShaderiv(shaderObject, GL_COMPILE_STATUS, &temp);
+	if(!temp){
+		glGetShaderiv(shaderObject, GL_INFO_LOG_LENGTH, &temp);
+		glGetShaderInfoLog(shaderObject, temp, &temp, isola_shaderSrc);
+		isola_error_gl();
+		SDL_Log("isola_shader_compile: failed '%s' compilation\n"
+				"log: %s\n\n\n",shaderFile,isola_shaderSrc);
 		return 0;
+	}
+	glGetShaderiv(shaderObject, GL_INFO_LOG_LENGTH, &temp);
+	if(temp){
+		glGetShaderInfoLog(shaderObject, temp, &temp, isola_shaderSrc);
+		SDL_Log("isola_shader_compile: completed '%s' compilation\n"
+				"log: %s\n\n\n",shaderFile,isola_shaderSrc);
 	}
 #endif
 
@@ -285,7 +285,8 @@ unsigned int isola_shader_buildProgram(const char* vertShaderFile,
 
 	unsigned int sp;
 	unsigned int vs, fs;
-	int length;
+	GLint temp;
+
 
 	sp = glCreateProgram();
 	vs = isola_shader_compile(vertShaderFile,GL_VERTEX_SHADER);
@@ -296,12 +297,20 @@ unsigned int isola_shader_buildProgram(const char* vertShaderFile,
 	glLinkProgram(sp);
 
 #ifdef ISOLA_DBG
-	glGetProgramiv(sp, GL_LINK_STATUS, &length);
-	if(!length){
-		glGetProgramiv(sp, GL_INFO_LOG_LENGTH, &length);
-		glGetProgramInfoLog(sp, length, &length, isola_shaderSrc);
-		SDL_Log("Compilation failed  :  %s\n\n",isola_shaderSrc);
+	glGetProgramiv(sp, GL_LINK_STATUS, &temp);
+	if(!temp){
+		glGetProgramiv(sp, GL_INFO_LOG_LENGTH, &temp);
+		glGetProgramInfoLog(sp, temp, &temp, isola_shaderSrc);
+		isola_error_gl();
+		SDL_Log("isola_shader_buildProgram: failed to link '%s', '%s'\n"
+				"log: %s\n\n\n",vertShaderFile,fragShaderFile,isola_shaderSrc);
 		return 0;
+	}
+	glGetProgramiv(sp, GL_INFO_LOG_LENGTH, &temp);
+	if(temp){
+		glGetProgramInfoLog(sp, temp, &temp, isola_shaderSrc);
+		SDL_Log("isola_shader_buildProgram: finished linking '%s', '%s'\n"
+				"log: %s\n\n\n",vertShaderFile,fragShaderFile,isola_shaderSrc);
 	}
 #endif
 
@@ -316,28 +325,23 @@ unsigned int isola_shader_buildProgram(const char* vertShaderFile,
 
 char* isola_shader_srcLoad(const char* shaderFile){
 
-/* 	FILE* file; */
-	int length;
 	char* shaderSrc;
+	size_t size;
 
-/* 	shaderSrc = SDL_calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
-	file = fopen(shaderFile, "a+");
-	fseek(file, 0, SEEK_END);
-	length = ftell(file);
-	if(!length){
-		SDL_Log("Shader file missing or empty\n");
-		fclose(file);
+
+	shaderSrc = SDL_LoadFile(shaderFile,&size);
+	if(!shaderSrc){
+		SDL_Log("isola_shader_srcLoad: failed loading file '%s'",shaderFile);
+		isola_error_sdl(0);
+		return 0;
+	}else if(size>ISOLA_GLSLCHARMAX){
+		SDL_Log("isola_shader_srcLoad: shader exceeds character limit "
+				"(defined as ISOLA_GLSLCHARMAX in isola_config.h)\n"
+				"current limit: %d\n""requested file: %lu\n\n\n",
+				ISOLA_GLSLCHARMAX,size);
+		SDL_free(shaderSrc);
 		return 0;
 	}
-	if(length>ISOLA_GLSLCHARMAX){
-		SDL_Log("Shader exceeds character limit (defined in isola.h)\n");
-		fclose(file);
-		return 0;
-	}
-	memset(shaderSrc, 0, ISOLA_GLSLCHARMAX);
-	fseek(file, 0, SEEK_SET);
-	(void)fread(shaderSrc, 1, length, file);
-	fclose(file); */
 
 	return shaderSrc;
 }
@@ -345,30 +349,31 @@ char* isola_shader_srcLoad(const char* shaderFile){
 
 unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 
-	int l;
-/* 	FILE* f; */
+	char* data;
+	size_t size;
 
-/* 	f = fopen(shaderFile, "a+");
-	fseek(f, 0, SEEK_END);
-	l = ftell(f);
-	if(!l){
-		SDL_Log("Shader file missing or empty\n");
-		fclose(f);
+
+	data = SDL_LoadFile(shaderFile,&size);
+	if(!data){
+		SDL_Log("isola_shader_srcCompare: failed loading file '%s'",shaderFile);
+		isola_error_sdl(0);
+		return 0;
+	}else if(size>ISOLA_GLSLCHARMAX){
+		SDL_Log("isola_shader_srcCompare: shader exceeds character limit "
+				"(defined as ISOLA_GLSLCHARMAX in isola_config.h)\n"
+				"current limit: %d\n""requested file: %lu\n\n\n",
+				ISOLA_GLSLCHARMAX,size);
+		SDL_free(data);
 		return 0;
 	}
-	if(l>ISOLA_GLSLCHARMAX){
-		SDL_Log("Shader exceeds character limit (defined in isola.h)\n");
-		fclose(f);
-		return 0;
-	}
-	memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
-	fseek(f, 0, SEEK_SET);
-	fread(isola_shaderSrc, 1, l, f);
-	fclose(f); */
+
+	SDL_memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
+	SDL_memcpy(isola_shaderSrc,data,size);
 	
-	if(strcmp(shaderSrc, isola_shaderSrc)){
-		memset(shaderSrc, 0, ISOLA_GLSLCHARMAX);
-		memcpy(shaderSrc, isola_shaderSrc, l);
+
+	if(SDL_strcmp(shaderSrc, isola_shaderSrc)){
+		SDL_memset(shaderSrc, 0, ISOLA_GLSLCHARMAX);
+		SDL_memcpy(shaderSrc, isola_shaderSrc, size);
 		return 1;
 	}
 
@@ -381,6 +386,7 @@ unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 static void isola_contextPromt(void){
 
 	int vers, maj, min, prof, flags;
+
 
 	SDL_Log("\n\n\n");
 	SDL_Log("Vendor          : %s", glGetString(GL_VENDOR));
@@ -443,6 +449,7 @@ static void isola_contextPromt(void){
 unsigned char isola_init(void){
 
 	int contextFlags = 0;
+
 
 	isola_shaderSrc = SDL_calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
 	if(!isola_shaderSrc) {

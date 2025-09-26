@@ -63,9 +63,12 @@ extern void isola_quit(void);
 #endif
 
 
-/* print first SDL error & clear errors, returns -1 if error, else 0 */
+/* print last SDL error & clear errors. */
+/* returns -1 if error, else 0. */
+/* feed 0 to always try to print last error. */
 extern signed char isola_error_sdl(int SDLfunction);
-/* print first openGL error & clear errors, returns -1 if error, else 0 */
+/* print first openGL error & clear errors. */
+/* returns -1 if error, else 0. */
 extern signed char isola_error_gl(void);
 
 
@@ -106,7 +109,8 @@ struct ISOLA_context{
 }extern isola_info_context;
 
 
-/* current window state. updated with isola_get_window() */
+/* current window state.
+ * updated with isola_get_window() */
 struct ISOLA_window{
 	int xPos, yPos;
 	int width, height;
@@ -120,15 +124,17 @@ struct ISOLA_window{
 }extern isola_info_window;
 
 
-/* initial display info
- * TODO all displays info, update according to display events*/
+/* initial display info */
+/* TODO */
+/* all displays info, update according to display events */
 struct ISOLA_display{
 	int numDisplaymodes;
 	SDL_DisplayMode** displaymodeList;
 }extern isola_info_display;
 
 
-/* glEnable information. meant for quick debugging. see isola_get_state() */
+/* glEnable information.
+ * updated with isola_get_state(). */
 enum ISOLA_state{
 	ISOLA_STATE_NONE = 0x00000000,
 	ISOLA_STATE_BLEND = 0x00000001,
@@ -151,7 +157,7 @@ enum ISOLA_state{
 extern void isola_get_window(void);
 
 
-/* retrieve all availiable display information (isola_info_display) */
+/* update display information (isola_info_display) */
 extern void isola_get_displays(void);
 
 
@@ -175,12 +181,14 @@ extern unsigned int isola_shader_buildProgram(const char* vertShaderFile,
 		const char* fragShaderFile);
 
 
-/* loads srcfile into heap, returns a pointer that can be issued to
- * isolaShaderSrcCompare(), you must free this pointer yourself */
+/* loads srcfile into heap.
+ * returns a pointer that can be issued to isolaShaderSrcCompare().
+ * you must free this pointer yourself. */
 extern char* isola_shader_srcLoad(const char* shaderFile);
 
 
-/* compares srcfile with loaded src, if !=, src is updated and return !0 */
+/* compares srcfile with loaded src.
+ * if it differs, update src and return not zero */
 extern unsigned char isola_shader_srcCompare(char* shaderSrc,
 		const char* shaderFile);
 
