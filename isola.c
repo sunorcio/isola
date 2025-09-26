@@ -234,6 +234,7 @@ unsigned int isola_shader_compile(const char* shaderFile,
 	unsigned int shaderObject;
 	int l;
 	size_t s;
+	char* p;
 /* 	FILE* f; */
 
 /* 	f = fopen(shaderFile, "a+");
@@ -254,10 +255,10 @@ unsigned int isola_shader_compile(const char* shaderFile,
 	fseek(f, 0, SEEK_SET);
 	fread(isola_shaderSrc, 1, l, f);
 	fclose(f); */
-	isola_shaderSrc = SDL_LoadFile(shaderFile,&s);
+	p = SDL_LoadFile(shaderFile,&s);
 
 /* 	TODO */
-	SDL_Log("%s",isola_shaderSrc);
+	SDL_Log("%s",p);
 		
 	shaderObject = glCreateShader(shaderType);
 	glShaderSource(shaderObject,1,(const char**)&isola_shaderSrc,0);
@@ -317,7 +318,7 @@ char* isola_shader_srcLoad(const char* shaderFile){
 	int length;
 	char* shaderSrc;
 
-	shaderSrc = SDL_calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
+/* 	shaderSrc = SDL_calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
 	file = fopen(shaderFile, "a+");
 	fseek(file, 0, SEEK_END);
 	length = ftell(file);
@@ -334,7 +335,7 @@ char* isola_shader_srcLoad(const char* shaderFile){
 	memset(shaderSrc, 0, ISOLA_GLSLCHARMAX);
 	fseek(file, 0, SEEK_SET);
 	(void)fread(shaderSrc, 1, length, file);
-	fclose(file);
+	fclose(file); */
 
 	return shaderSrc;
 }
@@ -345,7 +346,7 @@ unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 	int l;
 	FILE* f;
 
-	f = fopen(shaderFile, "a+");
+/* 	f = fopen(shaderFile, "a+");
 	fseek(f, 0, SEEK_END);
 	l = ftell(f);
 	if(!l){
@@ -361,7 +362,7 @@ unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 	memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
 	fseek(f, 0, SEEK_SET);
 	fread(isola_shaderSrc, 1, l, f);
-	fclose(f);
+	fclose(f); */
 	
 	if(strcmp(shaderSrc, isola_shaderSrc)){
 		memset(shaderSrc, 0, ISOLA_GLSLCHARMAX);
