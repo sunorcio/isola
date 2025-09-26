@@ -48,7 +48,7 @@ extern void isola_quit(void);
 #ifdef ISOLA_DBG
  #define ISOLA_GLDBG_(x)                                                      \
 	if(isola_error_gl()){                                                       \
-		SDL_Log(" ^- ##UNCAUGHT ERROR##");                                        \
+		SDL_Log(" ^- ##UNCAUGHT ERROR##\n\n\n");                                  \
 	}                                                                           \
 	x;                                                                          \
 	if(isola_error_gl()){                                                       \

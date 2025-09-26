@@ -257,7 +257,9 @@ unsigned int isola_shader_compile(const char* shaderFile,
 	memcpy(isola_shaderSrc,p,s);
 
 /* 	TODO */
+	SDL_Log("###SHADER START###");
 	SDL_Log("%s",isola_shaderSrc);
+	SDL_Log("###SHADER END###");
 		
 	shaderObject = glCreateShader(shaderType);
 	glShaderSource(shaderObject,1,(const char**)&isola_shaderSrc,0);
