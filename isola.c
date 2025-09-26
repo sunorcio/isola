@@ -244,7 +244,7 @@ unsigned int isola_shader_compile(const char* shaderFile,
 	}else if(size>ISOLA_GLSLCHARMAX){
 		SDL_Log("isola_shader_compile: shader exceeds character limit "
 				"(defined as ISOLA_GLSLCHARMAX in isola_config.h)\n"
-				"current limit: %d\n""requested file: %lu\n\n\n",
+				"current limit: %d\n""requested file: %zu\n\n\n",
 				ISOLA_GLSLCHARMAX,size);
 		SDL_free(data);
 		return 0;
@@ -337,7 +337,7 @@ char* isola_shader_srcLoad(const char* shaderFile){
 	}else if(size>ISOLA_GLSLCHARMAX){
 		SDL_Log("isola_shader_srcLoad: shader exceeds character limit "
 				"(defined as ISOLA_GLSLCHARMAX in isola_config.h)\n"
-				"current limit: %d\n""requested file: %lu\n\n\n",
+				"current limit: %d\n""requested file: %zu\n\n\n",
 				ISOLA_GLSLCHARMAX,size);
 		SDL_free(shaderSrc);
 		return 0;
@@ -361,7 +361,7 @@ unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 	}else if(size>ISOLA_GLSLCHARMAX){
 		SDL_Log("isola_shader_srcCompare: shader exceeds character limit "
 				"(defined as ISOLA_GLSLCHARMAX in isola_config.h)\n"
-				"current limit: %d\n""requested file: %lu\n\n\n",
+				"current limit: %d\n""requested file: %zu\n\n\n",
 				ISOLA_GLSLCHARMAX,size);
 		SDL_free(data);
 		return 0;
