@@ -57,11 +57,11 @@ unsigned char isola_textEditing = 0;
 
 static void isola_buildTextString(void){
 
-	memset(isola_textString,0,
+	SDL_memset(isola_textString,0,
 			isola_textCharLength*sizeof(char)*TEXT_CHAR_SIZE);
 	{unsigned int i;
 	for(i = 0;i<isola_textCharLength;i++){
-		strcat(isola_textString,isola_textChars[i]);
+		SDL_strlcat(isola_textString,isola_textChars[i],MAX_TEXT_STRING_LENGTH);
 	}}
 }
 
