@@ -15,12 +15,7 @@
 #define ISOLA_ARRAYCOUNT_(x) (sizeof(x)/sizeof(x[0]))
 
 
-/* linux only */
-#ifdef SDL_h_
- #define ISOLA_CLEARTERMINAL_() SDL_Log("\033[2J");;
-#else
- #define ISOLA_CLEARTERMINAL_() printf("\033[2J");;
-#endif
+#define ISOLA_CLEARTERMINAL_() SDL_Log("\033[H\033[2J\033[3J");
 	
 
 

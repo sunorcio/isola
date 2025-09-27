@@ -8,7 +8,6 @@
 
 
 
-/* move to isola config if stablished */
 #define TEXT_CHAR_SIZE 32
 #define MAX_TEXT_STRING_LENGTH 32
 
@@ -70,16 +69,12 @@ static void isola_buildTextString(void){
 void isola_textEditStart(unsigned int textLength, char(* textLoad)[32],
 		SDL_Window* isola_window){
 
-	if (isola_textEditing) {
-		return;
-	}
-	if (!textLength) {
-		SDL_Log("%s : text length must not be zero",__FUNCTION__);
+	if (isola_textEditing || !textLength) {
 		return;
 	}
 	if (MAX_TEXT_STRING_LENGTH && textLength > MAX_TEXT_STRING_LENGTH) {
-		SDL_Log("%s : text length cannot exceed %d",
-				__FUNCTION__,MAX_TEXT_STRING_LENGTH);
+		SDL_Log("isola_textEditStart: textLength(%d) cannot exceed %d",
+				textLength,MAX_TEXT_STRING_LENGTH);
 		return;
 	}
 
