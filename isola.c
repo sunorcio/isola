@@ -253,6 +253,7 @@ unsigned int isola_shader_compile(const char* shaderFile,
 
 	SDL_memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
 	SDL_memcpy(isola_shaderSrc,data,size);
+	SDL_free(data);
 
 
 	shaderObject = glCreateShader(shaderType);
@@ -372,6 +373,7 @@ unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 
 	SDL_memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
 	SDL_memcpy(isola_shaderSrc,data,size);
+	SDL_free(data);
 	
 
 	if(SDL_strcmp(shaderSrc, isola_shaderSrc)){

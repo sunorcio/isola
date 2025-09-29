@@ -35,7 +35,7 @@ void isola_inputClear(SDL_Window* isola_window){
 
 	if (SDL_TextInputActive(isola_window)) {SDL_StopTextInput(isola_window);}
 
-/* 	memset(keyRepeat,0,keyNum*sizeof(unsigned char)); */
+/* 	SDL_memset(keyRepeat,0,keyNum*sizeof(unsigned char)); */
 }
 
 
