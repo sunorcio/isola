@@ -257,7 +257,7 @@ unsigned int isola_shader_compile(const char* shaderFile,
 
 
 	shaderObject = glCreateShader(shaderType);
-	glShaderSource(shaderObject,1,(const char**)&isola_shaderSrc,0);
+	glShaderSource(shaderObject,1,(const char*const*)&isola_shaderSrc,0);
 	glCompileShader(shaderObject);
 
 #ifdef ISOLA_DBG

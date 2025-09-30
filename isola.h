@@ -116,7 +116,7 @@ struct ISOLA_window{
 	int width, height;
 	double xRatio, yRatio;
 	double pixelWidth, pixelHeight;
-	unsigned int flags; /* see SDL_WindowFlags for a list of flags */
+	SDL_WindowFlags flags; /* see SDL_WindowFlags for a list of flags */
 	SDL_DisplayID displayIndex;
 	const SDL_DisplayMode* displayMode;
 	const SDL_DisplayMode* desktopDisplayMode;
@@ -125,8 +125,6 @@ struct ISOLA_window{
 
 
 /* initial display info */
-/* TODO */
-/* all displays info, update according to display events */
 struct ISOLA_display{
 	int numDisplaymodes;
 	SDL_DisplayMode** displaymodeList;

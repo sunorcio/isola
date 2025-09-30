@@ -30,7 +30,8 @@ unsigned char isola_keyRepeat[SDL_SCANCODE_COUNT];
 void isola_inputClear(SDL_Window* isola_window){
 
 	if (isola_keyState == 0) {
-		isola_keyState = (unsigned char*)SDL_GetKeyboardState(&isola_keyNum);
+		isola_keyState =
+				(const unsigned char*)SDL_GetKeyboardState(&isola_keyNum);
 	}
 
 	if (SDL_TextInputActive(isola_window)) {SDL_StopTextInput(isola_window);}
@@ -73,8 +74,8 @@ void isola_textEditStart(unsigned int textLength, char(* textLoad)[32],
 		return;
 	}
 	if (MAX_TEXT_STRING_LENGTH && textLength > MAX_TEXT_STRING_LENGTH) {
-		SDL_Log("isola_textEditStart: textLength(%d) cannot exceed %d",
-				textLength,MAX_TEXT_STRING_LENGTH);
+		SDL_Log("isola_textEditStart: textLength cannot exceed %d, currently %u",
+				MAX_TEXT_STRING_LENGTH,textLength);
 		return;
 	}
 
