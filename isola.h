@@ -114,7 +114,8 @@ struct ISOLA_context{
 struct ISOLA_window{
 	int xPos, yPos;
 	int width, height;
-	double xRatio, yRatio;
+/* screen proportion in respect to smallest screen axis */
+	float xRatio, yRatio;
 	double pixelWidth, pixelHeight;
 	SDL_WindowFlags flags; /* see SDL_WindowFlags for a list of flags */
 	SDL_DisplayID displayIndex;
