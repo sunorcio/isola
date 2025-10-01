@@ -42,8 +42,8 @@ void isola_inputClear(SDL_Window* isola_window){
 
 void isola_inputRepeat(void){
 
-	memcpy(isola_keyRepeat,isola_keyState,
-			isola_keyNum*sizeof(unsigned char));
+	SDL_memcpy(isola_keyRepeat,isola_keyState,
+			(Uint64)isola_keyNum*sizeof(unsigned char));
 }
 
 
@@ -51,8 +51,8 @@ void isola_inputRepeat(void){
 
 static unsigned int isola_textCursor = 0;
 static unsigned int isola_textCharLength = 0;
-char(* isola_textChars)[TEXT_CHAR_SIZE] = {0};
-char* isola_textString = {0};
+static char(* isola_textChars)[TEXT_CHAR_SIZE] = {0};
+static char* isola_textString = {0};
 unsigned char isola_textEditing = 0;
 
 

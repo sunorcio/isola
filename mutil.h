@@ -23,7 +23,7 @@ void isola_mut_cp_m3m4(float src[3*3],float dest[4*4]);
 void isola_mut_mul_m3(float a[3*3],float b[3*3],float dest[3*3]);
 
 
-unsigned int isola_mut_gcd(int a, int b);
+int isola_mut_gcd(int a, int b);
 
 
 

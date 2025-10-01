@@ -74,21 +74,6 @@ void isola_mut_mul_m3(float a[3*3],float b[3*3],float dest[3*3]){
 }
 
 
-unsigned int isola_mut_gcd(int a, int b){
-
-	int t;
-
-
-	while(b!=0){
-		t=b;
-		b=a%b;
-		a=t;
-	}
-
-	return SDL_abs(a);
-}
-
-
 /* void isola_mut_print_m4(float m[4*4]){
 
 	int i;

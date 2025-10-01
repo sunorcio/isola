@@ -71,11 +71,11 @@ void isola_get_window(void){
 
 	if (isola_info_window.width > isola_info_window.height) {
 		isola_info_window.yRatio = 1.;
-		isola_info_window.xRatio = (double)isola_info_window.width
+		isola_info_window.xRatio = (float)isola_info_window.width
 				/isola_info_window.height;
 	}else {
 		isola_info_window.xRatio = 1.;
-		isola_info_window.yRatio = (double)isola_info_window.height 
+		isola_info_window.yRatio = (float)isola_info_window.height 
 				/isola_info_window.width;
 	}
 	isola_info_window.pixelWidth = (double)2./isola_info_window.width;
@@ -164,33 +164,46 @@ void isola_get_state(void){
 	int state = {0};
 
 
-	isola_info_state = 0x0000;
+	isola_info_state = 0x00000000;
 	glGetIntegerv(GL_BLEND, &state);
-	isola_info_state = (isola_info_state | state*ISOLA_STATE_BLEND);
+	isola_info_state = (isola_info_state |
+			(state!=0)*ISOLA_STATE_BLEND);
 	glGetIntegerv(GL_COLOR_LOGIC_OP, &state);
-	isola_info_state = (isola_info_state | state*ISOLA_STATE_COLORLOGIC);
+	isola_info_state = (isola_info_state |
+			(state!=0)*ISOLA_STATE_COLORLOGIC);
 	glGetIntegerv(GL_CULL_FACE, &state);
-	isola_info_state = (isola_info_state | state*ISOLA_STATE_CULLFACE);
+	isola_info_state = (isola_info_state |
+			(state!=0)*ISOLA_STATE_CULLFACE);
 	glGetIntegerv(GL_DEPTH_TEST, &state);
-	isola_info_state = (isola_info_state | state*ISOLA_STATE_DEPTHTEST);
+	isola_info_state = (isola_info_state |
+			(state!=0)*ISOLA_STATE_DEPTHTEST);
 	glGetIntegerv(GL_DITHER, &state);
-	isola_info_state = (isola_info_state | state*ISOLA_STATE_DITHER);
+	isola_info_state = (isola_info_state |
+			(state!=0)*ISOLA_STATE_DITHER);
 	glGetIntegerv(GL_SCISSOR_TEST, &state);
-	isola_info_state = (isola_info_state | state*ISOLA_STATE_SCISSORTEST);
+	isola_info_state = (isola_info_state |
+			(state!=0)*ISOLA_STATE_SCISSORTEST);
 	glGetIntegerv(GL_STENCIL_TEST, &state);
-	isola_info_state = (isola_info_state | state*ISOLA_STATE_STENCILTEST);
+	isola_info_state = (isola_info_state |
+			(state!=0)*ISOLA_STATE_STENCILTEST);
 	glGetIntegerv(GL_FRAMEBUFFER_SRGB, &state);
-	isola_info_state = (isola_info_state | state*ISOLA_STATE_SRGBFRAMEBUFFER);
+	isola_info_state = (isola_info_state |
+			(state!=0)*ISOLA_STATE_SRGBFRAMEBUFFER);
 	glGetIntegerv(GL_POINT_SMOOTH, &state);
-	isola_info_state = (isola_info_state | state*ISOLA_STATE_POINTSMOOTH);
+	isola_info_state = (isola_info_state |
+			(state!=0)*ISOLA_STATE_POINTSMOOTH);
 	glGetIntegerv(GL_LINE_SMOOTH, &state);
-	isola_info_state = (isola_info_state | state*ISOLA_STATE_LINESMOOTH);
+	isola_info_state = (isola_info_state |
+			(state!=0)*ISOLA_STATE_LINESMOOTH);
 	glGetIntegerv(GL_POLYGON_SMOOTH, &state);
-	isola_info_state = (isola_info_state | state*ISOLA_STATE_POLYGONSMOOTH);
+	isola_info_state = (isola_info_state |
+			(state!=0)*ISOLA_STATE_POLYGONSMOOTH);
 	glGetIntegerv(GL_PROGRAM_POINT_SIZE, &state);
-	isola_info_state = (isola_info_state | state*ISOLA_STATE_POINTSIZEPROGRAM);
+	isola_info_state = (isola_info_state |
+			(state!=0)*ISOLA_STATE_POINTSIZEPROGRAM);
 	glGetIntegerv(GL_MULTISAMPLE, &state);
-	isola_info_state = (isola_info_state | state*ISOLA_STATE_MULTISAMPLE);
+	isola_info_state = (isola_info_state |
+			(state!=0)*ISOLA_STATE_MULTISAMPLE);
 }
 
 
