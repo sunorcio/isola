@@ -306,6 +306,10 @@ unsigned int isola_shader_buildProgram(const char* vertShaderFile,
 	sp = glCreateProgram();
 	vs = isola_shader_compile(vertShaderFile,GL_VERTEX_SHADER);
 	fs = isola_shader_compile(fragShaderFile,GL_FRAGMENT_SHADER);
+	if (!vs || !fs){
+		return 0;
+	}
+
 	glAttachShader(sp,vs);
 	glAttachShader(sp,fs);
 	
@@ -345,6 +349,7 @@ char* isola_shader_srcLoad(const char* shaderFile){
 
 
 	shaderSrc = SDL_LoadFile(shaderFile,&size);
+
 	if(!shaderSrc){
 		SDL_Log("isola_shader_srcLoad: failed loading file '%s'",shaderFile);
 		isola_error_sdl(0);
