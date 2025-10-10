@@ -189,9 +189,9 @@ void isola_get_state(void){
 	glGetIntegerv(GL_FRAMEBUFFER_SRGB, &state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_SRGBFRAMEBUFFER);
-	glGetIntegerv(GL_POINT_SMOOTH, &state);
+/* 	glGetIntegerv(GL_POINT_SMOOTH, &state);
 	isola_info_state = (isola_info_state |
-			(state!=0)*ISOLA_STATE_POINTSMOOTH);
+			(state!=0)*ISOLA_STATE_POINTSMOOTH); */
 	glGetIntegerv(GL_LINE_SMOOTH, &state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_LINESMOOTH);
@@ -225,8 +225,8 @@ void isola_set_state(enum ISOLA_state state){
 	else {glDisable(GL_STENCIL_TEST);}
 	if (state&ISOLA_STATE_SRGBFRAMEBUFFER) {glEnable(GL_FRAMEBUFFER_SRGB);}
 	else {glDisable(GL_FRAMEBUFFER_SRGB);}
-	if (state&ISOLA_STATE_POINTSMOOTH) {glEnable(GL_POINT_SMOOTH);}
-	else {glDisable(GL_POINT_SMOOTH);}
+/* 	if (state&ISOLA_STATE_POINTSMOOTH) {glEnable(GL_POINT_SMOOTH);}
+	else {glDisable(GL_POINT_SMOOTH);} */
 	if (state&ISOLA_STATE_LINESMOOTH) {glEnable(GL_LINE_SMOOTH);}
 	else {glDisable(GL_LINE_SMOOTH);}
 	if (state&ISOLA_STATE_POLYGONSMOOTH) {glEnable(GL_POLYGON_SMOOTH);}
