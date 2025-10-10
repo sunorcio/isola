@@ -411,7 +411,6 @@ static void isola_contextPromt(void){
 	int vers, maj, min, prof, flags;
 
 
-	SDL_Log("\n\n\n");
 	SDL_Log("Vendor          : %s", glGetString(GL_VENDOR));
 	SDL_Log("Renderer        : %s", glGetString(GL_RENDERER));
 	SDL_Log("GL Version      : %s", glGetString(GL_VERSION));
@@ -474,6 +473,7 @@ unsigned char isola_init(void){
 	int contextFlags = 0;
 
 
+	SDL_Log("\n\n\n\n");
 	isola_shaderSrc = SDL_calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
 	if(!isola_shaderSrc) {
 		SDL_Log("isola_init: failed shader buffer allocation");
@@ -576,10 +576,44 @@ unsigned char isola_init(void){
 
 	isola_context = SDL_GL_CreateContext(isola_window);
 	if (!isola_context) {
-		SDL_Log("isola_init: failed GL context creation");
+		SDL_Log("isola_init: failed GL context creation. "
+				"trying again using default sdl hints");
 		isola_error_sdl(0);
 		SDL_Log("\n\n");
-		return 0;
+
+		SDL_DestroyWindow(isola_window);
+
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, contextFlags);
+		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 3);
+		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 3);
+		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 2);
+		SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE, 0);
+		SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE, 0);
+		SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE, 0);
+		SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 0);
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+		SDL_GL_SetAttribute(SDL_GL_STEREO, 0);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+				SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+
+		isola_window = SDL_CreateWindow( ISOLA_WINDOWTITLE,
+				ISOLA_WINDOWWIDTH, ISOLA_WINDOWHEIGHT,
+				SDL_WINDOW_OPENGL );
+
+		isola_context = SDL_GL_CreateContext(isola_window);
+		if (!isola_window) {
+			SDL_Log("isola_init: failed GL context creation a second time");
+			isola_error_sdl(0);
+			SDL_Log("\n\n");
+			return 0;
+		}
 	}
 	SDL_GL_MakeCurrent(isola_window, isola_context);
 
