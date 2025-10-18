@@ -117,7 +117,7 @@ struct ISOLA_window{
 /* screen resolution proportion in respect to smallest screen axis */
 	float xRatio, yRatio;
 /* proportion of singular pixel to resolution, inverse of the resolution */
-	double pixelWidth, pixelHeight;
+	float pixelWidth, pixelHeight;
 	SDL_WindowFlags flags; /* see SDL_WindowFlags for a list of flags */
 	SDL_DisplayID displayIndex;
 	const SDL_DisplayMode* displayMode;

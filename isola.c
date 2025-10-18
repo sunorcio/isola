@@ -25,7 +25,7 @@ signed char isola_error_gl(void){
 	GLenum error = glGetError();
 	if (error == GL_NO_ERROR){ return 0; }
 
-	do{ SDL_Log("GLerror : %s", gluErrorString(error)); }
+	do{ SDL_Log("GLerror : %s",gluErrorString(error)); }
 	while( (error = glGetError()) != GL_NO_ERROR );
 	return -1;
 }
@@ -70,16 +70,16 @@ void isola_get_window(void){
 			&isola_info_window.height);
 
 	if (isola_info_window.width > isola_info_window.height) {
-		isola_info_window.yRatio = 1.;
+		isola_info_window.yRatio = 1.f;
 		isola_info_window.xRatio = (float)isola_info_window.width
 				/(float)isola_info_window.height;
 	}else {
-		isola_info_window.xRatio = 1.;
+		isola_info_window.xRatio = 1.f;
 		isola_info_window.yRatio = (float)isola_info_window.height 
 				/(float)isola_info_window.width;
 	}
-	isola_info_window.pixelWidth = (double)2./isola_info_window.width;
-	isola_info_window.pixelHeight = (double)2./isola_info_window.height;
+	isola_info_window.pixelWidth = 2.f/isola_info_window.width;
+	isola_info_window.pixelHeight = 2.f/isola_info_window.height;
 
 	isola_info_window.flags = SDL_GetWindowFlags(isola_window);
 	isola_info_window.displayIndex = SDL_GetDisplayForWindow(isola_window);
@@ -106,48 +106,48 @@ static void isola_get_context(void){
 
 	glBindFramebuffer(GL_FRAMEBUFFER,0);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-			GL_FRONT_LEFT, GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE,
+			GL_FRONT_LEFT,GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE,
 			&isola_info_context.fbdef_redSize);
-	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, 
-			GL_FRONT_LEFT, GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE,
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+			GL_FRONT_LEFT,GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE,
 			&isola_info_context.fbdef_greenSize);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-			GL_FRONT_LEFT, GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE,
+			GL_FRONT_LEFT,GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE,
 			&isola_info_context.fbdef_blueSize);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-			GL_FRONT_LEFT, GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE,
+			GL_FRONT_LEFT,GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE,
 			&isola_info_context.fbdef_alphaSize);
 #if ISOLA_DEPTH
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-			GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE,
+			GL_DEPTH,GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE,
 			&isola_info_context.fbdef_depthSize);
 #endif
 #if ISOLA_STENCIL
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-			GL_STENCIL, GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE,
+			GL_STENCIL,GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE,
 			&isolaInfoContext.fbdefStencilsize);
 #endif
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-			GL_FRONT_LEFT, GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING,
+			GL_FRONT_LEFT,GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING,
 			&isola_info_context.fbdef_colorEncoding);
 
-	glGetIntegerv(GL_DOUBLEBUFFER, &isola_info_context.fbdef_doubleBuffer);
+	glGetIntegerv(GL_DOUBLEBUFFER,&isola_info_context.fbdef_doubleBuffer);
 
-	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &isola_info_context.max_vertices);
-	glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &isola_info_context.max_indices);
-	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &isola_info_context.max_attrib);
+	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES,&isola_info_context.max_vertices);
+	glGetIntegerv(GL_MAX_ELEMENTS_INDICES,&isola_info_context.max_indices);
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS,&isola_info_context.max_attrib);
 	glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS,
 			&isola_info_context.max_vertexUniforms);
 	glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS,
 			&isola_info_context.max_fragmentUniforms);
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
 			&isola_info_context.max_texCombinedUnits);
-	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &isola_info_context.max_texUnits);
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &isola_info_context.max_texSize);
-	glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &isola_info_context.max_3dTexSize);
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS,&isola_info_context.max_texUnits);
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE,&isola_info_context.max_texSize);
+	glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE,&isola_info_context.max_3dTexSize);
 	glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE,
 			&isola_info_context.max_cubeTexSize);
-	glGetIntegerv(GL_MAX_DRAW_BUFFERS, &isola_info_context.max_drawBuffers);
+	glGetIntegerv(GL_MAX_DRAW_BUFFERS,&isola_info_context.max_drawBuffers);
 	glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS,
 			&isola_info_context.max_colorAttachments);
 	glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE,
@@ -165,43 +165,43 @@ void isola_get_state(void){
 
 
 	isola_info_state = 0x00000000;
-	glGetIntegerv(GL_BLEND, &state);
+	glGetIntegerv(GL_BLEND,&state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_BLEND);
-	glGetIntegerv(GL_COLOR_LOGIC_OP, &state);
+	glGetIntegerv(GL_COLOR_LOGIC_OP,&state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_COLORLOGIC);
-	glGetIntegerv(GL_CULL_FACE, &state);
+	glGetIntegerv(GL_CULL_FACE,&state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_CULLFACE);
-	glGetIntegerv(GL_DEPTH_TEST, &state);
+	glGetIntegerv(GL_DEPTH_TEST,&state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_DEPTHTEST);
-	glGetIntegerv(GL_DITHER, &state);
+	glGetIntegerv(GL_DITHER,&state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_DITHER);
-	glGetIntegerv(GL_SCISSOR_TEST, &state);
+	glGetIntegerv(GL_SCISSOR_TEST,&state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_SCISSORTEST);
-	glGetIntegerv(GL_STENCIL_TEST, &state);
+	glGetIntegerv(GL_STENCIL_TEST,&state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_STENCILTEST);
-	glGetIntegerv(GL_FRAMEBUFFER_SRGB, &state);
+	glGetIntegerv(GL_FRAMEBUFFER_SRGB,&state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_SRGBFRAMEBUFFER);
-/* 	glGetIntegerv(GL_POINT_SMOOTH, &state);
+/* 	glGetIntegerv(GL_POINT_SMOOTH,&state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_POINTSMOOTH); */
-	glGetIntegerv(GL_LINE_SMOOTH, &state);
+	glGetIntegerv(GL_LINE_SMOOTH,&state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_LINESMOOTH);
-	glGetIntegerv(GL_POLYGON_SMOOTH, &state);
+	glGetIntegerv(GL_POLYGON_SMOOTH,&state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_POLYGONSMOOTH);
 	glGetIntegerv(GL_PROGRAM_POINT_SIZE, &state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_POINTSIZEPROGRAM);
-	glGetIntegerv(GL_MULTISAMPLE, &state);
+	glGetIntegerv(GL_MULTISAMPLE,&state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_MULTISAMPLE);
 }
@@ -264,7 +264,7 @@ unsigned int isola_shader_compile(const char* shaderFile,
 		return 0;
 	}
 
-	SDL_memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
+	SDL_memset(isola_shaderSrc,0,ISOLA_GLSLCHARMAX);
 	SDL_memcpy(isola_shaderSrc,data,size);
 	SDL_free(data);
 
@@ -274,18 +274,18 @@ unsigned int isola_shader_compile(const char* shaderFile,
 	glCompileShader(shaderObject);
 
 #ifdef ISOLA_DBG
-	glGetShaderiv(shaderObject, GL_COMPILE_STATUS, &temp);
+	glGetShaderiv(shaderObject,GL_COMPILE_STATUS,&temp);
 	if(!temp){
-		glGetShaderiv(shaderObject, GL_INFO_LOG_LENGTH, &temp);
-		glGetShaderInfoLog(shaderObject, temp, &temp, isola_shaderSrc);
+		glGetShaderiv(shaderObject,GL_INFO_LOG_LENGTH,&temp);
+		glGetShaderInfoLog(shaderObject,temp,&temp,isola_shaderSrc);
 		isola_error_gl();
 		SDL_Log("isola_shader_compile: failed '%s' compilation\n"
 				"log: %s\n\n\n",shaderFile,isola_shaderSrc);
 		return 0;
 	}
-	glGetShaderiv(shaderObject, GL_INFO_LOG_LENGTH, &temp);
+	glGetShaderiv(shaderObject,GL_INFO_LOG_LENGTH,&temp);
 	if(temp){
-		glGetShaderInfoLog(shaderObject, temp, &temp, isola_shaderSrc);
+		glGetShaderInfoLog(shaderObject,temp,&temp,isola_shaderSrc);
 		SDL_Log("isola_shader_compile: completed '%s' compilation\n"
 				"log: %s\n\n\n",shaderFile,isola_shaderSrc);
 	}
@@ -319,15 +319,15 @@ unsigned int isola_shader_buildProgram(const char* vertShaderFile,
 	glGetProgramiv(sp, GL_LINK_STATUS, &temp);
 	if(!temp){
 		glGetProgramiv(sp, GL_INFO_LOG_LENGTH, &temp);
-		glGetProgramInfoLog(sp, temp, &temp, isola_shaderSrc);
+		glGetProgramInfoLog(sp,temp,&temp,isola_shaderSrc);
 		isola_error_gl();
 		SDL_Log("isola_shader_buildProgram: failed to link '%s', '%s'\n"
 				"log: %s\n\n\n",vertShaderFile,fragShaderFile,isola_shaderSrc);
 		return 0;
 	}
-	glGetProgramiv(sp, GL_INFO_LOG_LENGTH, &temp);
+	glGetProgramiv(sp,GL_INFO_LOG_LENGTH,&temp);
 	if(temp){
-		glGetProgramInfoLog(sp, temp, &temp, isola_shaderSrc);
+		glGetProgramInfoLog(sp,temp,&temp,isola_shaderSrc);
 		SDL_Log("isola_shader_buildProgram: finished linking '%s', '%s'\n"
 				"log: %s\n\n\n",vertShaderFile,fragShaderFile,isola_shaderSrc);
 	}
@@ -389,14 +389,14 @@ unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 		return 0;
 	}
 
-	SDL_memset(isola_shaderSrc, 0, ISOLA_GLSLCHARMAX);
+	SDL_memset(isola_shaderSrc,0,ISOLA_GLSLCHARMAX);
 	SDL_memcpy(isola_shaderSrc,data,size);
 	SDL_free(data);
 	
 
-	if(SDL_strcmp(shaderSrc, isola_shaderSrc)){
-		SDL_memset(shaderSrc, 0, ISOLA_GLSLCHARMAX);
-		SDL_memcpy(shaderSrc, isola_shaderSrc, size);
+	if(SDL_strcmp(shaderSrc,isola_shaderSrc)){
+		SDL_memset(shaderSrc,0,ISOLA_GLSLCHARMAX);
+		SDL_memcpy(shaderSrc,isola_shaderSrc,size);
 		return 1;
 	}
 
@@ -411,34 +411,34 @@ static void isola_contextPromt(void){
 	int vers, maj, min, prof, flags;
 
 
-	SDL_Log("Vendor          : %s", glGetString(GL_VENDOR));
-	SDL_Log("Renderer        : %s", glGetString(GL_RENDERER));
-	SDL_Log("GL Version      : %s", glGetString(GL_VERSION));
-	SDL_Log("GLSL            : %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	SDL_Log("Vendor          : %s",glGetString(GL_VENDOR));
+	SDL_Log("Renderer        : %s",glGetString(GL_RENDERER));
+	SDL_Log("GL Version      : %s",glGetString(GL_VERSION));
+	SDL_Log("GLSL            : %s",glGetString(GL_SHADING_LANGUAGE_VERSION));
 	SDL_Log("\n");
 
 	vers = SDL_GetVersion();
-	SDL_Log("Platform        : %s", SDL_GetPlatform());
-	SDL_Log("SDL (revision)  : %s", SDL_GetRevision());
-	SDL_Log("SDL (header)    : %d.%d.%d", SDL_VERSIONNUM_MAJOR(SDL_VERSION),
+	SDL_Log("Platform        : %s",SDL_GetPlatform());
+	SDL_Log("SDL (revision)  : %s",SDL_GetRevision());
+	SDL_Log("SDL (header)    : %d.%d.%d",SDL_VERSIONNUM_MAJOR(SDL_VERSION),
 			SDL_VERSIONNUM_MINOR(SDL_VERSION),SDL_VERSIONNUM_MICRO(SDL_VERSION));
-	SDL_Log("SDL (shared)    : %d.%d.%d", SDL_VERSIONNUM_MAJOR(vers),
+	SDL_Log("SDL (shared)    : %d.%d.%d",SDL_VERSIONNUM_MAJOR(vers),
 			SDL_VERSIONNUM_MINOR(vers),SDL_VERSIONNUM_MICRO(vers));
 	SDL_Log("\n");
 
 
-	SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &maj);
-	SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &min);
+	SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,&maj);
+	SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,&min);
 	SDL_Log("GL Context(SDL) : %d.%d", maj, min);
 
-	SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &prof);
+	SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,&prof);
 	if(prof == GL_CONTEXT_CORE_PROFILE_BIT){
 		SDL_Log(" core profile");
 	}else if(prof == GL_CONTEXT_COMPATIBILITY_PROFILE_BIT){
 		SDL_Log(" compatibility profile");
 	}
 
-	SDL_GL_GetAttribute(SDL_GL_CONTEXT_FLAGS, &flags);
+	SDL_GL_GetAttribute(SDL_GL_CONTEXT_FLAGS,&flags);
 	if(flags & SDL_GL_CONTEXT_DEBUG_FLAG){
 		SDL_Log(" debug context");
 	}else{
@@ -446,18 +446,18 @@ static void isola_contextPromt(void){
 	}
 
 	SDL_Log("\n");
-	glGetIntegerv(GL_MAJOR_VERSION, &maj);
-	glGetIntegerv(GL_MINOR_VERSION, &min);
-	SDL_Log("GL Context(GL)  : %d.%d", maj, min);
+	glGetIntegerv(GL_MAJOR_VERSION,&maj);
+	glGetIntegerv(GL_MINOR_VERSION,&min);
+	SDL_Log("GL Context(GL)  : %d.%d", maj,min);
 
-	glGetIntegerv(GL_CONTEXT_PROFILE_MASK, &prof);
+	glGetIntegerv(GL_CONTEXT_PROFILE_MASK,&prof);
 	if(prof == GL_CONTEXT_CORE_PROFILE_BIT){
 		SDL_Log(" core profile");
 	}else if(prof == GL_CONTEXT_COMPATIBILITY_PROFILE_BIT){
 		SDL_Log(" compatibility profile");
 	}
 
-	glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+	glGetIntegerv(GL_CONTEXT_FLAGS,&flags);
 	if(flags & GL_CONTEXT_FLAG_DEBUG_BIT){
 		SDL_Log(" debug context");
 	}else{
@@ -474,7 +474,7 @@ unsigned char isola_init(void){
 
 
 	SDL_Log("\n\n\n\n");
-	isola_shaderSrc = SDL_calloc(ISOLA_GLSLCHARMAX+1, sizeof(char));
+	isola_shaderSrc = SDL_calloc(ISOLA_GLSLCHARMAX+1,sizeof(char));
 	if(!isola_shaderSrc) {
 		SDL_Log("isola_init: failed shader buffer allocation");
 		return 0;
@@ -489,9 +489,9 @@ unsigned char isola_init(void){
 	}
 
 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ISOLA_MAJOR_VERSION);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, ISOLA_MINOR_VERSION);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, ISOLA_PROFILE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,ISOLA_MAJOR_VERSION);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,ISOLA_MINOR_VERSION);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,ISOLA_PROFILE);
 
 #ifdef ISOLA_DBG
 	contextFlags |= SDL_GL_CONTEXT_DEBUG_FLAG;
@@ -499,43 +499,43 @@ unsigned char isola_init(void){
 #ifdef __APPLE__
 	contextFlags |= SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG;
 #endif
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, contextFlags);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS,contextFlags);
 
-	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
-	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
-	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE,5);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,5);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,5);
 
-	SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE, 0);
-	SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE, 0);
-	SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE, 0);
+	SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE,0);
+	SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE,0);
+	SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE,0);
 
 #if(ISOLA_ALPHA)
-	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 5);
+	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE,5);
 #endif
 
 #if(ISOLA_DEPTH)
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,16);
 #else
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 0);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,0);
 #endif
 
 #if(ISOLA_STENCIL)
-	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE,8);
 #else
-	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE,0);
 #endif
 
 #if(!ISOLA_DOUBLEBUFFER)
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 0);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,0);
 #endif
 
 #if(ISOLA_MSANTIALIASING)
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, ISOLA_MSANTIALIASING);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,1);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,ISOLA_MSANTIALIASING);
 #endif
 
 	isola_window = SDL_CreateWindow( ISOLA_WINDOWTITLE,
-			ISOLA_WINDOWWIDTH, ISOLA_WINDOWHEIGHT,
+			ISOLA_WINDOWWIDTH,ISOLA_WINDOWHEIGHT,
 			SDL_WINDOW_OPENGL );
 
 	if (!isola_window) {
@@ -544,22 +544,22 @@ unsigned char isola_init(void){
 		isola_error_sdl(0);
 		SDL_Log("\n\n");
 
-		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 3);
-		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 3);
-		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 2);
-		SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE, 0);
-		SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE, 0);
-		SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE, 0);
-		SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 0);
-		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
-		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
-		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-		SDL_GL_SetAttribute(SDL_GL_STEREO, 0);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
+		SDL_GL_SetAttribute(SDL_GL_RED_SIZE,3);
+		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,3);
+		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,2);
+		SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE,0);
+		SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE,0);
+		SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE,0);
+		SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE,0);
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,16);
+		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE,0);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
+		SDL_GL_SetAttribute(SDL_GL_STEREO,0);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,0);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,0);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS,0);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
 				SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
 
@@ -583,23 +583,23 @@ unsigned char isola_init(void){
 
 		SDL_DestroyWindow(isola_window);
 
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, contextFlags);
-		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 3);
-		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 3);
-		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 2);
-		SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE, 0);
-		SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE, 0);
-		SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE, 0);
-		SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 0);
-		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
-		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
-		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-		SDL_GL_SetAttribute(SDL_GL_STEREO, 0);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS,contextFlags);
+		SDL_GL_SetAttribute(SDL_GL_RED_SIZE,3);
+		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,3);
+		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,2);
+		SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE,0);
+		SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE,0);
+		SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE,0);
+		SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE,0);
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,16);
+		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE,0);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
+		SDL_GL_SetAttribute(SDL_GL_STEREO,0);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,0);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,0);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,2);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS,0);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
 				SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
 
@@ -628,7 +628,7 @@ unsigned char isola_init(void){
 
 #ifdef ISOLA_DBG
 	if( GLEW_KHR_debug || GLEW_ARB_debug_output ){
-		glDebugMessageCallbackARB(&debugCallback, 0);
+		glDebugMessageCallbackARB(&debugCallback,0);
 	}
 #endif
 
@@ -654,7 +654,7 @@ unsigned char isola_init(void){
 
 #if(ISOLA_ALPHA)
 	glEnable(GL_BLEND);
-	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+	glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ZERO);
 	glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD);
 	/* glDepthMask(GL_FALSE); */
 #else

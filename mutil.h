@@ -4,8 +4,8 @@
 
 
 
-void isola_mut_glproj_ortho(float left, float right,
-		float bottom, float top, float nearZ, float farZ, float dest[4*4]);
+void isola_mut_glproj_ortho(float left,float right,
+		float bottom,float top,float nearZ,float farZ,float dest[4*4]);
 
 
 void isola_mut_print_m4(float m[4*4]);
