@@ -78,8 +78,8 @@ void isola_get_window(void){
 		isola_info_window.yRatio = (float)isola_info_window.height 
 				/(float)isola_info_window.width;
 	}
-	isola_info_window.pixelWidth = (float)2.f/isola_info_window.width;
-	isola_info_window.pixelHeight = (float)2.f/isola_info_window.height;
+	isola_info_window.pixelWidth = 2.f/(float)isola_info_window.width;
+	isola_info_window.pixelHeight = 2.f/(float)isola_info_window.height;
 
 	isola_info_window.flags = SDL_GetWindowFlags(isola_window);
 	isola_info_window.displayIndex = SDL_GetDisplayForWindow(isola_window);
