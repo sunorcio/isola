@@ -69,6 +69,16 @@ void isola_get_window(void){
 	SDL_GetWindowSize(isola_window, &isola_info_window.width,
 			&isola_info_window.height);
 
+	if (isola_info_window.width > isola_info_window.height) {
+		isola_info_window.xLowRatio =
+				(float)isola_info_window.width/(float)isola_info_window.height;
+		isola_info_window.yLowRatio = 1.;
+	}else{
+		isola_info_window.xLowRatio = 1.;
+		isola_info_window.yLowRatio =
+				(float)isola_info_window.height/(float)isola_info_window.width;
+	}
+
 	isola_info_window.flags = SDL_GetWindowFlags(isola_window);
 	isola_info_window.displayIndex = SDL_GetDisplayForWindow(isola_window);
 	isola_info_window.displayMode = SDL_GetWindowFullscreenMode(isola_window);
