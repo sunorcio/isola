@@ -110,14 +110,10 @@ struct ISOLA_context{
 
 
 /* current window state.
- * updated with isola_get_window() */
+	updated with isola_get_window() */
 struct ISOLA_window{
-	int xPos, yPos;
+	int xScreenPos, yScreenPos; /* window top left corner position on screen */
 	int width, height;
-/* screen resolution proportion in respect to smallest screen axis */
-	float xRatio, yRatio;
-/* proportion of singular pixel to resolution, inverse of the resolution */
-	float pixelWidth, pixelHeight;
 	SDL_WindowFlags flags; /* see SDL_WindowFlags for a list of flags */
 	SDL_DisplayID displayIndex;
 	const SDL_DisplayMode* displayMode;
@@ -134,7 +130,7 @@ struct ISOLA_display{
 
 
 /* glEnable information.
- * updated with isola_get_state(). */
+	updated with isola_get_state(). */
 enum ISOLA_state{
 	ISOLA_STATE_NONE = 0x00000000,
 	ISOLA_STATE_BLEND = 0x00000001,
@@ -182,13 +178,13 @@ extern unsigned int isola_shader_buildProgram(const char* vertShaderFile,
 
 
 /* loads srcfile into heap.
- * returns a pointer that can be issued to isolaShaderSrcCompare().
- * you must free this pointer yourself. */
+	returns a pointer that can be issued to isolaShaderSrcCompare().
+	you must free this pointer yourself. */
 extern char* isola_shader_srcLoad(const char* shaderFile);
 
 
 /* compares srcfile with loaded src.
- * if it differs, update src and return not zero */
+	if it differs, update src and return not zero */
 extern unsigned char isola_shader_srcCompare(char* shaderSrc,
 		const char* shaderFile);
 

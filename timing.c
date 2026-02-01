@@ -13,7 +13,7 @@ Uint64 isola_clockFreq = 0;
 
 
 
-void isola_timerSetup(struct ISOLA_timer* timer,Uint64 stepsPerSecond){
+void isola_timerSetup(struct ISOLA_timer* const timer,Uint64 stepsPerSecond){
 
 	isola_clockFreq = SDL_GetPerformanceFrequency();
 
@@ -23,7 +23,7 @@ void isola_timerSetup(struct ISOLA_timer* timer,Uint64 stepsPerSecond){
 }
 
 
-void isola_counterSetup(struct ISOLA_counter* counter,
+void isola_counterSetup(struct ISOLA_counter* const counter,
 		Uint64 stepsPerSecond){
 
 	isola_clockFreq = SDL_GetPerformanceFrequency();
@@ -42,7 +42,7 @@ void isola_counterSetup(struct ISOLA_counter* counter,
 
 
 
-unsigned char isola_timerStep(struct ISOLA_timer* timer){
+unsigned char isola_timerStep(struct ISOLA_timer* const timer){
 
 	timer->currentStep = SDL_GetPerformanceCounter();
 	if(timer->currentStep >= timer->lastStep + isola_clockFreq/timer->sps){
@@ -55,7 +55,7 @@ unsigned char isola_timerStep(struct ISOLA_timer* timer){
 }
 
 
-unsigned char isola_counterStep(struct ISOLA_counter* counter){
+unsigned char isola_counterStep(struct ISOLA_counter* const counter){
 
 	counter->currentStep = SDL_GetPerformanceCounter();
 	if(counter->currentStep >= counter->lastStep

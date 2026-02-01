@@ -5,7 +5,7 @@
 
 static char* isola_shaderSrc;
 static void isola_get_context(void);
-static void isola_contextPromt(void);
+static void isola_contextPrompt(void);
 
 
 
@@ -64,22 +64,10 @@ static char* isola_shaderSrc = {0};
 
 void isola_get_window(void){
 
-	SDL_GetWindowPosition(isola_window, &isola_info_window.xPos,
-			&isola_info_window.yPos);
+	SDL_GetWindowPosition(isola_window, &isola_info_window.xScreenPos,
+			&isola_info_window.yScreenPos);
 	SDL_GetWindowSize(isola_window, &isola_info_window.width,
 			&isola_info_window.height);
-
-	if (isola_info_window.width > isola_info_window.height) {
-		isola_info_window.yRatio = 1.f;
-		isola_info_window.xRatio = (float)isola_info_window.width
-				/(float)isola_info_window.height;
-	}else {
-		isola_info_window.xRatio = 1.f;
-		isola_info_window.yRatio = (float)isola_info_window.height 
-				/(float)isola_info_window.width;
-	}
-	isola_info_window.pixelWidth = 2.f/(float)isola_info_window.width;
-	isola_info_window.pixelHeight = 2.f/(float)isola_info_window.height;
 
 	isola_info_window.flags = SDL_GetWindowFlags(isola_window);
 	isola_info_window.displayIndex = SDL_GetDisplayForWindow(isola_window);
@@ -92,7 +80,7 @@ void isola_get_window(void){
 
 void isola_get_displays(void){
 
-/* 	int numDisplays,numDisplaymodes;
+/* TODO	int numDisplays,numDisplaymodes;
 	SDL_DisplayID* displayList;
 	SDL_DisplayMode** displaymodeList; */
 
@@ -406,7 +394,7 @@ unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 
 
 
-static void isola_contextPromt(void){
+static void isola_contextPrompt(void){
 
 	int vers, maj, min, prof, flags;
 
@@ -623,7 +611,7 @@ unsigned char isola_init(void){
 
 
 #ifdef ISOLA_DBG
-	isola_contextPromt();
+	isola_contextPrompt();
 #endif
 
 #ifdef ISOLA_DBG
