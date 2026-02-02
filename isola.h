@@ -115,6 +115,7 @@ struct ISOLA_window{
 	int xScreenPos, yScreenPos; /* window top left corner position on screen */
 	int width, height;
 	float xLowRatio, yLowRatio; /* ratio against lower bound resolution */
+	float pixelScale; /* single pixel scale, inverse of lower bound resolution */
 	SDL_WindowFlags flags; /* see SDL_WindowFlags for a list of flags */
 	SDL_DisplayID displayIndex;
 	const SDL_DisplayMode* displayMode;

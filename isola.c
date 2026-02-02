@@ -73,16 +73,19 @@ void isola_get_window(void){
 		isola_info_window.xLowRatio =
 				(float)isola_info_window.width/(float)isola_info_window.height;
 		isola_info_window.yLowRatio = 1.;
+		isola_info_window.pixelScale = 2.f/(float)isola_info_window.height;
 	}else{
 		isola_info_window.xLowRatio = 1.;
 		isola_info_window.yLowRatio =
 				(float)isola_info_window.height/(float)isola_info_window.width;
+		isola_info_window.pixelScale = 2.f/(float)isola_info_window.width;
 	}
 
 	isola_info_window.flags = SDL_GetWindowFlags(isola_window);
 	isola_info_window.displayIndex = SDL_GetDisplayForWindow(isola_window);
 	isola_info_window.displayMode = SDL_GetWindowFullscreenMode(isola_window);
-	isola_info_window.desktopDisplayMode = SDL_GetDesktopDisplayMode(isola_info_window.displayIndex);
+	isola_info_window.desktopDisplayMode = 
+			SDL_GetDesktopDisplayMode(isola_info_window.displayIndex);
 
 	glGetFloatv(GL_COLOR_CLEAR_VALUE,isola_info_window.clearColor);
 }
