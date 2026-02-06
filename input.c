@@ -15,7 +15,7 @@
 
 
 static int isola_keyNum;
-static int isola_buttonFlags;
+static unsigned int isola_buttonFlags;
 static unsigned int isola_textCursor;
 static unsigned int isola_textCharLength;
 static void isola_buildTextString(void);
