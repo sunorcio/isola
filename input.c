@@ -56,7 +56,7 @@ void isola_inputRepeat(void){
 	isola_mouseButtonState[4] = (isola_buttonFlags&SDL_BUTTON_X2MASK) != 0;
 
 	SDL_memcpy(isola_keyRepeat,isola_keyState,
-			isola_keyNum*sizeof(unsigned char));
+			(Uint64)isola_keyNum*sizeof(unsigned char));
 }
 
 
