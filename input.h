@@ -11,8 +11,8 @@
 
 extern const unsigned char* isola_keyState;
 extern unsigned char isola_keyRepeat[SDL_SCANCODE_COUNT];
-extern unsigned char isola_mouseButtonState[5];
-extern unsigned char isola_mouseButtonRepeat[5];
+extern unsigned char isola_mouseButtonState[6];
+extern unsigned char isola_mouseButtonRepeat[6];
 extern float isola_mousePos[2];
 
 

@@ -25,8 +25,8 @@ static void isola_buildTextString(void);
 
 const unsigned char* isola_keyState;
 unsigned char isola_keyRepeat[SDL_SCANCODE_COUNT];
-unsigned char isola_mouseButtonState[5];
-unsigned char isola_mouseButtonRepeat[5];
+unsigned char isola_mouseButtonState[6];
+unsigned char isola_mouseButtonRepeat[6];
 float isola_mousePos[2];
 
 
@@ -49,11 +49,11 @@ void isola_inputRepeat(void){
 			5*sizeof(unsigned char));
 
 	isola_buttonFlags = SDL_GetMouseState(&isola_mousePos[0],&isola_mousePos[1]);
-	isola_mouseButtonState[0] = (isola_buttonFlags&SDL_BUTTON_LMASK) != 0;
-	isola_mouseButtonState[1] = (isola_buttonFlags&SDL_BUTTON_MMASK) != 0;
-	isola_mouseButtonState[2] = (isola_buttonFlags&SDL_BUTTON_RMASK) != 0;
-	isola_mouseButtonState[3] = (isola_buttonFlags&SDL_BUTTON_X1MASK) != 0;
-	isola_mouseButtonState[4] = (isola_buttonFlags&SDL_BUTTON_X2MASK) != 0;
+	isola_mouseButtonState[1] = (isola_buttonFlags&SDL_BUTTON_LMASK) != 0;
+	isola_mouseButtonState[2] = (isola_buttonFlags&SDL_BUTTON_MMASK) != 0;
+	isola_mouseButtonState[3] = (isola_buttonFlags&SDL_BUTTON_RMASK) != 0;
+	isola_mouseButtonState[4] = (isola_buttonFlags&SDL_BUTTON_X1MASK) != 0;
+	isola_mouseButtonState[5] = (isola_buttonFlags&SDL_BUTTON_X2MASK) != 0;
 
 	SDL_memcpy(isola_keyRepeat,isola_keyState,
 			(Uint64)isola_keyNum*sizeof(unsigned char));
