@@ -162,7 +162,7 @@ void isola_get_state(void){
 	int state = {0};
 
 
-	isola_info_state = 0x00000000;
+	isola_info_state = ISOLA_STATE_NONE;
 	glGetIntegerv(GL_BLEND,&state);
 	isola_info_state = (isola_info_state |
 			(state!=0)*ISOLA_STATE_BLEND);
@@ -247,7 +247,7 @@ unsigned int isola_shader_compile(const char* shaderFile,
 	size_t size;
 
 
-	data = SDL_LoadFile(shaderFile,&size);
+	data = (char*)SDL_LoadFile(shaderFile,&size);
 	if(!data){
 		SDL_Log("isola_shader_compile: failed loading file '%s'",shaderFile);
 		isola_error_sdl(0);
@@ -346,7 +346,7 @@ char* isola_shader_srcLoad(const char* shaderFile){
 	size_t size;
 
 
-	shaderSrc = SDL_LoadFile(shaderFile,&size);
+	shaderSrc = (char*)SDL_LoadFile(shaderFile,&size);
 
 	if(!shaderSrc){
 		SDL_Log("isola_shader_srcLoad: failed loading file '%s'",shaderFile);
@@ -372,7 +372,7 @@ unsigned char isola_shader_srcCompare(char* shaderSrc, const char* shaderFile){
 	size_t size;
 
 
-	data = SDL_LoadFile(shaderFile,&size);
+	data = (char*)SDL_LoadFile(shaderFile,&size);
 	if(!data){
 		SDL_Log("isola_shader_srcCompare: failed loading file '%s'",shaderFile);
 		isola_error_sdl(0);
@@ -472,7 +472,7 @@ unsigned char isola_init(void){
 
 
 	SDL_Log("\n\n\n\n");
-	isola_shaderSrc = SDL_calloc(ISOLA_GLSLCHARMAX+1,sizeof(char));
+	isola_shaderSrc = (char*)SDL_calloc(ISOLA_GLSLCHARMAX+1,sizeof(char));
 	if(!isola_shaderSrc) {
 		SDL_Log("isola_init: failed shader buffer allocation");
 		return 0;

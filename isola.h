@@ -134,6 +134,7 @@ struct ISOLA_display{
 /* glEnable information.
 	updated with isola_get_state(). */
 typedef Uint32 ISOLA_state;
+extern ISOLA_state isola_info_state;
 #define ISOLA_STATE_NONE 0x00000000
 #define ISOLA_STATE_BLEND 0x00000001
 #define ISOLA_STATE_COLORLOGIC 0x00000002
