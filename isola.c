@@ -3,7 +3,7 @@
 
 
 
-static char* isola_shaderSrc;
+static char* isola_shaderSrc = {0};
 static void isola_get_context(void);
 static void isola_contextPrompt(void);
 
@@ -54,10 +54,7 @@ SDL_Window* isola_window = {0};
 struct ISOLA_context isola_info_context = {0};
 struct ISOLA_window isola_info_window = {0};
 struct ISOLA_display isola_info_display = {0};
-enum ISOLA_state isola_info_state = {0};
-
-
-static char* isola_shaderSrc = {0};
+ISOLA_state isola_info_state = {0};
 
 
 
@@ -208,7 +205,7 @@ void isola_get_state(void){
 }
 
 
-void isola_set_state(enum ISOLA_state state){
+void isola_set_state(ISOLA_state state){
 
 	if (state&ISOLA_STATE_BLEND) {glEnable(GL_BLEND);}
 	else {glDisable(GL_BLEND);}

@@ -18,6 +18,8 @@ static int isola_keyNum;
 static unsigned int isola_buttonFlags;
 static unsigned int isola_textCursor;
 static unsigned int isola_textCharLength;
+static char(* isola_textChars)[TEXT_CHAR_SIZE] = {0};
+static char* isola_textString = {0};
 static void isola_buildTextString(void);
 
 
@@ -62,10 +64,6 @@ void isola_inputRepeat(void){
 
 
 
-static unsigned int isola_textCursor = 0;
-static unsigned int isola_textCharLength = 0;
-static char(* isola_textChars)[TEXT_CHAR_SIZE] = {0};
-static char* isola_textString = {0};
 unsigned char isola_textEditing = 0;
 
 
@@ -94,9 +92,9 @@ void isola_textEditStart(unsigned int textLength, char(* textLoad)[32],
 
 
 	isola_textCharLength = textLength;
-	isola_textChars = SDL_calloc(isola_textCharLength,
+	isola_textChars = (char(*)[TEXT_CHAR_SIZE])SDL_calloc(isola_textCharLength,
 			TEXT_CHAR_SIZE*sizeof(char));
-	isola_textString = SDL_calloc(isola_textCharLength,
+	isola_textString = (char*)SDL_calloc(isola_textCharLength,
 			TEXT_CHAR_SIZE*sizeof(char));
 	isola_textCursor = 0;
 
